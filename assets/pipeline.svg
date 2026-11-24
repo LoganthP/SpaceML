@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 230" width="1200" height="230" role="img" aria-label="Pipeline: official data, verify, train versus baseline, analyse and replay, review studio, evidence zip">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#050816"/>
+      <stop offset="1" stop-color="#120a26"/>
+    </linearGradient>
+    <linearGradient id="flow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="0.5" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#fb923c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="230" rx="20" fill="url(#bg)"/>
+
+  <!-- flowing connection -->
+  <line x1="110" y1="105" x2="1090" y2="105" stroke="#334155" stroke-width="3"/>
+  <line x1="110" y1="105" x2="1090" y2="105" stroke="url(#flow)" stroke-width="3" stroke-dasharray="14 18">
+    <animate attributeName="stroke-dashoffset" values="0;-64" dur="1.6s" repeatCount="indefinite"/>
+  </line>
+  <circle r="6" fill="#f8fafc">
+    <animateMotion dur="6s" repeatCount="indefinite" path="M110,105 L1090,105"/>
+    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.95;1" dur="6s" repeatCount="indefinite"/>
+  </circle>
+
+  <g font-family="Inter,'Segoe UI',Arial,sans-serif" text-anchor="middle">
+    <!-- 1 -->
+    <g>
+      <circle cx="110" cy="105" r="42" fill="#0e7490" fill-opacity="0.25" stroke="#22d3ee" stroke-width="2">
+        <animate attributeName="r" values="40;44;40" dur="3s" begin="0s" repeatCount="indefinite"/>
+      </circle>
+      <text x="110" y="114" font-size="28">🛰️</text>
+      <text x="110" y="172" font-size="15" font-weight="700" fill="#e2e8f0">Official data</text>
+      <text x="110" y="192" font-size="12" fill="#94a3b8">NASA · ESA · MAST</text>
+    </g>
+    <!-- 2 -->
+    <g>
+      <circle cx="306" cy="105" r="42" fill="#1d4ed8" fill-opacity="0.25" stroke="#60a5fa" stroke-width="2">
+        <animate attributeName="r" values="40;44;40" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+      </circle>
+      <text x="306" y="114" font-size="28">🔐</text>
+      <text x="306" y="172" font-size="15" font-weight="700" fill="#e2e8f0">Verify</text>
+      <text x="306" y="192" font-size="12" fill="#94a3b8">sha256 · schema · gaps</text>
+    </g>
+    <!-- 3 -->
+    <g>
+      <circle cx="502" cy="105" r="42" fill="#6d28d9" fill-opacity="0.25" stroke="#a78bfa" stroke-width="2">
+        <animate attributeName="r" values="40;44;40" dur="3s" begin="1s" repeatCount="indefinite"/>
+      </circle>
+      <text x="502" y="114" font-size="28">🧠</text>
+      <text x="502" y="172" font-size="15" font-weight="700" fill="#e2e8f0">Train vs baseline</text>
+      <text x="502" y="192" font-size="12" fill="#94a3b8">held-out · chronological</text>
+    </g>
+    <!-- 4 -->
+    <g>
+      <circle cx="698" cy="105" r="42" fill="#a21caf" fill-opacity="0.25" stroke="#e879f9" stroke-width="2">
+        <animate attributeName="r" values="40;44;40" dur="3s" begin="1.5s" repeatCount="indefinite"/>
+      </circle>
+      <text x="698" y="114" font-size="28">🎬</text>
+      <text x="698" y="172" font-size="15" font-weight="700" fill="#e2e8f0">Analyse &amp; replay</text>
+      <text x="698" y="192" font-size="12" fill="#94a3b8">no look-ahead</text>
+    </g>
+    <!-- 5 -->
+    <g>
+      <circle cx="894" cy="105" r="42" fill="#be123c" fill-opacity="0.25" stroke="#fb7185" stroke-width="2">
+        <animate attributeName="r" values="40;44;40" dur="3s" begin="2s" repeatCount="indefinite"/>
+      </circle>
+      <text x="894" y="114" font-size="28">✅</text>
+      <text x="894" y="172" font-size="15" font-weight="700" fill="#e2e8f0">Review Studio</text>
+      <text x="894" y="192" font-size="12" fill="#94a3b8">confirm · dismiss · correct</text>
+    </g>
+    <!-- 6 -->
+    <g>
+      <circle cx="1090" cy="105" r="42" fill="#c2410c" fill-opacity="0.25" stroke="#fb923c" stroke-width="2">
+        <animate attributeName="r" values="40;44;40" dur="3s" begin="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <text x="1090" y="114" font-size="28">📦</text>
+      <text x="1090" y="172" font-size="15" font-weight="700" fill="#e2e8f0">Evidence ZIP</text>
+      <text x="1090" y="192" font-size="12" fill="#94a3b8">manifest · report · repeat</text>
+    </g>
+  </g>
+</svg>

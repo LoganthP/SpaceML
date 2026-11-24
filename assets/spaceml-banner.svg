@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" width="1200" height="380" role="img" aria-label="Space ML Mission Control — real NASA and ESA data, honest ML, reviewed by people">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#03050f"/>
+      <stop offset="0.5" stop-color="#0a0f2b"/>
+      <stop offset="1" stop-color="#1a0b2e"/>
+    </linearGradient>
+    <linearGradient id="title" x1="0" y1="0" x2="1" y2="0" spreadMethod="reflect">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="0.5" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#fb923c"/>
+      <animateTransform attributeName="gradientTransform" type="translate" values="-0.6 0;0.6 0;-0.6 0" dur="9s" repeatCount="indefinite"/>
+    </linearGradient>
+    <radialGradient id="nebula" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#7c3aed" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="nebula2" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#0891b2" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#0891b2" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="earth" cx="0.35" cy="0.35" r="0.75">
+      <stop offset="0" stop-color="#67e8f9"/>
+      <stop offset="0.45" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#0b1340"/>
+    </radialGradient>
+    <radialGradient id="mars" cx="0.35" cy="0.35" r="0.75">
+      <stop offset="0" stop-color="#fdba74"/>
+      <stop offset="0.55" stop-color="#ea580c"/>
+      <stop offset="1" stop-color="#431407"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0"/>
+      <stop offset="0.3" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="380" rx="22" fill="url(#bg)"/>
+  <ellipse cx="300" cy="120" rx="360" ry="200" fill="url(#nebula)">
+    <animate attributeName="rx" values="340;390;340" dur="10s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="980" cy="290" rx="320" ry="170" fill="url(#nebula2)">
+    <animate attributeName="ry" values="150;190;150" dur="8s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- twinkling stars -->
+  <g fill="#ffffff">
+    <circle cx="60" cy="40" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" repeatCount="indefinite"/></circle>
+    <circle cx="140" cy="300" r="1.1"><animate attributeName="opacity" values="1;0.2;1" dur="4s" repeatCount="indefinite"/></circle>
+    <circle cx="220" cy="70" r="1.6"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.5s" repeatCount="indefinite"/></circle>
+    <circle cx="330" cy="340" r="1.2"><animate attributeName="opacity" values="0.8;0.2;0.8" dur="3.6s" repeatCount="indefinite"/></circle>
+    <circle cx="420" cy="30" r="1"><animate attributeName="opacity" values="0.2;0.9;0.2" dur="2.8s" repeatCount="indefinite"/></circle>
+    <circle cx="520" cy="350" r="1.5"><animate attributeName="opacity" values="1;0.3;1" dur="3.2s" repeatCount="indefinite"/></circle>
+    <circle cx="610" cy="22" r="1.2"><animate attributeName="opacity" values="0.3;1;0.3" dur="4.4s" repeatCount="indefinite"/></circle>
+    <circle cx="700" cy="355" r="1"><animate attributeName="opacity" values="0.9;0.2;0.9" dur="2.6s" repeatCount="indefinite"/></circle>
+    <circle cx="780" cy="45" r="1.7"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.8s" repeatCount="indefinite"/></circle>
+    <circle cx="880" cy="25" r="1.1"><animate attributeName="opacity" values="1;0.3;1" dur="2.9s" repeatCount="indefinite"/></circle>
+    <circle cx="1150" cy="60" r="1.4"><animate attributeName="opacity" values="0.3;1;0.3" dur="3.4s" repeatCount="indefinite"/></circle>
+    <circle cx="1120" cy="350" r="1.2"><animate attributeName="opacity" values="0.9;0.2;0.9" dur="4.1s" repeatCount="indefinite"/></circle>
+    <circle cx="40" cy="190" r="1"><animate attributeName="opacity" values="0.2;0.8;0.2" dur="3.1s" repeatCount="indefinite"/></circle>
+    <circle cx="1180" cy="200" r="1.3"><animate attributeName="opacity" values="1;0.2;1" dur="2.7s" repeatCount="indefinite"/></circle>
+    <circle cx="960" cy="150" r="0.9"><animate attributeName="opacity" values="0.3;1;0.3" dur="5s" repeatCount="indefinite"/></circle>
+    <circle cx="250" cy="210" r="0.9"><animate attributeName="opacity" values="0.9;0.3;0.9" dur="4.6s" repeatCount="indefinite"/></circle>
+  </g>
+
+  <!-- shooting star -->
+  <line x1="0" y1="0" x2="70" y2="22" stroke="#e0f2fe" stroke-width="1.6" stroke-linecap="round" opacity="0">
+    <animate attributeName="opacity" values="0;0;1;0" keyTimes="0;0.7;0.75;0.85" dur="7s" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" values="700 20;700 20;860 70;960 100" keyTimes="0;0.7;0.8;1" dur="7s" repeatCount="indefinite"/>
+  </line>
+
+  <!-- Earth system (left) -->
+  <circle cx="150" cy="190" r="95" fill="url(#glow)"/>
+  <circle cx="150" cy="190" r="58" fill="url(#earth)"/>
+  <ellipse cx="150" cy="190" rx="100" ry="34" fill="none" stroke="#22d3ee" stroke-opacity="0.45" stroke-width="1.2" stroke-dasharray="3 7" transform="rotate(-18 150 190)">
+    <animate attributeName="stroke-dashoffset" values="0;-100" dur="6s" repeatCount="indefinite"/>
+  </ellipse>
+  <!-- satellite orbiting Earth along the tilted ring -->
+  <g>
+    <animateMotion dur="7s" repeatCount="indefinite" path="M245,159 A100,34 -18 1,1 55,221 A100,34 -18 1,1 245,159 Z"/>
+    <rect x="-4" y="-3" width="8" height="6" rx="1" fill="#f1f5f9"/>
+    <rect x="-14" y="-2" width="9" height="4" fill="#38bdf8"/>
+    <rect x="5" y="-2" width="9" height="4" fill="#38bdf8"/>
+  </g>
+
+  <!-- Mars (right) -->
+  <circle cx="1060" cy="120" r="40" fill="url(#mars)"/>
+  <ellipse cx="1060" cy="120" rx="72" ry="16" fill="none" stroke="#fb923c" stroke-opacity="0.4" stroke-width="1" stroke-dasharray="2 6" transform="rotate(14 1060 120)">
+    <animate attributeName="stroke-dashoffset" values="0;80" dur="5s" repeatCount="indefinite"/>
+  </ellipse>
+  <circle r="3.2" fill="#fde68a">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M1130,137 C1110,150 990,120 990,103 C1010,90 1130,120 1130,137 Z"/>
+  </circle>
+
+  <!-- telemetry trace with anomaly -->
+  <path d="M300,300 C330,285 350,315 380,300 S430,285 460,300 S510,315 540,300 S585,250 600,330 S640,290 670,300 S720,315 750,300 S800,285 830,300 S880,315 910,300" fill="none" stroke="url(#wave)" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="800" stroke-dashoffset="800">
+    <animate attributeName="stroke-dashoffset" values="800;0;0;800" keyTimes="0;0.45;0.85;1" dur="7s" repeatCount="indefinite"/>
+  </path>
+  <rect x="572" y="245" width="56" height="95" rx="6" fill="#f43f5e" fill-opacity="0.12" stroke="#f43f5e" stroke-opacity="0.7" stroke-dasharray="4 4" opacity="0">
+    <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.35;0.45;0.85;1" dur="7s" repeatCount="indefinite"/>
+  </rect>
+  <text x="600" y="238" text-anchor="middle" font-family="'JetBrains Mono','Fira Code',Consolas,monospace" font-size="11" fill="#fda4af" opacity="0">ANOMALY · review
+    <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.38;0.48;0.85;1" dur="7s" repeatCount="indefinite"/>
+  </text>
+
+  <!-- title -->
+  <text x="600" y="120" text-anchor="middle" font-family="'Space Grotesk','Segoe UI',Inter,Arial,sans-serif" font-size="20" letter-spacing="8" fill="#94a3b8">🛰  NASA · ESA · STScI · JPL</text>
+  <text x="600" y="182" text-anchor="middle" font-family="'Space Grotesk','Segoe UI',Inter,Arial,sans-serif" font-size="58" font-weight="700" fill="url(#title)">Space ML Mission Control</text>
+  <text x="600" y="220" text-anchor="middle" font-family="Inter,'Segoe UI',Arial,sans-serif" font-size="19" fill="#cbd5e1">Replay real space events · beat honest baselines · review every result · export the evidence</text>
+</svg>

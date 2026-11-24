@@ -1,490 +1,677 @@
-# Space ML Mission Control
+<div align="center">
 
-Replay real space events, compare ML models with simple baselines on held-out data, review the results by hand and export the evidence, all on real NASA data. The dashboard and the API run as one app, locally or with one Docker command.
+<img src="assets/spaceml-banner.svg" alt="Space ML Mission Control" width="100%"/>
 
-| Module | Real data | Model vs baseline | Output |
-|---|---|---|---|
-| **Mission Replay** (flagship) | NASA OMNIWeb OMNI2 hourly solar wind + Dst, May 2024 superstorm and 9 other storms | Gradient-boosting Dst forecaster (+1…+24 h) vs **persistence**, issued hour by hour with no look-ahead | What happened · what the model could know at the time · where the baseline did better · evidence ZIP |
-| **Spacecraft Anomaly Detection** | NASA SMAP + Curiosity (MSL) telemetry, 105 expert-labeled anomalies | LSTM per channel + dynamic threshold vs z-score | Flags for review |
-| **Exoplanet Finder** | Kepler DR24 TCEs + MAST light curves, or your uploads | 1D CNN vs gradient boosting; BLS search, odd/even + secondary checks, 3D system + sky | Candidate score |
-| **Mars Terrain** + **Rover Traverse Explorer** | NASA/JPL AI4Mars; Curiosity waypoints (NASA/JPL MMGIS) + raw Navcam images | DeepLabV3+ vs all-soil; terrain along the drive by distance | Masks you can correct, located on the traverse |
-| **Space Weather Explorer** | OMNI2 1963→ | Dst forecast vs persistence, chronological split | Storm replay, annotations |
-| **Data Workbench** | Your CSV/XLSX/JSON/Parquet/FITS/PNG/GeoTIFF/zip | Robust anomaly flags vs z-score · change detection (km², NDWI) · terrain | Analysis + reproducible report |
-| **Review Studio** | Every flag, region, candidate and mask | Confirm · dismiss · correct | Reviewed labels (CSV/JSON/ZIP) |
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=A78BFA&center=true&vCenter=true&width=760&lines=Replay+the+May+2024+superstorm+hour+by+hour;Detect+anomalies+in+NASA+SMAP+%2F+MSL+telemetry;Find+exoplanet+transits+in+Kepler+light+curves;Segment+Mars+terrain+on+Curiosity's+traverse;Every+result+reviewed.+Every+run+reproducible." alt="Typing animation"/>
 
-![Overview](docs/screenshots/overview.png)
+<br/>
 
----
+<img src="https://img.shields.io/badge/Python-3.10--3.12-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
+<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/>
+<img src="https://img.shields.io/badge/PyTorch-2.6-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" alt="PyTorch"/>
+<img src="https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white" alt="scikit-learn"/>
+<img src="https://img.shields.io/badge/Astropy-FF6F00?style=for-the-badge&logo=astropy&logoColor=white" alt="Astropy"/>
+<img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite"/>
+<br/>
+<img src="https://img.shields.io/badge/React_18-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React"/>
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"/>
+<img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite"/>
+<img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS"/>
+<img src="https://img.shields.io/badge/three.js-000000?style=for-the-badge&logo=threedotjs&logoColor=white" alt="three.js"/>
+<img src="https://img.shields.io/badge/Plotly-3F4F75?style=for-the-badge&logo=plotly&logoColor=white" alt="Plotly"/>
+<br/>
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"/>
+<img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions"/>
+<img src="https://img.shields.io/badge/pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white" alt="pytest"/>
+<img src="https://img.shields.io/badge/Version-3.1.10-7C3AED?style=for-the-badge" alt="Version 3.1.10"/>
+<img src="https://img.shields.io/badge/Works-Offline-10B981?style=for-the-badge" alt="Works offline"/>
+<img src="https://img.shields.io/badge/WCAG_2.1-AA-22D3EE?style=for-the-badge" alt="WCAG 2.1 AA"/>
 
-## A · Evaluators: one command (Docker)
+<br/><br/>
 
-```bash
-docker compose up -d          # first build ~5-10 min; then open http://localhost:8080
-```
-No API keys, no GPU and no manual dataset setup. The image serves the dashboard and the API from the same origin (`/` and `/api`, docs at `/docs`).
+[**⚡ Quick Start**](#-quick-start) &nbsp;·&nbsp;
+[**🚀 Modules**](#-modules) &nbsp;·&nbsp;
+[**🏗️ Architecture**](#️-architecture) &nbsp;·&nbsp;
+[**🧰 Tech Stack**](#-tech-stack) &nbsp;·&nbsp;
+[**🗄️ Datasets**](#️-datasets) &nbsp;·&nbsp;
+[**🛠️ Troubleshooting**](#️-troubleshooting)
 
-What the first launch does (no terminal commands, ever):
-1. **Serves immediately.** Nothing heavy runs at startup: no automatic downloads, no automatic training.
-2. **Installs data once.** It installs the starter pack (`starter/`, about 35 MB, sha256-checked). This holds all 81 SMAP/MSL channels, a trained model for each and bundled reference runs, so anomaly detection works offline within seconds. If a **release bundle** sits in `./release/bundle` (see [Release bundle](#release-bundle-full-offline-deployment)), every dataset in it is verified and copied into the data volume once. Every dataset then shows **Ready**, offline.
-3. **Data & Training** is a dataset catalog. It shows **Dataset ready** and **Model status** separately for each module. Each module has its own **Train** buttons:
-   - **Quick run (pipeline check)** uses a small, seeded subset and takes minutes. It proves the pipeline works but is not a final model.
-   - **Full training** runs on demand.
-   Only one heavy job runs at a time, and the rest wait in a queue that says what they are waiting for. Training runs at low priority on capped CPU (`SPACEML_TRAIN_CPUS`), so the dashboard stays responsive. Clicking Start twice reuses the running job. A job interrupted by a restart keeps its checkpoint and shows **Resume**. The last working model stays active until a better one is published, and a full run is preferred over a quick one.
-4. **GPU option for Mars.** Train in `notebooks/mars_training.ipynb` on Colab or Kaggle and upload `mars_model.zip` with **Upload a trained model**.
+</div>
 
-Give Docker at least 4 GB of memory. More cores make full training faster. A job that prints nothing for 30 minutes is stopped and can be retried. Set `SPACEML_AUTOSETUP=light|full` only if you want the old automatic download-and-train behaviour.
+<img src="assets/divider.svg" width="100%" alt=""/>
 
-| | |
-|---|---|
-| Settings | `cp .env.example .env`: port, `SPACEML_AUTOSETUP` (default `off`), `SPACEML_TRAIN_CPUS`, `SPACEML_HEAVY_JOBS` (default 1), `SPACEML_MARS_WEIGHTS_URL`. Defaults work without it. |
-| Data persistence | Named volumes `smc-data`, `smc-models`, `smc-storage` (SQLite runs/reviews/notes/jobs, results, uploads). `docker compose down` keeps them; `down -v` resets. |
-| Training & data tools | `docker compose exec app python -m spaceml.telemetry.train --fast` or, with the app stopped, `docker compose --profile tools run --rm tools python -m spaceml.quickstart --stars 300` |
-| Skip the build | Push a tag `v*`: `.github/workflows/image.yml` publishes `ghcr.io/<owner>/space-ml-mission-control:<tag>`; then `SMC_IMAGE=ghcr.io/<owner>/space-ml-mission-control:<tag> docker compose up -d` |
-| Smaller image | `TORCH_INDEX=none docker compose build` gives a lite image without PyTorch (Mission Replay, Space Weather, Workbench, Exoplanet views; telemetry/Mars inference say clearly that they need the full image) |
-| Offline machine | Download `omni2_YYYY.dat` elsewhere and upload them on the Mission Replay page |
+## 🌌 About
 
-## B · Contributors: native React/Vite + FastAPI
+**Space ML Mission Control** is one web app for doing machine learning on **real space data**: NASA, ESA, STScI and JPL sources, never synthetic demos. It lets you replay real space events, compare ML models with **simple, honest baselines** on held-out data, review every result by hand, and export the evidence.
 
-Requirements: Python 3.10–3.12, Node 18+.
-```bash
-./scripts/setup.sh  &&  ./scripts/dev.sh          # Windows: .\scripts\setup.ps1 ; .\scripts\dev.ps1
-```
-API on :8000 (auto-reload), dashboard on http://localhost:5173 (Vite proxy to the API). The API installs the starter pack (and a release bundle, if `SPACEML_BUNDLE_DIR` points at one) on first start. Training starts only from the UI.
+The React dashboard and the FastAPI backend run as **one app on one origin**, either with a single `docker compose up -d` or natively for development. It ships a **sha256-verified starter pack** (all 81 SMAP/MSL telemetry channels, a trained model for each, the full ESA OPS-SAT release and reference runs), so the core features work **offline within seconds** of the first start.
 
-<details><summary>Manual steps</summary>
+<div align="center">
+  <img src="assets/pipeline.svg" alt="Official data → Verify → Train vs baseline → Analyse & replay → Review Studio → Evidence ZIP" width="100%"/>
+</div>
 
-```bash
-python -m venv .venv && source .venv/bin/activate         # Windows: .venv\Scripts\activate
-pip install torch --index-url https://download.pytorch.org/whl/cpu    # CPU wheels (optional on macOS/Windows)
-pip install -r backend/requirements.txt
-cd backend && uvicorn app.main:app --reload --reload-dir app --reload-dir spaceml --port 8000
-cd frontend && npm install && npm run dev                  # second terminal
-```
-Serving the built dashboard from the API (like Docker): `cd frontend && npm run build`, then open http://localhost:8000.
+### 🎯 What makes it different
+
+| Principle | How the app enforces it |
+| :--- | :--- |
+| 🧪 **Model vs baseline, always** | Every model is scored against a simple baseline (persistence, z-score, gradient boosting, "all soil") on held-out data. |
+| ⏱️ **No look-ahead** | Mission Replay recomputes a forecast with all later data removed; the result must be identical, or the "no look-ahead" badge is withheld. |
+| 📅 **Chronological splits** | Space weather trains on 2010–2016 and tests on 2017. Overlapping splits are refused, and in-sample replays are flagged. |
+| 🔍 **Data quality first** | Missing hours, gaps and stale readings are shown *before* the result. |
+| 👩‍🚀 **Humans decide** | Flags, regions, candidates and masks go to **Review Studio** to be confirmed, dismissed or corrected. |
+| 📦 **Reproducible evidence** | Every run exports a ZIP with a manifest (data sha256, model version, split, metrics, reviews) and can be **repeated** and compared value by value. |
+
+<img src="assets/divider.svg" width="100%" alt=""/>
+
+## 🚀 Modules
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 🎬 Mission Replay &nbsp;<sub>flagship</sub>
+Step through the **May 2024 Gannon superstorm** (and 9 other storms) hour by hour. A gradient-boosting Dst forecaster (+1 to +24 h) is issued with no look-ahead and compared with **persistence**: what happened, what the model could know at the time, and where the baseline did better.
+
+</td>
+<td width="50%" valign="top">
+
+### 📡 Telemetry & Missions
+**NASA SMAP + Curiosity (MSL)** telemetry with 105 expert-labelled anomalies: a per-channel **LSTM + dynamic threshold** against a z-score. Plus **ESA OPS-SAT** (RandomForest on the 18 published features), and **Hubble / James Webb** pointing with Isolation Forest and a **live "what is the telescope observing now"** panel.
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+### 🪐 Exoplanet Finder
+Kepler DR24 TCEs and MAST light curves, or your own uploads. A **1D CNN** against gradient boosting, with **BLS** period search, odd/even and secondary-eclipse checks, and a 3D system and sky view.
+
+</td>
+<td valign="top">
+
+### 🔴 Mars Terrain + Rover Traverse
+**AI4Mars** segmentation with **DeepLabV3+** against an "all soil" baseline. Follow **Curiosity's waypoints** on a map, pull the Navcam frames for any sol, segment them and correct the masks.
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+### ☀️ Space Weather Explorer
+**OMNI2 hourly solar wind + Dst from 1963 onward.** Dst forecasts against persistence on a chronological split, with storm replays and annotations.
+
+</td>
+<td valign="top">
+
+### 🧪 Data Workbench
+Bring your own **CSV / XLSX / JSON / Parquet / FITS / PNG / GeoTIFF / ZIP** (up to 1 GB). It detects the data type, recommends and runs an analysis: time-series anomaly flags, change detection in km² (NDWI water mode), image classification, terrain segmentation or transit search.
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
+### ✅ Review Studio
+One queue for every flag, interval, change region, transit candidate and terrain mask. **Confirm · dismiss · correct**, then export the reviewed labels as CSV, JSON or ZIP to retrain.
+
+</td>
+<td valign="top">
+
+### 📊 Data & Training · Evaluation · Run History
+A dataset catalog with **Dataset ready** and **Model status** shown separately for each module, **Quick run** and **Full training** buttons, a job queue on capped CPU with resume, model metrics against baselines, and every saved result.
+
+</td>
+</tr>
+</table>
+
+<details>
+<summary><b>📸 Screenshots</b></summary>
+<br/>
+
+| Welcome (dark) | Overview |
+| :---: | :---: |
+| <img src="docs/screenshots/welcome-desktop-dark.png" alt="Welcome page" width="100%"/> | <img src="docs/screenshots/overview.png" alt="Overview" width="100%"/> |
+| **Anomaly detection** | **Exoplanet 3D** |
+| <img src="docs/screenshots/anomaly-detection.png" alt="Anomaly detection" width="100%"/> | <img src="docs/screenshots/exoplanet-3d.png" alt="Exoplanet 3D system" width="100%"/> |
+| **Data Workbench** | **Data & Training** |
+| <img src="docs/screenshots/workbench-timeseries.png" alt="Workbench time series" width="100%"/> | <img src="docs/screenshots/data-training.png" alt="Data and training" width="100%"/> |
+
 </details>
 
----
+### 🧭 App routes
 
-## Multi-Mission Telemetry
+| Route | Page | Route | Page |
+| :--- | :--- | :--- | :--- |
+| `/welcome` | ✨ Project tour | `/space-weather` | ☀️ Space Weather |
+| `/` | 🗺️ Overview + 3D mission map | `/workbench` | 🧪 Data Workbench |
+| `/replay` | 🎬 Mission Replay | `/review` | ✅ Review Studio |
+| `/telemetry` | 📡 Telemetry & Missions | `/runs` | 🕘 Run History |
+| `/exoplanet` | 🪐 Exoplanet Finder | `/evaluation` | 📊 Evaluation |
+| `/mars` · `/mars/traverse` | 🔴 Mars Terrain · Rover Traverse | `/datasets` | 🗄️ Data & Training |
 
-Open **Telemetry** and pick a mission. **NASA SMAP / MSL** keeps its existing workflow. Every other source opens a shared workspace:
-- **Replay:** a searchable, keyboard-navigable list of segments / exposures / visits, and a chart with time and unit axes, data gaps, missing readings, annotations, a text summary and a data table. Only the selected item and time range are read. Long series are drawn as a min/max envelope, and analysis always uses full resolution.
-- **Quick train / Full training:** shown only where the source has labels to learn from. Jobs run one at a time on capped CPU threads, and the dashboard stays usable. A failed or cancelled job never replaces the last working model.
-- **Score** an item, and run the **held-out evaluation**. Predictions and unusual intervals go to **Review Studio** (filter: Missions), where **Inspect** shows the signal, the published label and the prediction.
+API docs (Swagger UI) are served at **`/docs`**, and the API itself under **`/api`**.
 
-**Start** (no automatic training; missing small mission datasets download in the background when online - set `SMC_AUTO_INSTALL=off` in `.env` for a fully offline start):
+<img src="assets/divider.svg" width="100%" alt=""/>
+
+## 🏗️ Architecture
+
+```mermaid
+flowchart LR
+    U(["👩‍🚀 Browser"]) -->|"/ and /api (one origin)"| API
+
+    subgraph FE["🎨 Frontend · React 18 + Vite + TypeScript"]
+        direction TB
+        P["Pages: Replay · Telemetry · Exoplanet · Mars · Traverse · Space Weather · Workbench · Review"]
+        V["Plotly charts · three.js 3D scenes · Tailwind + Framer Motion"]
+    end
+
+    subgraph BE["⚙️ Backend · FastAPI (serves frontend/dist)"]
+        direction TB
+        API["Routers: catalog · jobs · runs · reviews · missions · live · spaceweather · traverse · workbench"]
+        W["Run worker (thread pool)"]
+        J["Job runner (python -m subprocesses, progress, logs, retry, resume)"]
+        S["Starter pack + release bundle installer (sha256-verified)"]
+    end
+
+    subgraph ML["🧠 spaceml package"]
+        direction TB
+        T["telemetry · LSTM"]
+        X["exoplanet · 1D CNN + BLS"]
+        M["mars · DeepLabV3+"]
+        SW["spaceweather · GBM Dst"]
+        MI["missions · OPS-SAT · Hubble · Webb"]
+        WB["workbench · analyses"]
+    end
+
+    subgraph ST["💾 Persistent volumes"]
+        DB[("SQLite: runs · model_versions · evaluations · jobs · reviews · annotations")]
+        D[("data/ · models/ · storage/")]
+    end
+
+    FE -.->|"built into"| BE
+    API --> W --> ML
+    API --> J --> ML
+    API --> S --> D
+    W --> DB
+    J --> DB
+    ML --> D
+
+    EXT[["🌐 NASA · ESA Zenodo · MAST · OMNIWeb · JPL MMGIS · GIBS · Space Telescope Live"]] -.->|"downloads on demand, cached"| ML
+```
+
+### 🛫 What happens on the first launch
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor You
+    participant D as Docker Compose
+    participant A as FastAPI app
+    participant SP as Starter pack / release bundle
+    participant V as Volumes (data · models · storage)
+
+    You->>D: docker compose up -d
+    D->>A: build image and start container
+    A-->>You: dashboard served immediately on :8080
+    A->>SP: verify every file (sha256)
+    SP->>V: install 81 SMAP/MSL channels, models, OPS-SAT, reference runs
+    Note over A,V: no automatic downloads, no automatic training
+    You->>A: open Data & Training, click Quick run or Full training
+    A->>V: train into .staging-version, publish atomically
+    A-->>You: model ready, results go to Review Studio
+```
+
+### 🔄 Job lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> Queued: Start (a double click reuses the job)
+    Queued --> Running: heavy-job slot is free
+    Running --> Succeeded: model published atomically
+    Running --> Failed: readable error, Retry
+    Running --> Interrupted: app restarted, checkpoint kept
+    Running --> Cancelled: Cancel
+    Running --> Failed: no output for 30 min (stall guard)
+    Interrupted --> Running: Resume
+    Failed --> Queued: Retry with same settings
+    Succeeded --> [*]
+```
+
+> The last working model stays active until a better one is published, and a full run always beats a quick one. A failed or cancelled job never replaces a working model.
+
+<img src="assets/divider.svg" width="100%" alt=""/>
+
+## 🧰 Tech Stack
+
+| Layer | Technology | What it does here |
+| :--- | :--- | :--- |
+| 🎨 **UI framework** | React 18 · TypeScript 5.6 · React Router 6 | Single-page dashboard with grouped navigation and a command palette |
+| ⚡ **Build tool** | Vite 5 | Dev server with API proxy, production build served by FastAPI |
+| 💅 **Styling** | Tailwind CSS 3 · Framer Motion · Lucide icons | Dark/light themes, animations that respect reduced motion |
+| 📈 **Charts** | Plotly.js (react-plotly.js) | Telemetry, light curves, Dst forecasts, metric comparisons |
+| 🌍 **3D** | three.js | Mission map, Earth system, exoplanet systems, sky scenes |
+| ⚙️ **API** | FastAPI · Uvicorn · Pydantic 2 · httpx | REST API, job runner, starter-pack installer, live telescope proxy |
+| 🧠 **Deep learning** | PyTorch 2.6 + torchvision 0.21 (CPU) · segmentation-models-pytorch | Telemetry LSTMs, exoplanet 1D CNN, Mars DeepLabV3+ |
+| 🤖 **Classical ML** | scikit-learn · SciPy · NumPy · pandas · joblib | Gradient boosting, RandomForest, Isolation Forest, baselines |
+| 🔭 **Astronomy & geo** | Astropy · lightkurve · rasterio | FITS (Kepler, HST jitter, JWST FGS), MAST light curves, GeoTIFF change detection |
+| 🤗 **Datasets** | Hugging Face `datasets` · PyArrow · openpyxl | AI4Mars loading, Parquet and XLSX uploads |
+| 💾 **Storage** | SQLite + Docker named volumes | Runs, model versions, evaluations, jobs, reviews, annotations |
+| 🐳 **Delivery** | Docker (multi-stage: `node:20-alpine` → `python:3.11-slim`) · Docker Compose | One image, one origin, CPU PyTorch (about 1–1.5 GB) |
+| 🔁 **CI** | GitHub Actions (`image.yml`) | Publishes `ghcr.io/<owner>/space-ml-mission-control:<tag>` on `v*` tags |
+| 🧪 **Testing** | pytest · end-to-end audit scripts · axe-core | Offline test suite, deployment audit, accessibility checks |
+| 📓 **GPU training** | Jupyter (`notebooks/mars_training.ipynb`) | Train the Mars model on Colab or Kaggle and upload `mars_model.zip` |
+
+<img src="assets/divider.svg" width="100%" alt=""/>
+
+## 📁 Project Structure
+
+```text
+SpaceML/
+├── 🐳 Dockerfile                    # multi-stage: build dashboard → API + pipelines (CPU torch)
+├── 🐳 docker-compose.yml            # app (port 8080) + optional "tools" profile
+├── 🐳 docker-compose.offline.yml    # network-isolated run used by the audit
+├── ⚙️ .env.example                  # port, autosetup, CPU caps, Mars weights URL
+├── 📋 DATASETS-MANIFEST.json
+├── backend/
+│   ├── app/                         # FastAPI: main, jobs, worker, starter, db, routers/
+│   ├── spaceml/                     # ML package
+│   │   ├── telemetry/  exoplanet/  mars/  spaceweather/
+│   │   ├── missions/   workbench/  common/
+│   │   └── doctor.py · quickstart.py · release.py · audit.py
+│   ├── tests/                       # pytest suite (offline)
+│   └── requirements*.txt            # core + ML requirements
+├── frontend/
+│   ├── src/pages/                   # Welcome, Overview, MissionReplay, Telemetry, Exoplanet, Mars, …
+│   ├── src/components/              # MissionMap, SystemScene, MaskEditor, Evidence, Jobs, …
+│   └── src/lib/                     # api client, nav, theme, types
+├── starter/                         # sha256-checked starter pack: SMAP/MSL models + reference runs
+├── release/bundle/                  # optional full offline release bundle
+├── samples/                         # real SMAP/MSL test CSVs with NASA anomaly labels
+├── notebooks/mars_training.ipynb    # GPU training on Colab / Kaggle
+├── scripts/                         # setup, dev, audit (.sh + .ps1), release ZIP
+├── docs/screenshots/
+└── assets/                          # README banner and animated SVGs
+```
+
+<img src="assets/divider.svg" width="100%" alt=""/>
+
+## ⚡ Quick Start
+
+### ✅ Prerequisites
+
+| Path | You need |
+| :--- | :--- |
+| 🐳 **Docker (recommended)** | [Docker Desktop](https://www.docker.com/products/docker-desktop/) or Docker Engine + Compose v2, **4 GB+ memory** for Docker, **3 GB free disk** |
+| 💻 **Native dev** | **Python 3.10–3.12**, **Node.js 18+** (npm), Git |
+| 🎮 **GPU (optional)** | Only for Mars training: use the Colab/Kaggle notebook |
+
+No API keys and no GPU are needed.
+
+### 1️⃣ Clone the repository
+
 ```bash
-SMC_PORT=8081 docker compose up -d          # then open http://localhost:8081/telemetry
+git clone https://github.com/LoganthP/SpaceML.git
+cd SpaceML
 ```
-Startup installs the starter pack: SMAP/MSL, its models, and the complete OPS-SAT release. Missions without local data are installed automatically when the app is online (see Version 3.1.5), or with one click on **Install data**; uploading files and the command line below remain optional.
 
-| Mission | Shipped in this release | Training / evaluation | Status |
-|---|---|---|---|
-| ESA OPS-SAT | **Complete OPSSAT-AD v1** (Zenodo 10.5281/zenodo.12588359; the published `dataset.csv` + `segments.csv` byte-for-byte, md5 `c12fb838…` / `1f4b6ffd…`): 2,123 segments, 303,493 samples, 9 channels, 2022-01-04 → 2022-06-02; 22 MB prepared, CC BY 4.0 | RandomForest on the 18 published features, official split (1,594 / 529); segment-level confusion matrix, per-class P/R, false alarms, missed; single-feature threshold baseline | verified on real data |
-| Hubble | importer only (`*_jit.fits` + `*_jif.fits`) | Isolation Forest per telescope, split by exposure; review candidates (no fault labels) | real data **not** verified (MAST unreachable from the build machine) |
-| James Webb | importer only (FGS `*_gs-fg/track_*_cal.fits` POINTING tables) | Isolation Forest per telescope, split by visit; review candidates | real data **not** verified (MAST unreachable) |
+### 2️⃣ Start the app
 
-**Preparing a source once** (inside the app container, on a machine that has the files or network access). The importers validate schema, units, timestamps, counts and gaps, record source IDs and checksums, and refuse unknown OPS-SAT files:
+<details open>
+<summary><b>🐳 Option A: Docker, one command (recommended)</b></summary>
+<br/>
+
 ```bash
-docker compose exec app python -m spaceml.missions.prepare opssat --download v2 --from /app/data/missions-source/opssat
-docker compose exec app python -m spaceml.missions.prepare hubble --from /app/data/src/hst        # *_jit.fits + *_jif.fits
-docker compose exec app python -m spaceml.missions.prepare webb   --from /app/data/src/jwst       # *_gs-fg_*_cal.fits
+# optional: copy the settings file (the defaults work without it)
+cp .env.example .env              # Windows PowerShell: Copy-Item .env.example .env
+
+# build and start (the first build takes about 5–10 minutes)
+docker compose up -d
+
+# follow the logs until the app reports it is ready
+docker compose logs -f app
 ```
-Prepared sources are included automatically in the next release bundle (`spaceml.release build --from-data --include-models`), with checksums, scope, counts, date ranges, attribution and redistribution terms.
 
-**Disk space:** the starter pack adds 39 MB, and installed data plus models measured 0.3 GB on the test machine. The image size was not measured, because Docker images cannot be built in the build environment; with CPU PyTorch, expect roughly 1-1.5 GB. Allow **3 GB free**, plus the size of any release bundle you add.
+Then open:
 
-## Mission Replay: the flagship
+| URL | What |
+| :--- | :--- |
+| **http://localhost:8080** | 🛰️ Dashboard |
+| **http://localhost:8080/welcome** | ✨ Project tour |
+| **http://localhost:8080/docs** | 📘 API docs (Swagger) |
 
-Open **Mission Replay** (second icon in the dock). For the May 2024 Gannon storm the screen answers three questions:
-* **What happened?** Observed Dst and solar wind, with a timeline detected from the data: shock arrival, southward IMF, −50/−100/−250 nT crossings, peak, recovery.
-* **What could the model know at the time?** Drag or play the issuance time. Each hour shows the forecasts issued then for +1/+3/+6/+12/+24 h, the 24 h of inputs the model used (shaded), and the future greyed out. The first storm warning is given with its lead time.
-* **Where did the baseline do better?** Every issuance is marked green (model closer), red (persistence closer) or grey (tie within ±2 nT), with the longest stretches named and a scoreboard per horizon.
+Everyday commands:
 
-How it is kept honest:
-- **Chronological evaluation.** Train 2010-2016, test 2017; overlapping splits are refused. A replay of a training year is flagged **in-sample**.
-- **No look-ahead.** The server recomputes one forecast with all later data removed and the result must be identical ("no look-ahead" badge).
-- **Data quality first.** Missing hours, gaps and stale readings are shown before the result. Statuses are distinct: *ready*, *usable with gaps*, *insufficient data*, *source unavailable*.
-- **Provenance.** Each OMNI year records its URL, retrieval time, sha256 and Dst status: final up to 2020, provisional for 2021–2024 (2024 includes the storm).
-
-## Reproducible evidence for every run
-
-Every result (replay, telemetry, Mars, exoplanet, workbench) has an **Evidence** panel:
-- **Evidence (.zip):** `manifest.json` (data source + sha256, data window, model version + every model file's sha256, training split, held-out metric, settings, baseline, metrics, reviewer verdicts and notes, software versions), `report.md`, `result.json`, CSV tables (`forecasts.csv`, `timeline.csv`, `flagged.csv`, `reviews.csv`) and images.
-- **Repeat run:** the same input with the **same model version**, then compared value by value ("identical result · N values compared"). The API is `POST /api/runs/{id}/repeat` and `GET /api/runs/{id}/reproducibility`.
-
-## Rover Traverse Explorer
-
-Mars → **Rover Traverse**. Download Curiosity's waypoints (~0.7 MB, NASA/JPL MMGIS: site, drive, sol, lat/lon, distance driven) and click a waypoint. Navcam frames taken that sol come from NASA's raw-image API and are cached. **Segment terrain** runs the Mars model on a frame. The result opens with **Correct this mask**, and corrections flow into Review Studio exports.
-
-Location precision is always shown on the map:
-- **Exact:** the image's product id (characters 19–25 = site/drive) matches a surveyed waypoint.
-- **Within site:** nearest earlier drive in that site.
-- **Sol only:** only the sol is known; the image is placed at that sol's end-of-drive position.
-
-Below the map, **terrain along the traverse** compares the predicted soil/bedrock/sand/rock shares per 0.5–5 km section, filterable by sol, dominant class and reviewed masks. Images from the official AI4Mars release (`python -m spaceml.mars.data samples --from-nasa …`) and uploads with NASA file names are located the same way. The Hugging Face copy of AI4Mars has no file names, so its samples are listed as "not located".
-
-## Data Workbench: bring your own data
-
-1. Open **Data Workbench**, drop a file or archive (≤ 1 GB). The type is detected automatically (or pick *Series / Images / Light curve*).
-2. **Preview**: column types (numeric, binary, datetime, text), missing values, ranges, first rows and a plot; images with size, bands, GeoTIFF CRS and pixel size.
-3. **It classifies the dataset** (e.g. "Mars rover surface imagery · Perseverance · Navcam", with the evidence) and **runs the recommended analysis automatically**. You can pick another compatible analysis; its settings form is pre-filled with detected time/label/sensor columns.
-4. **Inspect the result**, confirm/dismiss each flag or region (review verdicts), compare runs in the experiment table, download the **Markdown report** or full **JSON** (dataset content hash, settings, model version, metrics, reviews).
-
-| You upload | Analysis | Notes |
-|---|---|---|
-| Telemetry / sensor / space-weather table (e.g. OMNIWeb, MEDA exports) with a time or step column | Time-series anomaly flags | Optional 0/1 label column or typed intervals → event-level precision/recall for both detectors |
-| Two aligned images or GeoTIFFs of the same place | Change detection | GeoTIFFs: area in km² (projected or lat/lon), "after" reprojected if grids differ. Water mode: NDWI from green + NIR bands (Sentinel-2: 3 & 8; Landsat 8/9, HLS L30: 3 & 5) |
-| Any image collection, e.g. a zip of rover photos | Classify & summarise images | Per image: region map (terrain / rover hardware / shadow / sky), scene type, ground-roughness heat map, rocks & pebbles, exposure/sharpness, duplicates, stereo pairs; charts for the whole set; terrain classes on terrain pixels when the Mars model is installed. Each image's classification can be confirmed in Review Studio |
-| Rover image (+ optional `*_mask.png` with AI4Mars class ids) | Terrain segmentation | Needs the Mars model |
-| Light curves: Kepler/K2/TESS FITS, or tables with time + flux/mag | Transit search → Exoplanet Finder | BLS period search or your own ephemeris; JD/BJD/BTJD/BKJD/MJD handled |
-
-**Try it:** `samples/` contains CSVs built from the real SMAP/MSL test telemetry with NASA's expert labels as an `anomaly` column (e.g. `smap_P-1_test_with_labels.csv`). `python -m spaceml.workbench.samples imagery` downloads real NASA GIBS MODIS before/after GeoTIFFs (Lake Mead 2000 vs 2022, Indus flood 2021 vs 2022) as ready-to-upload zips — check them for clouds. You can also export two dates from [NASA Worldview](https://worldview.earthdata.nasa.gov) (Take snapshot → GeoTIFF).
-
-**Units & masks:** set a unit per column in the settings (shown on plots and in the report). In Mars results click **Correct this mask** to paint the right terrain class; corrected masks are stored as reviews.
-
-**Experiments:** tick two or more runs in the experiment table → **Compare** shows settings that differ, metric bars and the flags each run got wrong (missed / false alarms).
-
-**Review Studio:** one queue for telemetry flags, workbench intervals and change regions, transit candidates and terrain masks. Confirm, dismiss or correct, then export reviewed labels as CSV, JSON or a ZIP (with corrected masks as PNG) to retrain models.
-
-**Adding a new analysis** = one entry in `backend/spaceml/workbench/analyses.py` (input kind, settings, output viewer, evaluation) plus a `run()` function. The API validates requests against the declaration and the frontend renders its form and viewer.
-
-## Data & training commands (optional - for contributors)
-
-You never need these in Docker: the **Data & Training** page runs them for you. The page runs all of these as background jobs with progress, ETA, logs, cancel and **Retry**. The `>_` switch in the top bar shows the commands.
-
-| Step | Local (`backend/`) | Docker |
-|---|---|---|
-| Health check | `python -m spaceml.doctor` | `docker compose exec app python -m spaceml.doctor` |
-| Space weather: everything (download → train → replay) | `python -m spaceml.spaceweather.data download --years 2010 2011 2012 2013 2014 2015 2016 2017 2024 && python -m spaceml.spaceweather.forecast --if-missing && python -m app.starter replay --event 2024-05` | prefix each with `docker compose exec app` |
-| Import OMNI files you downloaded | `python -m spaceml.spaceweather.data import omni2_2024.dat` | same prefix |
-| Curiosity waypoints | `python -m spaceml.mars.traverse download` | same prefix |
-| Full telemetry set + train the other 70 channels (fast) | `python -m spaceml.telemetry.data download && python -m spaceml.telemetry.train --fast --version v1-sandbox && python -m spaceml.telemetry.evaluate --version v1-sandbox` | same prefix |
-| Kepler catalog + light curves + CNN | `python -m spaceml.quickstart --skip-telemetry --skip-mars --stars 300` | same prefix |
-| AI4Mars local dataset (validated pairs) | `python -m spaceml.mars.local build --train 3000 --test all` · check: `python -m spaceml.mars.local check` | same prefix |
-| Mars samples / quick / full / resume | `python -m spaceml.mars.data samples --n 36` · `python -m spaceml.mars.train --quick` · `--resume` | same prefix |
-| Release bundle build / verify / install | `python -m spaceml.release build --out ../release/bundle` · `verify` · `install` | `docker compose --profile tools run --rm tools python -m spaceml.release build --out /bundle-out` |
-| Starter pack status / rebuild | `python -m app.starter status` · `python -m app.starter build --with-network` | same prefix |
-
-Fast defaults: telemetry trains in parallel on every 4th window (`--fast`, about 10× quicker, same detections on the shipped channels). Kepler downloads 8 of 17 quarters per star with 6 workers. CPU Mars training uses 300 images × 3 epochs.
-
-**Building a full offline starter pack.** On a machine with internet, `python -m app.starter build --with-network` adds OMNI2 2024, the trained forecaster and a May 2024 reference replay to `starter/`. Commit the folder, and fresh machines replay the storm without any download.
-
-## Release bundle: full offline deployment
-
-A release is the Docker image plus **one versioned folder**, `release/bundle/`. The folder holds `manifest.json` and `datasets/<id>/…`. The manifest pins, for every dataset, its source and revision, its splits and date ranges, the Kepler targets and quarters, file counts, sizes, a sha256 for every file, the attribution and the redistribution terms.
-
-| Dataset | What ships | Prepared form |
-|---|---|---|
-| `telemetry` | NASA SMAP/MSL, all 81 channels and the 105 labeled anomalies | `.npy` arrays + labels |
-| `kepler` | DR24 TCE catalog + light curves for `--kepler-stars` targets, `--kepler-quarters` quarters each | folded global/local views (`.npz`) + `targets.json` (targets and quarters used) |
-| `ai4mars` | AI4Mars train subset (`--ai4mars-train`, default 3000) + the expert-labeled test split, plus 36 review samples | validated image/label PNG pairs + `index.json` (revision, rows read/kept/skipped per split) |
-| `omni2` | OMNI2 hourly, years in `--omni-years` (including 2024 for the May 2024 replay) | parsed yearly files |
-| `traverse` | Curiosity waypoints and drive geometry | GeoJSON/JSON |
-| `flood` | Satellite flood scenes (NASA GIBS) for the Workbench demo | zip per event |
-
-**Building it (on any machine with internet, once).** Downloads and preprocessing run here, so the machines you deploy to never need the network:
 ```bash
-docker compose --profile tools run --rm tools python -m spaceml.release build --out /bundle-out            # downloads + prepares
-docker compose --profile tools run --rm tools python -m spaceml.release build --out /bundle-out --from-data --include-models   # package what you already have (+ trained models)
-```
-On Linux, if the bind mount is not writable for the container user, run `mkdir -p release/bundle && chmod a+rwx release/bundle` first.
-
-**Deploying.** Copy the project folder together with `release/bundle/` to the target machine and run `docker compose up -d`. On first start, each file is checked against its checksum and copied into the data volume. Only missing or changed files are copied on later starts. The catalog shows the bundle version, size, verification state and free disk space. **Re-verify** and **Install** buttons are there as well.
-
-**Size and disk space.** The build prints the exact size and records it in `manifest.json`. With the defaults, expect roughly **1-1.5 GB**. AI4Mars images are most of it, and `--ai4mars-train all` makes it several GB. Free space needed on the target is about **2× the bundle size + 3 GB** (bundle, installed copy, models, runs and checkpoints).
-
-**Redistribution.** The NASA sources (PDS, MAST, OMNIWeb, GIBS) are public. AI4Mars is marked `verify` in the manifest: confirm its license terms before you hand the bundle to third parties.
-
-**Acceptance test.** On a clean machine with Docker, go offline and start the app:
-1. Every dataset in the catalog shows **Ready**.
-2. Open the May 2024 replay.
-3. Start Mars and Kepler training from the UI. Kepler waits in the queue behind Mars.
-4. Restart the app. Jobs come back as *interrupted* with **Resume**, and published models are still there.
-
-Kepler ingestion (when building) is checkpointed per star and per quarter, so a restart during a download resumes from the last completed file.
-
-## Deployment audit
-
-`scripts\audit.ps1` (Windows) or `scripts/audit.sh` runs the whole acceptance check against the real container. The app runs on `localhost:8081` with external network access cut off (`docker-compose.offline.yml`).
-
-1. **Mounts.** It confirms that `/app/data`, `/app/models` and `/app/storage` are on named volumes before anything is recreated, and stops if the old container uses anonymous volumes. `-Backup` first saves the three volumes to `.\backup`.
-2. **Rebuild.** The image is rebuilt with the matched CPU torch/torchvision pair.
-3. **Runtime check.** `pip show`, `pip check`, and `torchvision.ops.nms` run on CPU inside the container that runs the jobs.
-4. **`spaceml.audit data`.** Every local dataset is inventoried and validated: counts, splits, shapes, label/class ids, train/test separation, Dst coverage. Each count is compared with the intended release scope, so a local subset is marked **LOCAL SUBSET**.
-5. **`spaceml.audit ui`.** It uses the same HTTP API the buttons use:
-   - **Quick training** for each trainable module. A run passes only when the job succeeded, a new model version with artifacts exists, and an inference run pinned to that version succeeded.
-   - **Analysis-only workflows:** traverse render, change detection with its area result, and the review queue.
-   - **Full Training controls:** each must point at the full local split and make real progress. The audit then cancels it, unless you pass `-WaitFull`.
-6. **Restart persistence.** Datasets, models, job history and checkpoints must survive `docker compose restart`, and startup must not start any job.
-7. **Report.** The results go to `audit-results/report.md`, one row per module. Anything not exercised is marked UNTESTED.
-
-Audit models are written as separate versions (`audit-*` for telemetry, `*-quick` for the others). The active-model rules never let them replace a fuller model.
-
-## Reliability
-
-* **Jobs** run as subprocesses with persisted state. If the server stops, running jobs become **interrupted** (not "failed"), and **Retry** reruns them with the same settings.
-* **Outputs are published atomically.** Models train into `.staging-<version>/` and are renamed when complete. Runs write to `.<id>.partial/`. Downloads go to `*.part` first. A crash never leaves half a model or result behind.
-* **Kepler downloads** are checkpointed per star and per quarter (`lightcurves/quarters/<kepid>/`). Each quarter has its own timeout and bounded retries, and one unavailable quarter does not block the star or the batch.
-* **Preflight before training.** Mars validates image/label pairs (sizes, class ids) and Kepler validates view shapes and finite values. Both then run one training batch, so a bad dataset fails in seconds with the real error instead of after hours.
-* **Downloads** have timeouts, bounded retries with backoff, an on-disk cache and a provenance sidecar. Failures surface as `source_unavailable` with a readable reason.
-* **One instance by default.** SQLite plus the volumes are enough. Move to a shared database or queue only when you need several workers.
-
-## Architecture
-```
-Browser ──/ and /api──► FastAPI (one origin; serves frontend/dist)
-  React + Vite + TS + Tailwind,           ├─ run worker (thread pool) ─► spaceml.{telemetry,exoplanet,mars,spaceweather,workbench}
-  Plotly, three.js                        ├─ job runner (python -m … subprocesses, progress, logs, retry)
-                                          ├─ starter pack installer (sha256-verified) + first-launch bootstrap
-                                          └─ SQLite: runs (origin, repeat_of) · model_versions · evaluations · jobs · reviews · annotations
-data/   models/<module>/<version>/ (manifest, metrics, auto-detected)   storage/ (db, runs, uploads, logs)   starter/ (pack.json + files + reference runs)
+docker compose ps                 # status and health
+docker compose restart app        # restart (jobs come back as "interrupted" with Resume)
+docker compose down               # stop; your data, models and runs are kept in volumes
+docker compose up -d --build app  # upgrade after pulling new code; volumes are reused
+docker compose down -v            # ⚠️ full reset: deletes all data volumes
 ```
 
-## Tests
+> 💡 Port 8080 busy? Run `SMC_PORT=8081 docker compose up -d` (or set `SMC_PORT` in `.env`).
+> On Windows PowerShell: `$env:SMC_PORT=8081; docker compose up -d`.
+
+</details>
+
+<details>
+<summary><b>💻 Option B: Native development (React/Vite + FastAPI, hot reload)</b></summary>
+<br/>
+
+**One-time setup** (virtual env, backend and frontend dependencies, telemetry data, sample files, health check):
+
 ```bash
-cd backend && python -m pytest -q        # 51 tests, no network needed
+# macOS / Linux
+./scripts/setup.sh
+
+# Windows PowerShell
+.\scripts\setup.ps1
 ```
-They cover the API, the pipelines and the following:
-- **OMNI2 parsing** checked against **real NASA OMNI2 rows** (`tests/data/omni2_2000_excerpt.dat`), with a column-shift guard based on E = −V·Bz and Pdyn = 2·10⁻⁶·N·V².
-- **Mission Replay:** causality, persistence, timeline, manifest, evidence ZIP, Repeat → identical.
-- **Jobs and starter pack:** interrupted/retry jobs; starter-pack build, install and tamper detection; integrity of the shipped pack.
-- **Bundled data:** a **real bundled telemetry run repeated offline with identical results**.
-- **Release bundle and job queue:** bundle build, install and tamper detection; reuse on double Start; queued job says what it waits for; final-exception error messages.
-- **AI4Mars loader:** unlabeled rows skipped and counted, schema errors report the row keys. **Kepler:** restart mid-download resumes from the last completed quarter.
-- **Traverse Explorer:** id parsing, locating images, sections, non-NASA hosts refused.
 
-## Release checks run for this version (sandbox)
-| Check | Result |
-|---|---|
-| Clean `docker compose up -d` (fresh volumes) | healthy; dashboard, assets, `/docs` and `/api` served from one origin; starter pack installed with hashes verified; bundled runs listed |
-| Persistence | reviewer note kept across `restart` and `down`/`up` |
-| Job interrupted by restart | marked *interrupted*; Retry resubmits it |
-| Upstream outage | NASA hosts unreachable → space weather and waypoints report *source unavailable*, nothing presented as a result |
-| Real starter-pack analysis | bundled telemetry run repeated → identical |
-| Telemetry 3D view after a completed run | renders (browser screenshot) |
-| Test suite | 34/34 locally (Python 3.13); 12 offline tests inside the container (Python 3.12) |
+**Start both servers** (Ctrl+C stops both):
 
-**Limits of this sandbox, stated plainly:**
-- **Docker:** Docker Hub, the PyTorch wheel index and NASA were blocked. Compose was therefore tested with an Ubuntu 24.04 stand-in base and the lite image (`TORCH_INDEX=none`), not the official `python:3.11-slim`/`node:20-alpine` images or the CPU-PyTorch layer.
-- **Space weather:** the real May 2024 replay, the waypoint download and raw images could not be fetched here. Those features were exercised with QA-only stand-in files that are **not shipped**. They download on your machine on first use.
+```bash
+# macOS / Linux
+./scripts/dev.sh
 
-## Troubleshooting
+# Windows PowerShell
+.\scripts\dev.ps1
+```
+
+| URL | What |
+| :--- | :--- |
+| **http://localhost:5173** | 🎨 Dashboard (Vite, proxies `/api`) |
+| **http://localhost:8000/docs** | 📘 API docs |
+
+</details>
+
+<details>
+<summary><b>🔧 Option C: Manual steps (two terminals)</b></summary>
+<br/>
+
+```bash
+# Terminal 1: backend
+python -m venv .venv
+source .venv/bin/activate                     # Windows: .venv\Scripts\activate
+pip install torch --index-url https://download.pytorch.org/whl/cpu   # CPU wheels (Linux without GPU)
+pip install -r backend/requirements.txt
+cd backend
+uvicorn app.main:app --reload --reload-dir app --reload-dir spaceml --port 8000
+```
+
+```bash
+# Terminal 2: frontend
+cd frontend
+npm install
+npm run dev                                   # http://localhost:5173
+```
+
+Serve the built dashboard from the API, as Docker does:
+
+```bash
+cd frontend && npm run build                  # then open http://localhost:8000
+```
+
+</details>
+
+### 3️⃣ Use it
+
+1. 🗄️ Open **Data & Training** (`/datasets`). SMAP/MSL and OPS-SAT already show **Ready** from the starter pack.
+2. ⬇️ Click **Download** / **Install data** on any other dataset card (OMNI2, Kepler, AI4Mars, waypoints).
+3. 🧠 Click **Quick run (pipeline check)** to prove a pipeline in minutes, or **Full training** for the real model.
+4. 🎬 Open **Mission Replay** and drag the issuance time through the May 2024 storm.
+5. ✅ Confirm or dismiss the results in **Review Studio**, then download the **Evidence ZIP** from any run.
+
+### 4️⃣ Run the tests
+
+```bash
+cd backend
+python -m pytest -q               # offline, no network needed
+```
+
+```bash
+cd frontend
+npm run typecheck                 # TypeScript check
+npm run build                     # production build
+```
+
+<img src="assets/divider.svg" width="100%" alt=""/>
+
+## ⚙️ Configuration
+
+All settings are optional. Copy `.env.example` to `.env` to change them.
+
+| Variable | Default | Purpose |
+| :--- | :--- | :--- |
+| `SMC_PORT` | `8080` | Host port for the dashboard + API |
+| `SMC_IMAGE` | `space-ml-mission-control:3.1.9` | Use a published image (e.g. `ghcr.io/<you>/space-ml-mission-control:<tag>`) to skip the build |
+| `SPACEML_AUTOSETUP` | `off` | `off` · `light` · `full`: opt-in background download and training |
+| `SPACEML_TRAIN_CPUS` | all but one | CPUs one training job may use |
+| `SPACEML_HEAVY_JOBS` | `1` | Training jobs that run at the same time |
+| `SPACEML_JOB_STALL_MINUTES` | `30` | Stop a job that shows no progress for this long |
+| `SPACEML_MARS_WEIGHTS_URL` | empty | HTTPS link to a GPU-trained `mars_model.zip` |
+| `TORCH_INDEX` | CPU wheel index | Set `none` for a **lite image** without PyTorch |
+| `SMC_AUTO_INSTALL` | `on` | Fetch small mission datasets (OPS-SAT, Hubble, Webb) when online; `off` for a fully offline start |
+| `SMC_LIVE_MAX_AGE` | `120` | Seconds between Hubble/Webb live-view refreshes |
+
+<details>
+<summary><b>🧠 Data & training commands (optional, for contributors)</b></summary>
+<br/>
+
+In Docker you never need these: the **Data & Training** page runs them as background jobs with progress, ETA, logs, cancel and Retry. Run them from `backend/` locally, or prefix them with `docker compose exec app`.
+
+| Step | Command |
+| :--- | :--- |
+| 🩺 Health check | `python -m spaceml.doctor` |
+| ☀️ Space weather: download → train → replay | `python -m spaceml.spaceweather.data download --years 2010 2011 2012 2013 2014 2015 2016 2017 2024 && python -m spaceml.spaceweather.forecast --if-missing && python -m app.starter replay --event 2024-05` |
+| 📥 Import OMNI files you downloaded | `python -m spaceml.spaceweather.data import omni2_2024.dat` |
+| 🗺️ Curiosity waypoints | `python -m spaceml.mars.traverse download` |
+| 📡 Full telemetry + train all channels (fast) | `python -m spaceml.telemetry.data download && python -m spaceml.telemetry.train --fast --version v1-sandbox && python -m spaceml.telemetry.evaluate --version v1-sandbox` |
+| 🪐 Kepler catalog + light curves + CNN | `python -m spaceml.quickstart --skip-telemetry --skip-mars --stars 300` |
+| 🔴 AI4Mars local dataset | `python -m spaceml.mars.local build --train 3000 --test all` · check: `python -m spaceml.mars.local check` |
+| 🔴 Mars samples / quick / resume | `python -m spaceml.mars.data samples --n 36` · `python -m spaceml.mars.train --quick` · `--resume` |
+| 🛰️ Prepare mission sources | `python -m spaceml.missions.prepare opssat --download v2 --from /app/data/missions-source/opssat` · `hubble --from /app/data/src/hst` · `webb --from /app/data/src/jwst` |
+| 🌊 Satellite before/after samples | `python -m spaceml.workbench.samples imagery` |
+| 📦 Starter pack status / rebuild | `python -m app.starter status` · `python -m app.starter build --with-network` |
+| 📦 Release bundle | `python -m spaceml.release build --out ../release/bundle` · `verify` · `install` |
+
+</details>
+
+<details>
+<summary><b>📦 Full offline deployment (release bundle)</b></summary>
+<br/>
+
+```mermaid
+flowchart LR
+    A["💻 Machine with internet"] -->|"spaceml.release build"| B["📦 release/bundle/ (manifest.json + datasets/)"]
+    B -->|"copy project folder"| C["🖥️ Offline machine"]
+    C -->|"docker compose up -d"| D["🔐 sha256 verify + install into volumes"]
+    D --> E["✅ Every dataset shows Ready"]
+```
+
+Build once on a machine with internet:
+
+```bash
+docker compose --profile tools run --rm tools python -m spaceml.release build --out /bundle-out
+# or package what you already have, including trained models:
+docker compose --profile tools run --rm tools python -m spaceml.release build --out /bundle-out --from-data --include-models
+```
+
+On Linux, if the bind mount is not writable: `mkdir -p release/bundle && chmod a+rwx release/bundle`.
+
+Copy the project folder with `release/bundle/` to the target and run `docker compose up -d`. With the defaults the bundle is roughly **1–1.5 GB**; allow about **2× the bundle size + 3 GB** free disk. AI4Mars is marked `verify` in the manifest: confirm its licence before handing the bundle to third parties.
+
+</details>
+
+<details>
+<summary><b>🔍 Deployment audit</b></summary>
+<br/>
+
+```bash
+./scripts/audit.sh                # Windows: .\scripts\audit.ps1   (-Backup saves the volumes first)
+```
+
+It runs the full acceptance check against the real container on `localhost:8081` with external network cut off: volume mounts, rebuild with the matched CPU torch/torchvision pair, runtime checks, a data inventory, quick training for each module, restart persistence, and a report in `audit-results/report.md`.
+
+</details>
+
+<img src="assets/divider.svg" width="100%" alt=""/>
+
+## 🗄️ Datasets
+
+```mermaid
+flowchart TB
+    subgraph OFF["✅ Official sources (used by the app)"]
+        O1["NASA telemanom S3 + GitHub"]
+        O2["ESA OPS-SAT on Zenodo"]
+        O3["MAST (Hubble, Webb, Kepler)"]
+        O4["NASA Exoplanet Archive"]
+        O5["AI4Mars on Zenodo / NASA Open Data"]
+        O6["SPDF OMNIWeb"]
+        O7["JPL MMGIS + raw image API"]
+        O8["NASA GIBS / Worldview · CDS hips2fits"]
+    end
+    subgraph KAG["📓 Kaggle copies (community re-uploads)"]
+        K1["Notebooks, reports, new experiments"]
+    end
+    OFF -->|"importers check file names, columns, checksums"| APP(["🛰️ Space ML Mission Control"])
+    KAG -.->|"not accepted by the importers"| APP
+    KAG --> NB(["📓 Jupyter / Kaggle notebooks"])
+```
+
+> ⚠️ The app downloads from the **official sources** below. Its importers check file names, column layouts and checksums, so Kaggle copies (community re-uploads) suit notebooks and reports, not the app.
+
+### 🛰️ Datasets used by the app
+
+| Module | Official source (used by the app) | Kaggle copy | Notes |
+| :--- | :--- | :--- | :--- |
+| 📡 Spacecraft telemetry: NASA SMAP / MSL | [telemanom data.zip](https://s3-us-west-2.amazonaws.com/telemanom/data.zip) + [labeled_anomalies.csv](https://raw.githubusercontent.com/khundman/telemanom/master/labeled_anomalies.csv); code: [telemanom](https://github.com/khundman/telemanom) | [patrickfleith/nasa-anomaly-detection-dataset-smap-msl](https://www.kaggle.com/datasets/patrickfleith/nasa-anomaly-detection-dataset-smap-msl) | The telemanom README itself downloads this Kaggle copy |
+| 🛰️ ESA OPS-SAT (OPSSAT-AD) | Zenodo [v1](https://zenodo.org/records/12588359) (in the starter pack) and [v2](https://zenodo.org/records/15108715); code: [OPS-SAT-AD](https://github.com/kplabs-pl/OPS-SAT-AD) | None found | `segments.csv` (telemetry) + `dataset.csv` (labelled segment features); [paper](https://arxiv.org/abs/2407.04730), DOI 10.1038/s41597-025-05035-3 |
+| 🔭 Hubble and James Webb pointing | [MAST](https://mast.stsci.edu) (Hubble `*_jit/*_jif.fits`, Webb FGS `*gs-fg*_cal.fits`); live data: [Space Telescope Live](https://spacetelescopelive.org) | None | Formats: [Hubble jitter files](https://www.stsci.edu/hst/instrumentation/focus-and-pointing/pointing/jitter-file-format-definition), [Webb guiding](https://jwst-docs.stsci.edu/jwst-observatory-characteristics/jwst-pointing-performance/jwst-fine-guide-stability) |
+| 🪐 Kepler exoplanets | [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu) (KOI cumulative table, DOI 10.26133/NEA4); light curves from MAST | [nasa/kepler-exoplanet-search-results](https://www.kaggle.com/datasets/nasa/kepler-exoplanet-search-results) | KOI table of ~10,000 candidates, no light curves; reference copy only |
+| 🔴 Mars terrain: AI4Mars | [NASA Open Data portal](https://data.nasa.gov/dataset/ai4mars-a-dataset-for-terrain-aware-autonomous-driving-on-mars) → [Zenodo 15995036](https://zenodo.org/records/15995036) (v0.6, 17.8 GB) | [yash92328/ai4mars-terrainaware-autonomous-driving-on-mars](https://www.kaggle.com/datasets/yash92328/ai4mars-terrainaware-autonomous-driving-on-mars) | [Paper](https://openaccess.thecvf.com/content/CVPR2021W/AI4Space/papers/Swan_AI4MARS_A_Dataset_for_Terrain-Aware_Autonomous_Driving_on_Mars_CVPRW_2021_paper.pdf); [Hugging Face copy](https://huggingface.co/datasets/hassanjbara/AI4MARS) |
+| ☀️ Space weather: OMNI2 hourly + Dst | [SPDF low_res_omni](https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/) (`omni2_{year}.dat`); [OMNIWeb](https://omniweb.gsfc.nasa.gov); DOI [10.48322/1shr-ht18](https://doi.org/10.48322/1shr-ht18) | Community upload "ujjwal9 / OMNI2" ([listing](https://baselight.app/u/kaggle/dataset/ujjwal9_o_m_n_i_2)) | Exact Kaggle page not confirmed |
+| 🗺️ Curiosity traverse + Navcam images | [Waypoints JSON](https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json), [raw images API](https://mars.nasa.gov/api/v1/raw_image_items/), [map viewer](https://mars.nasa.gov/maps/location/?mission=Curiosity) | None | — |
+| 🌊 Before/after satellite scenes | [NASA GIBS](https://gibs.earthdata.nasa.gov), [Worldview](https://worldview.earthdata.nasa.gov) | None | Lake Mead, Indus flood |
+| 🌠 Sky images (live panel) | [CDS hips2fits](https://alasky.cds.unistra.fr/hips-image-services/hips2fits) (DSS2 colour) | None | Ground-based survey images |
+
+### 📓 More Kaggle datasets for new space analyses
+
+<details open>
+<summary><b>🌟 Exoplanets and stars</b></summary>
+<br/>
+
+| Dataset | Size / shape | Good for |
+| :--- | :--- | :--- |
+| [Kepler labelled time series](https://www.kaggle.com/datasets/keplersmachines/kepler-labelled-time-series-data) | Train 5,087 stars (37 exoplanet hosts), test 570 stars (5 hosts); column 1 = label, 3,197 flux columns | Light-curve classifier (heavily imbalanced) |
+| [Stellar Classification (SDSS17)](https://www.kaggle.com/datasets/fedesoriano/stellar-classification-dataset-sdss17) | 100,000 Sloan Digital Sky Survey observations | Star / galaxy / quasar classification |
+| [Star types (6 classes)](https://www.kaggle.com/datasets/deepu1109/star-dataset) | 240 stars: temperature, luminosity, radius, absolute magnitude, colour, spectral class | Hertzsprung–Russell diagram demo, not serious training |
+
+</details>
+
+<details>
+<summary><b>🌀 Galaxies</b></summary>
+<br/>
+
+| Dataset | Size / shape | Good for |
+| :--- | :--- | :--- |
+| [Galaxy Zoo: The Galaxy Challenge](https://www.kaggle.com/competitions/galaxy-zoo-the-galaxy-challenge/data) | 61,578 colour JPG galaxy images, each with the probability of falling into each Galaxy Zoo class | An image-classification module. It is a Kaggle competition, so accept its rules before downloading |
+
+</details>
+
+<details>
+<summary><b>☄️ Asteroids and near-Earth objects</b></summary>
+<br/>
+
+| Dataset | Size / shape | Good for |
+| :--- | :--- | :--- |
+| [NASA Nearest Earth Objects](https://www.kaggle.com/datasets/sameepvani/nasa-nearest-earth-objects) | 90,836 rows × 10 columns: diameter, velocity, miss distance, sentry flag, magnitude, hazardous label | Classic hazard classifier |
+| [NASA Nearest Earth Objects (1910–2024)](https://www.kaggle.com/datasets/ivansher/nasa-nearest-earth-objects-1910-2024) | 338,199 rows | Larger version of the same task |
+| [NASA Asteroids Classification (NeoWs)](https://www.kaggle.com/datasets/lovishbansal123/nasa-asteroids-classification) | Asteroid records from NASA's NeoWs web service | Hazard classification with orbital features |
+| [Asteroid Impacts (NASA JPL)](https://www.kaggle.com/datasets/nasa/asteroid-impacts) | Orbits and impact-risk data from JPL's Near Earth Object Program | Impact-risk analysis |
+
+</details>
+
+<details>
+<summary><b>🌑 Meteorites · ☀️ Sun · 🚀 Launches</b></summary>
+<br/>
+
+| Dataset | Details | Good for |
+| :--- | :--- | :--- |
+| [Meteorite Landings](https://www.kaggle.com/datasets/nafayunnoor/meteorite-landings-on-earth-data) | Compiled by The Meteoritical Society; official copy on [NASA's Open Data Portal](https://data.nasa.gov/dataset/meteorite-landings) | Map and geospatial analysis |
+| [Solar Flares from the RHESSI mission](https://www.kaggle.com/datasets/khsamaha/solar-flares-rhessi) | Flares seen by RHESSI, a NASA solar flare observatory launched on 5 February 2002 | Pairs with the OMNI2 / Dst module: join flare times against Dst storms |
+| **All Space Missions from 1957** (Kaggle user *agirlcoding*) | Every space mission since 1957: 4,324 observations, 7 variables, scraped from nextspaceflight. The exact page address could not be confirmed, so search the title on Kaggle | Dashboards: launches per year, success rates, cost |
+
+</details>
+
+### 🎯 Best fits for future modules
+
+| Kaggle dataset | Where it fits |
+| :--- | :--- |
+| 🪐 Kepler labelled time series | the **Exoplanets** module |
+| ☀️ RHESSI flares | **Space Weather** |
+| ☄️ NASA Nearest Earth Objects | a new tabular **"Asteroid hazard"** module |
+| 🌀 Galaxy Zoo | a new **image** module |
+
+> 📜 All Kaggle datasets above are community uploads: check each dataset's **licence tab** on Kaggle before shipping it in a release bundle.
+
+<img src="assets/divider.svg" width="100%" alt=""/>
+
+## 🛡️ Reliability
+
+- 🔁 **Jobs** run as subprocesses with persisted state. If the server stops, running jobs become **interrupted** (not failed), and **Resume / Retry** reruns them with the same settings.
+- ⚛️ **Atomic outputs:** models train into `.staging-<version>/`, runs write to `.<id>.partial/`, downloads go to `*.part`. A crash never leaves half a model behind.
+- 📍 **Checkpointed downloads:** Kepler is checkpointed per star and per quarter, with timeouts and bounded retries.
+- 🩺 **Preflight before training:** Mars and Kepler validate their data and run one batch first, so a bad dataset fails in seconds.
+- 🌐 **Honest outages:** unreachable hosts show `source unavailable` with a readable reason; nothing is presented as a result.
+- 🐢 **Responsive UI:** one heavy job at a time, low priority, capped CPU (`SPACEML_TRAIN_CPUS`).
+
+<img src="assets/divider.svg" width="100%" alt=""/>
+
+## 🛠️ Troubleshooting
+
 | Symptom | Fix |
-|---|---|
-| A dataset is not Ready | Put a release bundle in `release/bundle/` (see above), or use **Download** on its catalog card. "Source unavailable" means that NASA/Hugging Face host was unreachable; press **Retry** later. |
-| Mars model is slow / low accuracy | A quick run is only a pipeline check; run **Full training**, or train the GPU model in Colab/Kaggle and upload `mars_model.zip` (Mars page → Upload a trained model). |
-| Training killed / container restarts | Give Docker more memory (Settings → Resources, 4 GB+). Interrupted jobs show **Retry**. |
-| Mars Quick run: "expert test images are also in the training pairs" | Fixed in 3.1.1. When the Hugging Face rows have no file name, the pairs are named by row number, so `train/row000042` and `test_min3/row000042` are different images. The old check compared names. Images are now compared by a hash of their decoded pixels, which is recorded in `index.json`. An exact duplicate of an expert test image is held out of training and reported, not fatal. `python -m spaceml.mars.local check` prints the dataset root and the usable / held-out counts per split. |
-| `operator torchvision::nms does not exist` | torch and torchvision come from different builds (e.g. CPU torch + PyPI/CUDA torchvision). Rebuild the image: it installs a matched pair (`TORCH_VERSION`/`TORCHVISION_VERSION`, default 2.6.0/0.21.0) from the CPU index, locks it with `PIP_CONSTRAINT`, and fails the build if `torchvision.ops.nms` doesn't work. |
-| "needs PyTorch" | You built the lite image. Run `docker compose build --no-cache` with the default `TORCH_INDEX` (or `pip install -r backend/requirements.txt`). |
-| Port 8080 busy | Set `SMC_PORT=8081` in `.env` |
-| Exoplanet training: "Not enough cached light curves" | Download more stars (`--stars 300+`) |
-| Change detection: "barely overlap" | Export both dates with the same bounding box |
-| Theme looks wrong after an update | Hard refresh (Ctrl+Shift+R) |
+| :--- | :--- |
+| 🔌 Port 8080 busy | Set `SMC_PORT=8081` in `.env`, then `docker compose up -d` |
+| 🗄️ A dataset is not Ready | Use **Download** on its catalog card, or put a release bundle in `release/bundle/`. "Source unavailable" means the NASA / Hugging Face host was unreachable: press **Retry** later |
+| 💥 Training killed / container restarts | Give Docker more memory (Settings → Resources, **4 GB+**). Interrupted jobs show **Retry** |
+| 🐌 Mars model slow or low accuracy | A Quick run is only a pipeline check. Run **Full training**, or train on a GPU with `notebooks/mars_training.ipynb` and upload `mars_model.zip` |
+| ❗ `operator torchvision::nms does not exist` | torch and torchvision come from different builds. Rebuild the image: `docker compose build --no-cache` |
+| 🧩 "needs PyTorch" | You built the lite image. Rebuild with the default `TORCH_INDEX`, or `pip install -r backend/requirements.txt` |
+| 🪐 "Not enough cached light curves" | Download more stars: `--stars 300` or more |
+| 🌊 Change detection: "barely overlap" | Export both dates with the same bounding box |
+| 🎨 Theme looks wrong after an update | Hard refresh (Ctrl+Shift+R) |
+| 🔍 Anything else | Run `docker compose exec app python -m spaceml.doctor` |
 
-## Version 3.1.10 — dedicated project landing page (/welcome)
+<img src="assets/divider.svg" width="100%" alt=""/>
 
-* **Welcome landing page (`/welcome`).** A polished, full-feature introduction to Space ML Mission Control:
-  - Hero with product overview, value statement, dual CTAs (*Open Mission Control* and *Bring your data*), and a lazy-loaded 3D Mission Map (lightweight glowing orb on mobile).
-  - Live system status strip reporting real metrics from `/api/catalog` and `/api/overview` with count-up animations and graceful offline fallback.
-  - Interactive 8-module grid dynamically driven by the navigation metadata.
-  - Real-time "What is Webb observing now?" live observation teaser powered by `/api/live/webb`.
-  - 3-step operational workflow (*Install data* → *Train / analyse* → *Review*) linking directly to core features.
-  - Full support for dark/light themes, zero accessibility violations (WCAG 2.1 AA), and strict prefers-reduced-motion compliance.
-  - Dismissible "New here? Take the tour" prompt on the main Overview.
+## 🗒️ What's new in 3.1.10
 
-Upgrade exactly as for 3.1.9 below (`docker compose up -d --build app`); existing volumes are preserved.
+- ✨ **Welcome landing page (`/welcome`):** hero with a lazy-loaded 3D Mission Map, a live system-status strip from `/api/catalog` and `/api/overview`, an 8-module grid, a "What is Webb observing now?" teaser from `/api/live/webb`, and a 3-step workflow. Dark/light themes, WCAG 2.1 AA, reduced-motion support.
+- 🔭 **3.1.9:** live Hubble / Webb view inside the app, a larger mission map with labelled spacecraft, full-size rover images.
+- 🎯 **3.1.8:** the app now focuses on OPS-SAT, Hubble and Webb; ESA Missions 1–3, FUNcube-1 and SatNOGS UWE-4 were removed.
 
-## Version 3.1.9 — live telescope view inside the app, clearer map, full-size rover images
+Upgrade without losing data:
 
-* **Hubble / Webb live view in the app.** Mission pages now show what the telescope is observing without leaving the app:
-  target, program title, science category, instruments, PI, start / end (UTC, local time on hover), a progress bar with time
-  left, the next observation, RA / Dec, and a sky picture of the target region at three fields of view (0.1°, 0.5°, 2°).
-  It refreshes every minute while the page is open (and on **Refresh**). The data comes from NASA / STScI Space Telescope
-  Live, which cannot be embedded in other sites, so the backend reads the public JSON its own page uses
-  (`/api/live/{hubble|webb}`) and caches it in the storage volume. Offline, the last known observation and its sky picture
-  stay visible, marked *Offline · last known*; "Earlier observations seen by this app" lists what was fetched before.
-  The sky picture is a ground-based DSS2 survey image (CDS hips2fits) - Hubble and Webb images are not released in real
-  time, so no live telescope image exists anywhere. Space Telescope Live's JSON is undocumented and was not reachable from
-  the build machine; it is parsed defensively and tested against recorded field names, and if it changes the panel shows
-  a calm notice instead of an error. `SMC_LIVE_MAX_AGE` (seconds, default 120) sets how often it is refreshed.
-* **Mission map.** The Earth system is drawn 1.5× larger, satellites sit on wider orbits, every spacecraft has its own
-  name tag, and tags never cover each other (they are moved apart automatically). A spacecraft bar under the map
-  (SMAP, OPS-SAT, Hubble, James Webb, ACE · DSCOVR, Kepler, Curiosity) flies the camera to any of them and follows it;
-  **Open** goes to its data, **Back** returns. The map controls moved under the map, so nothing covers the scene.
-* **Rover Traverse images.** The image panel now fills the height of the map (no more cut-off second row), uses 4:3
-  thumbnails in 2-3 columns, and any image opens full size (Esc or click to close).
-
-Upgrade exactly as for 3.1.8 below, using the 3.1.9 ZIP (`docker compose up -d --build app`); volumes are reused.
-
-## Version 3.1.8 — focused on OPS-SAT, Hubble and Webb
-
-**Removed:** ESA Missions 1-3, FUNcube-1 (AO-73) and SatNOGS UWE-4. Their importers, install buttons, token settings
-(`SATNOGS_TOKEN`), map spacecraft, tests and the `satnogs-decoders` package are gone, so their download errors
-(Zenodo `IncompleteRead`, SatNOGS HTTP 429, FUNcube "stopped by a restart") can no longer appear. Old jobs of those missions
-are hidden from the job list. Everything else (SMAP/MSL, OPS-SAT, Hubble, Webb, Kepler, Mars, space weather, the workbench,
-Review Studio) is unchanged, and your volumes, datasets, models, job history and reviews are kept.
-
-The mission install panel is now one card: what will be downloaded, one **Install data** button, and an optional upload.
-
-### Upgrade on Windows (PowerShell) - keeps your Docker volumes
-
-```powershell
-cd C:\path\to\space-ml-mission-control            # the SAME folder as before: the volume names come from it
-docker compose down                                  # never add -v (that deletes the volumes)
-Expand-Archive -Path $HOME\Downloads\space-ml-mission-control-3.1.8.zip -DestinationPath $env:TEMP\smc318 -Force
-robocopy "$env:TEMP\smc318\space-ml-mission-control" . /E /XF .env   # replaces project files, keeps your .env
-docker compose up -d --build app
-docker compose ps
+```bash
+git pull
+docker compose up -d --build app   # never add -v: volumes hold your data, models and reviews
 ```
 
-You can delete the `SATNOGS_TOKEN=` line from `.env`; it is ignored now.
+<img src="assets/divider.svg" width="100%" alt=""/>
 
-**Optional cleanup** of space used by the removed missions (partial ESA archives can be several GB). Nothing is deleted
-automatically; run this only if you want the space back:
-```powershell
-docker compose exec app sh -c "rm -rf /app/data/missions-source/cache /app/data/missions-source/esa-m* /app/data/missions-source/funcube /app/data/missions-source/satnogs /app/data/missions/esa-m* /app/data/missions/funcube /app/data/missions/satnogs"
-```
+## 🙏 Acknowledgements
 
-## Version 3.1.7 — fixes from real installs
+Data from **NASA** (JPL, GSFC SPDF / OMNIWeb, Exoplanet Archive, GIBS, MMGIS), **ESA** and KP Labs (OPS-SAT-AD), **STScI / MAST** and Space Telescope Live, the **AI4Mars** team, and **CDS** (hips2fits). Telemetry anomaly methodology from Hundman et al., [telemanom](https://github.com/khundman/telemanom). Each dataset keeps its own licence and attribution, which are recorded in the release manifest.
 
-Upgrade exactly as for 3.1.6 (PowerShell commands below), using the 3.1.7 ZIP; `docker compose up -d --build app` is
-required because a new Python package (`inflate64`) is installed into the image.
+<div align="center">
 
-* **ZIP uploads** stored with Deflate64 (ZIP method 9) are readable; an archive using any other unsupported method is
-  rejected before extraction with the method named.
-* **Hubble / OPS-SAT "no item" errors** came from the previous mission's selection leaking into the next one when switching;
-  every mission page now starts with its own state.
-* **OPS-SAT "Model: not trained"** although a model existed: models trained on another data version were hidden. They are
-  shown again (with a "retrain recommended" note when the data version differs).
-* **Review step count** on mission pages (HTTP 422) fixed.
-* **Mission map:** the 3D scene was rebuilt on every catalog refresh (every 2.5-12 s), which reset any rotation or zoom.
-  It is now built once; labels update in place. Real spacecraft models replace the placeholder blocks (Hubble, Webb with
-  gold mirror segments and sunshield at L2, Kepler, SMAP, a CubeSat for OPS-SAT); particles are
-  round. Controls: drag, wheel, arrow keys and + / -, plus buttons to rotate, zoom, pause, fly to an Earth-orbit close-up
-  and reset. Hover a spacecraft to see its name, click it to open its mission.
+<br/>
 
-## Version 3.1.6 — reliable mission downloads, one readiness definition
+**Built by [Loganth P](https://github.com/LoganthP)** &nbsp;·&nbsp; [LinkedIn](https://www.linkedin.com/in/loganth-p-158667280/)
 
-### Upgrade on Windows (PowerShell) - keeps your Docker volumes, datasets, models, jobs and reviews
+<sub>If this project helped you, consider giving it a ⭐</sub>
 
-```powershell
-cd C:\path\to\space-ml-mission-control            # the SAME folder as before: the volume names come from it
-docker compose down                                  # stops the app; never add -v (that deletes the volumes)
-docker volume ls --filter name=smc-                  # expect <folder>_smc-data, _smc-models, _smc-storage
-# optional backup of runs, reviews and jobs
-docker run --rm -v space-ml-mission-control_smc-storage:/v -v ${PWD}:/b alpine tar czf /b/smc-storage-backup.tgz -C /v .
-Expand-Archive -Path $HOME\Downloads\space-ml-mission-control-3.1.6.zip -DestinationPath $env:TEMP\smc316 -Force
-robocopy "$env:TEMP\smc316\space-ml-mission-control" . /E /XF .env   # replaces project files, keeps your .env
-docker compose up -d --build app
-docker compose ps
-```
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:22d3ee,50:a78bfa,100:fb923c&height=110&section=footer" width="100%" alt=""/>
 
-If the project folder has a different name than before, set `$env:COMPOSE_PROJECT_NAME = "<old folder name>"` first so
-Compose reuses the existing volumes. `.env` is excluded from Git, from the Docker build context and from this ZIP.
-
-### What changed
-
-* ESA Missions 1-3, FUNcube-1 and SatNOGS UWE-4 were part of this release and were removed in 3.1.8.
-* **Hubble / Webb live feeds** opened the official Space Telescope Live viewer in a new tab (replaced in 3.1.9 by an in-app view). Archived pointing data, replay and training are unaffected by the live feed.
-* **One readiness definition** on Overview, Missions and Data & Training: **Missing · Installed · Ready to train ·
-  Model available · Analysis only**, refreshed automatically when install or training jobs finish. Mission pages show the
-  running install job and the last failure in place.
-* **Offline:** with no network the app starts normally (automatic install is skipped), and installed data, training,
-  analysis, models, job history and reviews keep working.
-
-### Verification for this release (build machine without access to MAST)
-
-| Mission | Source path | Ingestion | Replay / analysis | Training | Remaining blocker |
-|---|---|---|---|---|---|
-| Hubble / Webb | MAST (Install data) / external live viewer | Unchanged from 3.1.5 | Webb replay + scoring run in the browser (offline) | Webb quick model scores; Hubble needs data | Bundled 2022 Webb copy has a collapsed time axis - use **Re-download Webb data** once online |
-| OPS-SAT | starter pack v1 | installed | segment prediction | Quick train → model → held-out evaluation completed in the browser with the network disabled (F1 0.903 vs 0.754) | - |
-| SMAP / MSL | starter pack | installed | anomaly detection run completed offline | existing models | - |
-
-## Version 3.1.5 — automatic data, labeled-window datasets, a real review workspace
-
-**Mission data installs itself.** With `SMC_AUTO_INSTALL=on` (default) the app checks for internet at startup and queues
-an install job for every mission whose data is missing and whose source is small and public:
-
-| Mission | Automatic source (no file names needed) |
-|---|---|
-| Hubble | the 12 newest public observations with jitter logs (`_jit` + `_jif`), found through the MAST CAOM API |
-| James Webb | the newest public fine-guidance (`gs-fg` cal) files, one per visit, 10 visits, via MAST `Mast.Jwst.Filtered.GuideStar`; files still in their exclusive-access period are skipped |
-| OPS-SAT | OPSSAT-AD v2 from Zenodo |
-
-Every mission page also has one **Install data** button that does the same, and **More options** for specific files or an upload.
-These sources could not be reached from the build machine; their request formats follow the MAST documentation and are covered by
-tests with recorded responses. If a source changes, the job fails with a readable message and the upload path still works.
-
-**Dataset versions.** Installing newer data never deletes the old data: the previous store is kept as an earlier version
-(up to 4). Step 1 on each mission page has a **Version** picker and **Get newest data**. Models remember which data version
-they were trained on: after switching, a model trained on another version is marked and **Quick train** is offered for the
-selected one. The bundled 2022 Webb visits stay available next to the newest ones.
-
-**Workbench: labeled windows (e.g. solar flares).** JSON / JSON Lines records with a label and parameter series - the
-SWAN-SF benchmark used by the IEEE BigData 2020 flare-prediction cup (`train_partition*_data.json`) - upload as a
-*Labeled windows* dataset (this was the "Trailing data" error). You get class balance, the parameters that separate flaring
-from quiet regions, per-class trajectories, and **Predict the label of each window**: a random forest on window features
-compared with the classic single-parameter threshold, scored with TSS and HSS (the flare-forecasting scores; accuracy is
-misleading when flares are rare). With several partitions in one upload, every partition is tested by a model trained on the
-others. Misses and false alarms go to Review Studio. JSON Lines also works for ordinary tables now.
-
-**Review Studio** is a two-pane workspace: the queue (filter by module, repeated flags from re-runs shown once) and, for the
-selected item, its evidence - the signal around a telemetry flag with the threshold, a mission alert on its time series,
-before/after/change images for a region, the folded light curve of a transit candidate, a flare window next to the class
-medians - plus Real / False alarm / Unsure buttons (keys 1 / 2 / 3, ↑ ↓ to move) and a note.
-
-**Mission pages** plot each channel in its own panel (a large channel no longer flattens the others), zoom to the typical
-0.5-99.5 % range with a **Show full range** toggle, and show duration, cadence, gaps, flags and per-channel statistics.
-The overview map now shows Webb at Sun-Earth L2 and the Earth-orbit missions.
-
-## Version 3.1.4 — easier to use, one status everywhere
-
-**Navigation.** The top bar has labeled groups: **Overview · Missions ▾ · Data & Training · Analyze ▾ · Review Studio** (on phones: a labeled bottom bar plus a grouped **Menu**). Every mission page has the same four steps across the top: **1 Data → 2 Train → 3 Analyze → 4 Review**, each with its status and a direct action.
-
-**One status definition, used by Overview, Data & Training, module pages and mission pages** (served by `/api/catalog` → `summary` and each entry's `status`; refreshed automatically while a job runs and when it finishes, with no Rescan needed):
-
-| Term | Meaning |
-|---|---|
-| **installed** | the data is on this machine and can be explored |
-| **ready to train** | installed data that meets the trainer's requirements |
-| **browse only** | installed, but not enough labeled examples to train (Kepler shows the planet-candidate / false-positive counts and how many more are needed) |
-| **needs re-import** | installed data known to be wrong; one button re-imports it |
-| **models available** | a trained model exists and can produce results |
-
-Each dataset card has **one highlighted next step** (Install data · Quick train · Resume · View latest result · Open). Raw commands are under **Setup help**.
-
-**Install data in the app.** Missions without local data show an **Install data** panel. You can **download** from the official source (OPS-SAT/Zenodo, Hubble and Webb/MAST by file name or rootname) or **upload** the files you already have. The importer validates the data before anything is installed, and the mission page updates when the job finishes.
-
-**Live telescope feeds.** Space Telescope Live does not allow embedding (the "refused to connect" panel). Hubble and Webb pages now offer an **Open live feed** button that opens the official viewer in a new tab, kept separate from the archived pointing data, which works offline.
-
-**Webb timestamps fixed.** The JWST guider `POINTING` table stores `Time` in **MJD days**. Earlier releases read it as milliseconds, which squeezed each visit (about 4 minutes of 15.6 Hz samples) into a few microseconds. The importer now uses the column unit (or infers it from the values and cadence) and refuses to install a store whose clock collapses. A Webb store imported by an older release is flagged **needs re-import**, with a **Re-download Webb data (fix timestamps)** button that fetches the same 10 MAST files again (about 50 MB, needs internet). Re-verifying the release bundle never overwrites a mission store that you re-imported locally.
-
-**Also:** faster first page (torch is no longer loaded to list datasets, and summaries are warmed at startup), explicit loading states (Traverse, Telemetry), no horizontal scrolling at 375/768/1280 px, and axe WCAG 2.1 AA clean on the main pages in light and dark themes.
-
-## Version 3.1.2 — offline data and telescope observing feeds
-
-*(Superseded in 3.1.4: the live viewer opens in a new tab, because the site refuses embedding.)* Archived pointing analysis uses local FITS-derived datasets.
-
-Train actions for Kepler, AI4Mars, and OMNI2 use installed data. Use the separate Download action to install inputs. An OMNI2 training run can complete without the May 2024 replay input. The CPU queue intentionally limits heavy jobs by default. Curiosity waypoint downloads and jobs for different telemetry missions can proceed independently.
-
-This source distribution includes a verified release-data manifest for the NASA/JPL Curiosity traverse and two NASA GIBS imagery pairs (Lake Mead and the Indus flood). SMAP/MSL and OPS-SAT are in the existing starter pack. Kepler, AI4Mars, OMNI2, and Hubble/Webb pointing archives require their own locally prepared datasets if absent from your volumes.
-
-### Upgrade on Windows
-
-Copy the new project files into the existing project folder so Compose resolves the same named volumes. In PowerShell:
-
-```powershell
-$env:SMC_PORT = "8081"
-docker compose up -d --build app
-```
-
-This ZIP contains the full source project and bundled data listed above. The first image build needs access to the configured registries and package repositories. Once built, the bundled workflows can use the local image and data without outbound access.
-
-## Webb pointing data update
-
-The release bundle includes a prepared subset of public JWST Fine Guidance Sensor
-telemetry from MAST program 2732: one guide product per visit across 10 visits. *Bundles built before 3.1.4 carry a wrong time axis for these visits; see “Webb timestamps fixed” above.*
-The manifest records the exact products and checksums. Quick Train was verified
-on seven visits with three held out. Alerts are review candidates; there are no
-fault labels. The official live observing view is available independently.
+</div>
