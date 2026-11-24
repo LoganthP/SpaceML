@@ -1,0 +1,17 @@
+{
+  "datasets_same": true,
+  "models_same": true,
+  "jobs_kept": true,
+  "artifacts_kept": true,
+  "missing_artifacts": [],
+  "jobs_started_by_startup": [],
+  "failed_jobs_with_retry": [
+    {
+      "id": "c5ae1c34bee6",
+      "task": "mars.train",
+      "status": "source_unavailable",
+      "error": "Could not download AI4Mars from Hugging Face (huggingface.co). Check the internet connection or proxy, then press Retry. Details: hassanjbara/AI4MARS [test_min3"
+    }
+  ],
+  "ok": true
+}

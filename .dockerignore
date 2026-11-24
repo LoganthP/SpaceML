@@ -1,0 +1,23 @@
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+.venv
+venv
+**/node_modules
+frontend/dist
+data
+storage
+models
+docs
+notebooks
+.git
+*.zip
+
+# release bundles are mounted at runtime, never baked into the image
+release/
+
+# local configuration and secrets - never sent to the build context
+.env
+.env.*
+!.env.example
+**/secrets

@@ -1,0 +1,96 @@
+{
+  "source": {
+    "name": "JWST FGS guider products (MAST)",
+    "version": "as downloaded",
+    "files": {
+      "jw02732001001_gs-fg_2022162160927_cal.fits": {
+        "sha256": "45aa6cead7783ddb17adf43d4651d4c32782cb87780c659b66c79a85eb86aafe",
+        "bytes": 5702400
+      },
+      "jw02732001002_gs-fg_2022162182251_cal.fits": {
+        "sha256": "903af8aaf0a1c3ea3a3e1cc3d22e0336fb38cf9883b380ae945337a858c2ceb5",
+        "bytes": 9037440
+      },
+      "jw02732001003_gs-fg_2022162194014_cal.fits": {
+        "sha256": "bd77ad21deef644714446a101a815031e9cee10562203b2ef2c5ac1c52e3a132",
+        "bytes": 5685120
+      },
+      "jw02732001004_gs-fg_2022162214257_cal.fits": {
+        "sha256": "029a3dfecd1f1dce5c89cd7697ec2614df2e575d4c2861851da823ae58e543f2",
+        "bytes": 5803200
+      },
+      "jw02732002001_gs-fg_2022163180758_cal.fits": {
+        "sha256": "663da9245334f3f483053b79986020633d8259e62c43eb6ccd0fb16796580611",
+        "bytes": 3574080
+      },
+      "jw02732002002_gs-fg_2022163212047_cal.fits": {
+        "sha256": "9408b00b49e4ca614060de44bd2a92e44dc2a6d9c28f92a2c6bd1fbfde1df1ea",
+        "bytes": 3605760
+      },
+      "jw02732003001_gs-fg_2022166161647_cal.fits": {
+        "sha256": "4f3c6b7fcc0e96e6ed589046e4d6a68261bddf25e4dbeec3c0301239b4f0333e",
+        "bytes": 4135680
+      },
+      "jw02732004001_gs-fg_2022171100414_cal.fits": {
+        "sha256": "06407bbf3a2e8f5079f4cea84ffd43aac97bfe8bb94e422a5f30c452d1183fb9",
+        "bytes": 4242240
+      },
+      "jw02732005001_gs-fg_2022171114054_cal.fits": {
+        "sha256": "ec0a82e731b478dca8b2c86d24bdac77f5c4a70a0283645172ff4220e4034537",
+        "bytes": 4708800
+      },
+      "jw02732006001_gs-fg_2022181235818_cal.fits": {
+        "sha256": "7d8e87d81cf33c0607db192cb8179d44cb5aadf41c973efb2b1287380b4915b9",
+        "bytes": 3058560
+      }
+    },
+    "license": "public MAST data",
+    "attribution": "Data from the Mikulski Archive for Space Telescopes (MAST), STScI."
+  },
+  "scope": "10 visits from 10 guider files",
+  "time_is_epoch": true,
+  "time_basis": "UTC derived from each file's end-of-data stamp and the POINTING 'Time' column (ms)",
+  "date_range": [
+    "2022-06-11T16:09:26.999997+00:00",
+    "2022-06-30T23:58:18+00:00"
+  ],
+  "counts": {
+    "visits": 10,
+    "files": 10,
+    "skipped": 0
+  },
+  "skipped": [],
+  "channels": [
+    {
+      "id": "delta_ddc_dec",
+      "name": "delta_ddc_dec",
+      "unit": "mas"
+    },
+    {
+      "id": "delta_ddc_ra",
+      "name": "delta_ddc_ra",
+      "unit": "mas"
+    },
+    {
+      "id": "hga_motion",
+      "name": "hga_motion",
+      "unit": "0=moving 1=finished 2=offline"
+    },
+    {
+      "id": "jitter",
+      "name": "jitter",
+      "unit": "mas"
+    }
+  ],
+  "detect_columns": [
+    "jitter",
+    "delta_ddc_ra",
+    "delta_ddc_dec"
+  ],
+  "mission": "webb",
+  "items": 10,
+  "events": 0,
+  "prepared_files": 13,
+  "prepared_bytes": 466345,
+  "fingerprint": "0e091f226d5e32b5"
+}

@@ -1,0 +1,767 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/admin/rescan",
+    "operation_id": "",
+    "tags": [
+      "overview"
+    ],
+    "summary": "Rescan"
+  },
+  {
+    "method": "GET",
+    "path": "/api/catalog",
+    "operation_id": "",
+    "tags": [
+      "catalog"
+    ],
+    "summary": "Catalog"
+  },
+  {
+    "method": "GET",
+    "path": "/api/datasets",
+    "operation_id": "",
+    "tags": [
+      "overview"
+    ],
+    "summary": "Get Datasets"
+  },
+  {
+    "method": "GET",
+    "path": "/api/evaluation",
+    "operation_id": "",
+    "tags": [
+      "overview"
+    ],
+    "summary": "Get Evaluation"
+  },
+  {
+    "method": "GET",
+    "path": "/api/exoplanet/catalog",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Exoplanet Catalog Info"
+  },
+  {
+    "method": "GET",
+    "path": "/api/exoplanet/datasets",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Exoplanet Datasets"
+  },
+  {
+    "method": "POST",
+    "path": "/api/exoplanet/datasets",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Exoplanet Dataset Upload"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/exoplanet/datasets/{dataset_id}",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Exoplanet Dataset Delete"
+  },
+  {
+    "method": "GET",
+    "path": "/api/exoplanet/datasets/{dataset_id}",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Exoplanet Dataset"
+  },
+  {
+    "method": "GET",
+    "path": "/api/exoplanet/featured",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Exoplanet Featured"
+  },
+  {
+    "method": "GET",
+    "path": "/api/exoplanet/sky",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Exoplanet Sky"
+  },
+  {
+    "method": "GET",
+    "path": "/api/exoplanet/tces",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Exoplanet Tces"
+  },
+  {
+    "method": "GET",
+    "path": "/api/exoplanet/views/{kepid}/{plnt}",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Exoplanet View"
+  },
+  {
+    "method": "GET",
+    "path": "/api/health",
+    "operation_id": "",
+    "tags": [
+      "overview"
+    ],
+    "summary": "Health"
+  },
+  {
+    "method": "GET",
+    "path": "/api/jobs",
+    "operation_id": "",
+    "tags": [
+      "jobs"
+    ],
+    "summary": "List Jobs"
+  },
+  {
+    "method": "POST",
+    "path": "/api/jobs",
+    "operation_id": "",
+    "tags": [
+      "jobs"
+    ],
+    "summary": "Create"
+  },
+  {
+    "method": "GET",
+    "path": "/api/jobs/tasks",
+    "operation_id": "",
+    "tags": [
+      "jobs"
+    ],
+    "summary": "Tasks"
+  },
+  {
+    "method": "GET",
+    "path": "/api/jobs/{job_id}",
+    "operation_id": "",
+    "tags": [
+      "jobs"
+    ],
+    "summary": "Get"
+  },
+  {
+    "method": "POST",
+    "path": "/api/jobs/{job_id}/cancel",
+    "operation_id": "",
+    "tags": [
+      "jobs"
+    ],
+    "summary": "Cancel"
+  },
+  {
+    "method": "POST",
+    "path": "/api/jobs/{job_id}/dismiss",
+    "operation_id": "",
+    "tags": [
+      "jobs"
+    ],
+    "summary": "Dismiss"
+  },
+  {
+    "method": "POST",
+    "path": "/api/jobs/{job_id}/retry",
+    "operation_id": "",
+    "tags": [
+      "jobs"
+    ],
+    "summary": "Retry"
+  },
+  {
+    "method": "GET",
+    "path": "/api/live/{telescope}",
+    "operation_id": "",
+    "tags": [
+      "live"
+    ],
+    "summary": "Live"
+  },
+  {
+    "method": "GET",
+    "path": "/api/live/{telescope}/sky/{obs_id}",
+    "operation_id": "",
+    "tags": [
+      "live"
+    ],
+    "summary": "Sky"
+  },
+  {
+    "method": "GET",
+    "path": "/api/mars/samples",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Mars Samples"
+  },
+  {
+    "method": "GET",
+    "path": "/api/mars/samples/{sample_id}/{kind}",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Mars Sample File"
+  },
+  {
+    "method": "GET",
+    "path": "/api/mars/traverse",
+    "operation_id": "",
+    "tags": [
+      "traverse"
+    ],
+    "summary": "Traverse Overview"
+  },
+  {
+    "method": "POST",
+    "path": "/api/mars/traverse/download",
+    "operation_id": "",
+    "tags": [
+      "traverse"
+    ],
+    "summary": "Download Waypoints"
+  },
+  {
+    "method": "GET",
+    "path": "/api/mars/traverse/raw/{imageid}",
+    "operation_id": "",
+    "tags": [
+      "traverse"
+    ],
+    "summary": "Raw Image"
+  },
+  {
+    "method": "GET",
+    "path": "/api/mars/traverse/sections",
+    "operation_id": "",
+    "tags": [
+      "traverse"
+    ],
+    "summary": "Sections"
+  },
+  {
+    "method": "GET",
+    "path": "/api/mars/traverse/waypoint",
+    "operation_id": "",
+    "tags": [
+      "traverse"
+    ],
+    "summary": "Waypoint"
+  },
+  {
+    "method": "POST",
+    "path": "/api/mars/uploads",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Mars Upload"
+  },
+  {
+    "method": "GET",
+    "path": "/api/mars/uploads/{upload_id}/image",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Mars Upload Image"
+  },
+  {
+    "method": "GET",
+    "path": "/api/missions",
+    "operation_id": "",
+    "tags": [
+      "missions"
+    ],
+    "summary": "List Missions"
+  },
+  {
+    "method": "GET",
+    "path": "/api/missions/{mission}",
+    "operation_id": "",
+    "tags": [
+      "missions"
+    ],
+    "summary": "Mission"
+  },
+  {
+    "method": "GET",
+    "path": "/api/missions/{mission}/items",
+    "operation_id": "",
+    "tags": [
+      "missions"
+    ],
+    "summary": "Items"
+  },
+  {
+    "method": "GET",
+    "path": "/api/missions/{mission}/predictions",
+    "operation_id": "",
+    "tags": [
+      "missions"
+    ],
+    "summary": "Predictions"
+  },
+  {
+    "method": "GET",
+    "path": "/api/missions/{mission}/series",
+    "operation_id": "",
+    "tags": [
+      "missions"
+    ],
+    "summary": "Series"
+  },
+  {
+    "method": "POST",
+    "path": "/api/missions/{mission}/upload",
+    "operation_id": "",
+    "tags": [
+      "missions"
+    ],
+    "summary": "Upload"
+  },
+  {
+    "method": "POST",
+    "path": "/api/missions/{mission}/versions/{vid}/activate",
+    "operation_id": "",
+    "tags": [
+      "missions"
+    ],
+    "summary": "Activate Version"
+  },
+  {
+    "method": "GET",
+    "path": "/api/models",
+    "operation_id": "",
+    "tags": [
+      "overview"
+    ],
+    "summary": "Get Models"
+  },
+  {
+    "method": "POST",
+    "path": "/api/models/mars/upload",
+    "operation_id": "",
+    "tags": [
+      "setup"
+    ],
+    "summary": "Upload Mars Model"
+  },
+  {
+    "method": "GET",
+    "path": "/api/overview",
+    "operation_id": "",
+    "tags": [
+      "overview"
+    ],
+    "summary": "Overview"
+  },
+  {
+    "method": "GET",
+    "path": "/api/reviews",
+    "operation_id": "",
+    "tags": [
+      "reviews"
+    ],
+    "summary": "List Reviews"
+  },
+  {
+    "method": "GET",
+    "path": "/api/reviews/evidence",
+    "operation_id": "",
+    "tags": [
+      "reviews"
+    ],
+    "summary": "Evidence"
+  },
+  {
+    "method": "GET",
+    "path": "/api/reviews/export",
+    "operation_id": "",
+    "tags": [
+      "reviews"
+    ],
+    "summary": "Export"
+  },
+  {
+    "method": "GET",
+    "path": "/api/reviews/queue",
+    "operation_id": "",
+    "tags": [
+      "reviews"
+    ],
+    "summary": "Review Queue"
+  },
+  {
+    "method": "GET",
+    "path": "/api/runs",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "List Runs"
+  },
+  {
+    "method": "POST",
+    "path": "/api/runs",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "Create Run"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/runs/{run_id}",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "Delete Run"
+  },
+  {
+    "method": "GET",
+    "path": "/api/runs/{run_id}",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "Get Run"
+  },
+  {
+    "method": "GET",
+    "path": "/api/runs/{run_id}/evidence.zip",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "Evidence"
+  },
+  {
+    "method": "GET",
+    "path": "/api/runs/{run_id}/files/img/{name}",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "Run Image File"
+  },
+  {
+    "method": "GET",
+    "path": "/api/runs/{run_id}/files/{name}",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "Run File"
+  },
+  {
+    "method": "GET",
+    "path": "/api/runs/{run_id}/manifest",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "Run Manifest"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/runs/{run_id}/mask",
+    "operation_id": "",
+    "tags": [
+      "reviews"
+    ],
+    "summary": "Save Corrected Mask"
+  },
+  {
+    "method": "POST",
+    "path": "/api/runs/{run_id}/repeat",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "Repeat Run"
+  },
+  {
+    "method": "GET",
+    "path": "/api/runs/{run_id}/report",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "Report"
+  },
+  {
+    "method": "GET",
+    "path": "/api/runs/{run_id}/reproducibility",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "Reproducibility"
+  },
+  {
+    "method": "GET",
+    "path": "/api/runs/{run_id}/reviews",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "List Reviews"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/runs/{run_id}/reviews/{item}",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "Delete Review"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/runs/{run_id}/reviews/{item}",
+    "operation_id": "",
+    "tags": [
+      "runs"
+    ],
+    "summary": "Put Review"
+  },
+  {
+    "method": "GET",
+    "path": "/api/setup",
+    "operation_id": "",
+    "tags": [
+      "setup"
+    ],
+    "summary": "Setup Status"
+  },
+  {
+    "method": "POST",
+    "path": "/api/setup/run",
+    "operation_id": "",
+    "tags": [
+      "setup"
+    ],
+    "summary": "Setup Run"
+  },
+  {
+    "method": "POST",
+    "path": "/api/spaceweather/annotations",
+    "operation_id": "",
+    "tags": [
+      "spaceweather"
+    ],
+    "summary": "Add Annotation"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/spaceweather/annotations/{ann_id}",
+    "operation_id": "",
+    "tags": [
+      "spaceweather"
+    ],
+    "summary": "Delete Annotation"
+  },
+  {
+    "method": "GET",
+    "path": "/api/spaceweather/events",
+    "operation_id": "",
+    "tags": [
+      "spaceweather"
+    ],
+    "summary": "Events"
+  },
+  {
+    "method": "GET",
+    "path": "/api/spaceweather/forecast",
+    "operation_id": "",
+    "tags": [
+      "spaceweather"
+    ],
+    "summary": "Forecast"
+  },
+  {
+    "method": "POST",
+    "path": "/api/spaceweather/import",
+    "operation_id": "",
+    "tags": [
+      "spaceweather"
+    ],
+    "summary": "Import Omni"
+  },
+  {
+    "method": "GET",
+    "path": "/api/spaceweather/quality",
+    "operation_id": "",
+    "tags": [
+      "spaceweather"
+    ],
+    "summary": "Quality"
+  },
+  {
+    "method": "GET",
+    "path": "/api/spaceweather/replays",
+    "operation_id": "",
+    "tags": [
+      "spaceweather"
+    ],
+    "summary": "Replays"
+  },
+  {
+    "method": "GET",
+    "path": "/api/spaceweather/series",
+    "operation_id": "",
+    "tags": [
+      "spaceweather"
+    ],
+    "summary": "Series"
+  },
+  {
+    "method": "GET",
+    "path": "/api/spaceweather/status",
+    "operation_id": "",
+    "tags": [
+      "spaceweather"
+    ],
+    "summary": "Status"
+  },
+  {
+    "method": "GET",
+    "path": "/api/starter",
+    "operation_id": "",
+    "tags": [
+      "system"
+    ],
+    "summary": "Starter Status"
+  },
+  {
+    "method": "GET",
+    "path": "/api/telemetry/channels",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Telemetry Channels"
+  },
+  {
+    "method": "GET",
+    "path": "/api/telemetry/preview",
+    "operation_id": "",
+    "tags": [
+      "modules"
+    ],
+    "summary": "Telemetry Preview"
+  },
+  {
+    "method": "GET",
+    "path": "/api/workbench/analyses",
+    "operation_id": "",
+    "tags": [
+      "workbench"
+    ],
+    "summary": "Analyses"
+  },
+  {
+    "method": "GET",
+    "path": "/api/workbench/datasets",
+    "operation_id": "",
+    "tags": [
+      "workbench"
+    ],
+    "summary": "Datasets"
+  },
+  {
+    "method": "POST",
+    "path": "/api/workbench/datasets",
+    "operation_id": "",
+    "tags": [
+      "workbench"
+    ],
+    "summary": "Upload"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/workbench/datasets/{dataset_id}",
+    "operation_id": "",
+    "tags": [
+      "workbench"
+    ],
+    "summary": "Delete"
+  },
+  {
+    "method": "GET",
+    "path": "/api/workbench/datasets/{dataset_id}",
+    "operation_id": "",
+    "tags": [
+      "workbench"
+    ],
+    "summary": "Dataset"
+  },
+  {
+    "method": "GET",
+    "path": "/api/workbench/datasets/{dataset_id}/class-profile",
+    "operation_id": "",
+    "tags": [
+      "workbench"
+    ],
+    "summary": "Class Profile"
+  },
+  {
+    "method": "GET",
+    "path": "/api/workbench/datasets/{dataset_id}/image-stats/{image_id}",
+    "operation_id": "",
+    "tags": [
+      "workbench"
+    ],
+    "summary": "Image Stats"
+  },
+  {
+    "method": "GET",
+    "path": "/api/workbench/datasets/{dataset_id}/images/{image_id}/{kind}",
+    "operation_id": "",
+    "tags": [
+      "workbench"
+    ],
+    "summary": "Image File"
+  },
+  {
+    "method": "GET",
+    "path": "/api/workbench/datasets/{dataset_id}/series",
+    "operation_id": "",
+    "tags": [
+      "workbench"
+    ],
+    "summary": "Series"
+  },
+  {
+    "method": "POST",
+    "path": "/api/workbench/samples/{name}",
+    "operation_id": "",
+    "tags": [
+      "catalog"
+    ],
+    "summary": "Open Sample"
+  }
+]

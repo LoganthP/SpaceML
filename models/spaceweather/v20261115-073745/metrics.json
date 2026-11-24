@@ -1,0 +1,239 @@
+{
+  "module": "spaceweather",
+  "version": "v20261115-073745",
+  "created_at": "2026-11-15T07:39:24+00:00",
+  "model_name": "Gradient-boosting Dst forecaster",
+  "baseline_name": "Persistence: Dst(t+h) = Dst(t)",
+  "eval_split": "Chronological: trained on 2010-2016, tested on 2017",
+  "headline": {
+    "metric": "Skill vs persistence (+6 h)",
+    "model": 0.2069987931473326,
+    "baseline": 0.0
+  },
+  "rows": [
+    {
+      "group": "+1 h ahead",
+      "metrics": [
+        {
+          "name": "RMSE (nT)",
+          "model": 3.5274596241517044,
+          "baseline": 4.231714725494385,
+          "lower_is_better": true
+        },
+        {
+          "name": "MAE (nT)",
+          "model": 2.378836142790523,
+          "baseline": 2.7874186038970947,
+          "lower_is_better": true
+        },
+        {
+          "name": "Storm RMSE (nT)",
+          "model": 7.779112191726329,
+          "baseline": 10.232690811157227,
+          "lower_is_better": true
+        },
+        {
+          "name": "Storm onsets forecast",
+          "model": "53/53",
+          "baseline": "53/53"
+        }
+      ]
+    },
+    {
+      "group": "+3 h ahead",
+      "metrics": [
+        {
+          "name": "RMSE (nT)",
+          "model": 6.915773861796237,
+          "baseline": 8.484723091125488,
+          "lower_is_better": true
+        },
+        {
+          "name": "MAE (nT)",
+          "model": 4.813455370306717,
+          "baseline": 5.639716625213623,
+          "lower_is_better": true
+        },
+        {
+          "name": "Storm RMSE (nT)",
+          "model": 16.846186088949537,
+          "baseline": 25.22930335998535,
+          "lower_is_better": true
+        },
+        {
+          "name": "Storm onsets forecast",
+          "model": "37/53",
+          "baseline": "53/53"
+        }
+      ]
+    },
+    {
+      "group": "+6 h ahead",
+      "metrics": [
+        {
+          "name": "RMSE (nT)",
+          "model": 9.023627054181757,
+          "baseline": 11.379083633422852,
+          "lower_is_better": true
+        },
+        {
+          "name": "MAE (nT)",
+          "model": 6.095041068184242,
+          "baseline": 7.4035868644714355,
+          "lower_is_better": true
+        },
+        {
+          "name": "Storm RMSE (nT)",
+          "model": 27.430807923953914,
+          "baseline": 40.069297790527344,
+          "lower_is_better": true
+        },
+        {
+          "name": "Storm onsets forecast",
+          "model": "37/53",
+          "baseline": "53/53"
+        }
+      ]
+    },
+    {
+      "group": "+12 h ahead",
+      "metrics": [
+        {
+          "name": "RMSE (nT)",
+          "model": 11.359494185405707,
+          "baseline": 14.002914428710938,
+          "lower_is_better": true
+        },
+        {
+          "name": "MAE (nT)",
+          "model": 7.36790988923071,
+          "baseline": 9.046639442443848,
+          "lower_is_better": true
+        },
+        {
+          "name": "Storm RMSE (nT)",
+          "model": 42.08547365813524,
+          "baseline": 49.065650939941406,
+          "lower_is_better": true
+        },
+        {
+          "name": "Storm onsets forecast",
+          "model": "26/53",
+          "baseline": "53/53"
+        }
+      ]
+    },
+    {
+      "group": "+24 h ahead",
+      "metrics": [
+        {
+          "name": "RMSE (nT)",
+          "model": 13.575031983867275,
+          "baseline": 16.442272186279297,
+          "lower_is_better": true
+        },
+        {
+          "name": "MAE (nT)",
+          "model": 9.051371081253404,
+          "baseline": 10.601076126098633,
+          "lower_is_better": true
+        },
+        {
+          "name": "Storm RMSE (nT)",
+          "model": 50.35769789449724,
+          "baseline": 60.812931060791016,
+          "lower_is_better": true
+        },
+        {
+          "name": "Storm onsets forecast",
+          "model": "19/53",
+          "baseline": "53/53"
+        }
+      ]
+    }
+  ],
+  "per_horizon": {
+    "1": {
+      "n": 8759,
+      "rmse": 3.5274596241517044,
+      "mae": 2.378836142790523,
+      "rmse_persistence": 4.231714725494385,
+      "mae_persistence": 2.7874186038970947,
+      "skill": 0.16642310435054275,
+      "corr": 0.9771465840884324,
+      "storm_hours": 226,
+      "rmse_storm": 7.779112191726329,
+      "rmse_storm_persistence": 10.232690811157227,
+      "storm_onsets": 53,
+      "forecast_hits": 53,
+      "false_onsets": 2
+    },
+    "3": {
+      "n": 8757,
+      "rmse": 6.915773861796237,
+      "mae": 4.813455370306717,
+      "rmse_persistence": 8.484723091125488,
+      "mae_persistence": 5.639716625213623,
+      "skill": 0.18491460622566203,
+      "corr": 0.9088600256263929,
+      "storm_hours": 226,
+      "rmse_storm": 16.846186088949537,
+      "rmse_storm_persistence": 25.22930335998535,
+      "storm_onsets": 53,
+      "forecast_hits": 37,
+      "false_onsets": 2
+    },
+    "6": {
+      "n": 8754,
+      "rmse": 9.023627054181757,
+      "mae": 6.095041068184242,
+      "rmse_persistence": 11.379083633422852,
+      "mae_persistence": 7.4035868644714355,
+      "skill": 0.2069987931473326,
+      "corr": 0.8389987266002487,
+      "storm_hours": 226,
+      "rmse_storm": 27.430807923953914,
+      "rmse_storm_persistence": 40.069297790527344,
+      "storm_onsets": 53,
+      "forecast_hits": 37,
+      "false_onsets": 5
+    },
+    "12": {
+      "n": 8748,
+      "rmse": 11.359494185405707,
+      "mae": 7.36790988923071,
+      "rmse_persistence": 14.002914428710938,
+      "mae_persistence": 9.046639442443848,
+      "skill": 0.188776433417695,
+      "corr": 0.7328105276919362,
+      "storm_hours": 226,
+      "rmse_storm": 42.08547365813524,
+      "rmse_storm_persistence": 49.065650939941406,
+      "storm_onsets": 53,
+      "forecast_hits": 26,
+      "false_onsets": 7
+    },
+    "24": {
+      "n": 8736,
+      "rmse": 13.575031983867275,
+      "mae": 9.051371081253404,
+      "rmse_persistence": 16.442272186279297,
+      "mae_persistence": 10.601076126098633,
+      "skill": 0.17438223683005738,
+      "corr": 0.5882917057026975,
+      "storm_hours": 226,
+      "rmse_storm": 50.35769789449724,
+      "rmse_storm_persistence": 60.812931060791016,
+      "storm_onsets": 53,
+      "forecast_hits": 19,
+      "false_onsets": 1
+    }
+  },
+  "struggles": [
+    "+1 h: storm-time RMSE 7.8 nT",
+    "+3 h: storm-time RMSE 16.8 nT",
+    "+6 h: storm-time RMSE 27.4 nT",
+    "+12 h: storm-time RMSE 42.1 nT",
+    "+24 h: storm-time RMSE 50.4 nT"
+  ]
+}

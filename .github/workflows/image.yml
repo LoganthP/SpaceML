@@ -1,0 +1,36 @@
+# Publishes the single application image to GitHub Container Registry on version tags.
+# Evaluators can then skip the build:  SMC_IMAGE=ghcr.io/<owner>/space-ml-mission-control:<tag> docker compose up -d
+name: image
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+permissions:
+  contents: read
+  packages: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/space-ml-mission-control:${{ github.ref_name }}
+            ghcr.io/${{ github.repository_owner }}/space-ml-mission-control:latest
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: pip install torch --index-url https://download.pytorch.org/whl/cpu && pip install -r backend/requirements.txt
+      - run: cd backend && python -m pytest -q        # bundled-data tests, no upstream network needed

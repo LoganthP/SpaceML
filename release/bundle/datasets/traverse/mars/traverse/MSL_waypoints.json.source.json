@@ -1,0 +1,8 @@
+{
+  "source": "NASA/JPL MMGIS (Curiosity waypoints)",
+  "url": "https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json",
+  "retrieved_at": "2026-11-22T06:54:53+00:00",
+  "bytes": 665124,
+  "sha256": "5a32324f4b8ba22ebdfac50a503e195f47ccdc876ad4c15b19e29dc7cef15a09",
+  "attempts": 1
+}

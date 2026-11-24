@@ -1,0 +1,32 @@
+{
+  "module": "telemetry",
+  "version": "v1-sandbox",
+  "created_at": "2026-11-14T04:24:04+00:00",
+  "model_name": "LSTM forecaster (2x80, dropout 0.3) + nonparametric dynamic threshold",
+  "hparams": {
+    "hidden": 80,
+    "layers": 2,
+    "dropout": 0.3,
+    "window": 250,
+    "epochs": 35,
+    "patience": 10,
+    "min_delta": 0.0003,
+    "batch_size": 128,
+    "lr": 0.001,
+    "val_frac": 0.2
+  },
+  "channels": [
+    "A-5",
+    "A-6",
+    "A-8",
+    "A-9",
+    "C-1",
+    "C-2",
+    "D-12",
+    "M-6",
+    "P-1",
+    "T-8",
+    "T-9"
+  ],
+  "data": "NASA SMAP & MSL telemetry (Hundman et al. 2018) - train files only"
+}

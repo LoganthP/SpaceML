@@ -1,0 +1,898 @@
+[
+  {
+    "file": "frontend\\src\\components\\Catalog.tsx",
+    "line": 53,
+    "raw": "/api/catalog",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "try { store.data = await api<CatalogData>(\"/api/catalog\"); store.error = null; } catch (e) { store.error = (e as Error).message; }"
+  },
+  {
+    "file": "frontend\\src\\components\\Catalog.tsx",
+    "line": 102,
+    "raw": "/api/jobs/${id}/cancel",
+    "method": "POST",
+    "quote": "`",
+    "line_text": "cancel: (id: string) => run(\"cancel\", () => api(`/api/jobs/${id}/cancel`, { method: \"POST\" })),"
+  },
+  {
+    "file": "frontend\\src\\components\\Catalog.tsx",
+    "line": 103,
+    "raw": "/api/jobs/${id}/retry",
+    "method": "POST",
+    "quote": "`",
+    "line_text": "retry: (id: string) => run(\"retry\", () => api(`/api/jobs/${id}/retry`, { method: \"POST\" })),"
+  },
+  {
+    "file": "frontend\\src\\components\\Catalog.tsx",
+    "line": 104,
+    "raw": "/api/jobs/${id}/dismiss",
+    "method": "POST",
+    "quote": "`",
+    "line_text": "dismiss: (id: string) => run(\"dismiss\", () => api(`/api/jobs/${id}/dismiss`, { method: \"POST\" })),"
+  },
+  {
+    "file": "frontend\\src\\components\\Catalog.tsx",
+    "line": 160,
+    "raw": "/api/workbench/samples/${encodeURIComponent(name)}",
+    "method": "POST",
+    "quote": "`",
+    "line_text": "const r = await api<{ id: string }>(`/api/workbench/samples/${encodeURIComponent(name)}`, { method: \"POST\" });"
+  },
+  {
+    "file": "frontend\\src\\components\\CommandPalette.tsx",
+    "line": 26,
+    "raw": "/api/telemetry/channels",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "if (!channels.length) api<Channel[]>(\"/api/telemetry/channels\").then(setChannels).catch(() => {});"
+  },
+  {
+    "file": "frontend\\src\\components\\Evidence.tsx",
+    "line": 45,
+    "raw": "/api/runs/${runId}/manifest",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "api<Manifest>(`/api/runs/${runId}/manifest`).then(setMan).catch(() => setMan(null));"
+  },
+  {
+    "file": "frontend\\src\\components\\Evidence.tsx",
+    "line": 49,
+    "raw": "/api/runs/${rep.id}/reproducibility",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "api<Repro>(`/api/runs/${rep.id}/reproducibility`).then(setRepro).catch(() => setRepro({ status: rep.status }));"
+  },
+  {
+    "file": "frontend\\src\\components\\Evidence.tsx",
+    "line": 56,
+    "raw": "/api/runs/${runId}/repeat",
+    "method": "POST",
+    "quote": "`",
+    "line_text": "const r = await api<Run>(`/api/runs/${runId}/repeat`, { method: \"POST\" });"
+  },
+  {
+    "file": "frontend\\src\\components\\Evidence.tsx",
+    "line": 73,
+    "raw": "/api/runs/${runId}/evidence.zip",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<a className=\"btn-ghost px-3 py-1.5 text-xs\" href={`/api/runs/${runId}/evidence.zip`} download>"
+  },
+  {
+    "file": "frontend\\src\\components\\Evidence.tsx",
+    "line": 76,
+    "raw": "/api/runs/${runId}/report?format=md",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<a className=\"btn-ghost px-3 py-1.5 text-xs\" href={`/api/runs/${runId}/report?format=md`} download>"
+  },
+  {
+    "file": "frontend\\src\\components\\Jobs.tsx",
+    "line": 17,
+    "raw": "/api/jobs?limit=40",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const j = await api<Job[]>(\"/api/jobs?limit=40\");"
+  },
+  {
+    "file": "frontend\\src\\components\\Jobs.tsx",
+    "line": 32,
+    "raw": "/api/jobs",
+    "method": "POST",
+    "quote": "\"",
+    "line_text": "const j = await api<Job>(\"/api/jobs\", { method: \"POST\", body: JSON.stringify({ task, params }) });"
+  },
+  {
+    "file": "frontend\\src\\components\\Jobs.tsx",
+    "line": 76,
+    "raw": "/api/jobs/${jobId}?lines=300",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const j = await api<Job>(`/api/jobs/${jobId}?lines=300`);"
+  },
+  {
+    "file": "frontend\\src\\components\\Jobs.tsx",
+    "line": 122,
+    "raw": "/api/jobs/${job.id}/cancel",
+    "method": "POST",
+    "quote": "`",
+    "line_text": "onClick={async () => { await api(`/api/jobs/${job.id}/cancel`, { method: \"POST\" }); refresh(); }}>"
+  },
+  {
+    "file": "frontend\\src\\components\\Jobs.tsx",
+    "line": 128,
+    "raw": "/api/jobs/${job.id}/retry",
+    "method": "POST",
+    "quote": "`",
+    "line_text": "onClick={async () => { try { await api(`/api/jobs/${job.id}/retry`, { method: \"POST\" }); } catch { /* busy */ } refresh(); }}>"
+  },
+  {
+    "file": "frontend\\src\\components\\Layout.tsx",
+    "line": 111,
+    "raw": "/api/health",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const { data, error } = useApi<{ status: string }>(\"/api/health\");"
+  },
+  {
+    "file": "frontend\\src\\components\\MaskEditor.tsx",
+    "line": 55,
+    "raw": "/api/runs/${runId}/files",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const base = `/api/runs/${runId}/files`;"
+  },
+  {
+    "file": "frontend\\src\\components\\MaskEditor.tsx",
+    "line": 108,
+    "raw": "/api/runs/${runId}/mask",
+    "method": "PUT",
+    "quote": "`",
+    "line_text": "const r = await fetch(`/api/runs/${runId}/mask`, { method: \"PUT\", body: fd });"
+  },
+  {
+    "file": "frontend\\src\\components\\RunTools.tsx",
+    "line": 10,
+    "raw": "/api/runs/${runId}/report?format=md",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<a className=\"btn-ghost px-3 py-1.5 text-xs\" href={`/api/runs/${runId}/report?format=md`} download>"
+  },
+  {
+    "file": "frontend\\src\\components\\RunTools.tsx",
+    "line": 13,
+    "raw": "/api/runs/${runId}/report?format=json",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<a className=\"btn-ghost px-3 py-1.5 text-xs\" href={`/api/runs/${runId}/report?format=json`} download>"
+  },
+  {
+    "file": "frontend\\src\\components\\RunTools.tsx",
+    "line": 28,
+    "raw": "/api/runs/${runId}/reviews",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const r = await api<Review[]>(`/api/runs/${runId}/reviews`);"
+  },
+  {
+    "file": "frontend\\src\\components\\RunTools.tsx",
+    "line": 34,
+    "raw": "/api/runs/${runId}/reviews/${item}",
+    "method": "DELETE",
+    "quote": "`",
+    "line_text": "if (verdict === null) await api(`/api/runs/${runId}/reviews/${item}`, { method: \"DELETE\" });"
+  },
+  {
+    "file": "frontend\\src\\components\\RunTools.tsx",
+    "line": 35,
+    "raw": "/api/runs/${runId}/reviews/${item}",
+    "method": "PUT",
+    "quote": "`",
+    "line_text": "else await api(`/api/runs/${runId}/reviews/${item}`, { method: \"PUT\", body: JSON.stringify({ verdict, note }) });"
+  },
+  {
+    "file": "frontend\\src\\components\\Setup.tsx",
+    "line": 20,
+    "raw": "/api/setup",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const load = useCallback(async () => { try { setData(await api<SetupStatus>(\"/api/setup\")); } catch { /* API offline */ } }, []);"
+  },
+  {
+    "file": "frontend\\src\\components\\Setup.tsx",
+    "line": 27,
+    "raw": "/api/setup/run",
+    "method": "POST",
+    "quote": "\"",
+    "line_text": "await api(\"/api/setup/run\", { method: \"POST\", body: JSON.stringify({ steps, force: true }) });"
+  },
+  {
+    "file": "frontend\\src\\components\\Setup.tsx",
+    "line": 191,
+    "raw": "/api/models/mars/upload",
+    "method": "POST",
+    "quote": "\"",
+    "line_text": "const r = await api<{ version: string; has_metrics: boolean }>(\"/api/models/mars/upload\", { method: \"POST\", body: fd });"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 63,
+    "raw": "/api/missions/${mission}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const info = useApi<MissionStatus>(`/api/missions/${mission}`, [mission]);"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 125,
+    "raw": "/api/reviews/queue?module=missions&limit=500",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const q = useApi<{ items: { mission?: string }[]; pending: number }>(m.dataset.installed ? \"/api/reviews/queue?module=missions&limit=500\" : null, [m.id, m.model.version]);"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 146,
+    "raw": "/api/missions/${m.id}/versions/${encodeURIComponent(vid)}/activate",
+    "method": "POST",
+    "quote": "`",
+    "line_text": "try { await api(`/api/missions/${m.id}/versions/${encodeURIComponent(vid)}/activate`, { method: \"POST\" }); reloadCatalog(); onChanged(); }"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 236,
+    "raw": "/api/missions/${m.id}/upload",
+    "method": "POST",
+    "quote": "`",
+    "line_text": "x.open(\"POST\", `/api/missions/${m.id}/upload`);"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 342,
+    "raw": "/api/missions/${m.id}/items?${qs}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const list = useApi<{ total: number; items: Item[] }>(`/api/missions/${m.id}/items?${qs}`, [m.id, q, split, label, channel]);"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 408,
+    "raw": "/api/missions/${m.id}/items?q=${encodeURIComponent(itemId)}&limit=20",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const meta = useApi<{ items: Item[] }>(`/api/missions/${m.id}/items?q=${encodeURIComponent(itemId)}&limit=20`, [m.id, itemId]);"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 629,
+    "raw": "/api/runs/${runId}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "api<{ input_ref: { action?: string } }>(`/api/runs/${runId}`).then((r) => { if (r.input_ref?.action === \"evaluate\") setRid(runId); }).catch(() => undefined);"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 692,
+    "raw": "/api/missions",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "return useApi<{ missions: MissionStatus[] }>(\"/api/missions\");"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\TelescopeLive.tsx",
+    "line": 88,
+    "raw": "/api/live/${mission}/sky/${encodeURIComponent(o.id)}?fov=${fov}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<img key={`${o.id}-${fov}`} src={`/api/live/${mission}/sky/${encodeURIComponent(o.id)}?fov=${fov}`} onError={() => setImgOk(false)}"
+  },
+  {
+    "file": "frontend\\src\\components\\workbench\\Insights.tsx",
+    "line": 92,
+    "raw": "/api/runs/${runId}/files/${p ?? x.thumb}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "return `/api/runs/${runId}/files/${p ?? x.thumb}`;"
+  },
+  {
+    "file": "frontend\\src\\components\\workbench\\ParamForm.tsx",
+    "line": 93,
+    "raw": "/api/workbench/datasets/${dataset.id}/images/${im.id}/thumb",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<img src={`/api/workbench/datasets/${dataset.id}/images/${im.id}/thumb`} alt={im.file} className=\"aspect-square w-full object-cover\" />"
+  },
+  {
+    "file": "frontend\\src\\components\\workbench\\Samples.tsx",
+    "line": 36,
+    "raw": "/api/workbench/datasets/${ds.id}/class-profile?param=${encodeURIComponent(param)}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const prof = useApi<ClassProfile>(`/api/workbench/datasets/${ds.id}/class-profile?param=${encodeURIComponent(param)}`, [param]);"
+  },
+  {
+    "file": "frontend\\src\\components\\workbench\\Viewers.tsx",
+    "line": 169,
+    "raw": "/api/runs/${runId}/files",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const base = `/api/runs/${runId}/files`;"
+  },
+  {
+    "file": "frontend\\src\\lib\\api.ts",
+    "line": 42,
+    "raw": "/api/runs",
+    "method": "POST",
+    "quote": "\"",
+    "line_text": "return api<Run>(\"/api/runs\", { method: \"POST\", body: JSON.stringify({ module, input }) });"
+  },
+  {
+    "file": "frontend\\src\\lib\\api.ts",
+    "line": 81,
+    "raw": "/api/runs/${runId}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const r = await api<Run<R>>(`/api/runs/${runId}`);"
+  },
+  {
+    "file": "frontend\\src\\pages\\Datasets.tsx",
+    "line": 61,
+    "raw": "/api/starter",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const { data } = useApi<Starter>(\"/api/starter\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Datasets.tsx",
+    "line": 127,
+    "raw": "/api/datasets",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const ds = useApi<Dataset[]>(\"/api/datasets\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Datasets.tsx",
+    "line": 128,
+    "raw": "/api/models",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const models = useApi<Models>(\"/api/models\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Datasets.tsx",
+    "line": 138,
+    "raw": "/api/admin/rescan",
+    "method": "POST",
+    "quote": "\"",
+    "line_text": "try { await api(\"/api/admin/rescan\", { method: \"POST\" }); await Promise.all([models.reload(), ds.reload()]); } finally { setScanning(false); }"
+  },
+  {
+    "file": "frontend\\src\\pages\\Evaluation.tsx",
+    "line": 117,
+    "raw": "/api/evaluation",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const { data, error, loading } = useApi<ModuleEvaluation[]>(\"/api/evaluation\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Exoplanet.tsx",
+    "line": 48,
+    "raw": "/api/exoplanet/featured",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const { data } = useApi<Featured>(\"/api/exoplanet/featured\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Exoplanet.tsx",
+    "line": 85,
+    "raw": "/api/exoplanet/tces?${qs}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const tces = useApi<Tce[]>(`/api/exoplanet/tces?${qs}`, []);"
+  },
+  {
+    "file": "frontend\\src\\pages\\Exoplanet.tsx",
+    "line": 157,
+    "raw": "/api/exoplanet/datasets",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const list = useApi<UploadDataset[]>(\"/api/exoplanet/datasets\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Exoplanet.tsx",
+    "line": 162,
+    "raw": "/api/workbench/datasets",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "<DropZone url=\"/api/workbench/datasets\" fields={{ kind: \"auto\" }}"
+  },
+  {
+    "file": "frontend\\src\\pages\\Exoplanet.tsx",
+    "line": 185,
+    "raw": "/api/exoplanet/datasets/${d.id}",
+    "method": "DELETE",
+    "quote": "`",
+    "line_text": "onClick={async () => { await api(`/api/exoplanet/datasets/${d.id}`, { method: \"DELETE\" }); list.reload(); }}>"
+  },
+  {
+    "file": "frontend\\src\\pages\\Exoplanet.tsx",
+    "line": 202,
+    "raw": "/api/exoplanet/sky",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const sky = useApi<SkyCatalog>(tab === \"sky\" ? \"/api/exoplanet/sky\" : null);"
+  },
+  {
+    "file": "frontend\\src\\pages\\Mars.tsx",
+    "line": 117,
+    "raw": "/api/mars/samples",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const samples = useApi<MarsSample[]>(\"/api/mars/samples\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Mars.tsx",
+    "line": 118,
+    "raw": "/api/models",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const models = useApi<Record<string, { active: string | null }>>(\"/api/models\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Mars.tsx",
+    "line": 140,
+    "raw": "/api/mars/uploads",
+    "method": "POST",
+    "quote": "\"",
+    "line_text": "const up = await api<{ upload_id: string }>(\"/api/mars/uploads\", { method: \"POST\", body: fd });"
+  },
+  {
+    "file": "frontend\\src\\pages\\Mars.tsx",
+    "line": 147,
+    "raw": "/api/runs/${run!.id}/files/${name}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const fileUrl = (name: string) => `/api/runs/${run!.id}/files/${name}`;"
+  },
+  {
+    "file": "frontend\\src\\pages\\Mars.tsx",
+    "line": 189,
+    "raw": "/api/mars/samples/${s.id}/thumb",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<img src={`/api/mars/samples/${s.id}/thumb`} alt={s.name} loading=\"lazy\" className=\"aspect-square w-full object-cover transition group-hover:scale-105\" />"
+  },
+  {
+    "file": "frontend\\src\\pages\\MissionReplay.tsx",
+    "line": 280,
+    "raw": "/api/spaceweather/events",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const events = useApi<{ catalog: Ev[] }>(\"/api/spaceweather/events\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\MissionReplay.tsx",
+    "line": 281,
+    "raw": "/api/spaceweather/status",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const status = useApi<Status>(\"/api/spaceweather/status\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\MissionReplay.tsx",
+    "line": 282,
+    "raw": "/api/spaceweather/replays?event_id=${eventId}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const replays = useApi<ReplayRow[]>(`/api/spaceweather/replays?event_id=${eventId}`, [eventId]);"
+  },
+  {
+    "file": "frontend\\src\\pages\\MissionReplay.tsx",
+    "line": 284,
+    "raw": "/api/spaceweather/quality?start=${ev.start}&end=${ev.end}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const quality = useApi<Quality>(ev ? `/api/spaceweather/quality?start=${ev.start}&end=${ev.end}` : null, [ev?.id]);"
+  },
+  {
+    "file": "frontend\\src\\pages\\MissionReplay.tsx",
+    "line": 286,
+    "raw": "/api/runs/${runRow.id}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const run = useApi<Run<ReplayResult>>(runRow ? `/api/runs/${runRow.id}` : null, [runRow?.id]);"
+  },
+  {
+    "file": "frontend\\src\\pages\\MissionReplay.tsx",
+    "line": 307,
+    "raw": "/api/runs",
+    "method": "POST",
+    "quote": "\"",
+    "line_text": "await api(\"/api/runs\", { method: \"POST\", body: JSON.stringify({ module: \"spaceweather\", input: { event_id: eventId } }) });"
+  },
+  {
+    "file": "frontend\\src\\pages\\MissionReplay.tsx",
+    "line": 409,
+    "raw": "/api/spaceweather/import",
+    "method": "POST",
+    "quote": "\"",
+    "line_text": "const r = await api<{ imported: { file: string; records: number }[]; cached_years: number[] }>(\"/api/spaceweather/import\", { method: \"POST\", body: fd });"
+  },
+  {
+    "file": "frontend\\src\\pages\\Overview.tsx",
+    "line": 56,
+    "raw": "/api/telemetry/preview",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const { data } = useApi<{ chan_id: string; spacecraft: string; step: number; n_steps: number; values: (number | null)[]; labeled: { start: number; end: number }[] }>(\"/api/telemetry/preview\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Overview.tsx",
+    "line": 74,
+    "raw": "/api/spaceweather/replays?event_id=2024-05&limit=5",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const replays = useApi<ReplayRow[]>(\"/api/spaceweather/replays?event_id=2024-05&limit=5\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Overview.tsx",
+    "line": 75,
+    "raw": "/api/starter",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const starter = useApi<Starter>(\"/api/starter\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Overview.tsx",
+    "line": 77,
+    "raw": "/api/runs/${ok.id}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const run = useApi<{ result: { observed: { Dst: (number | null)[] }; forecast: Record<string, (number | null)[]>; issued: string[]; observed_time?: string[] } }>(ok ? `/api/runs/${ok.id}` : null, [ok?.id]);"
+  },
+  {
+    "file": "frontend\\src\\pages\\Overview.tsx",
+    "line": 115,
+    "raw": "/api/overview",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const { data, error, loading } = useApi<OverviewT>(\"/api/overview\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 46,
+    "raw": "/api/reviews?${qs}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const data = useApi<{ reviews: ReviewRow[]; counts: Record<string, number> }>(`/api/reviews?${qs}`, [module, verdict]);"
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 47,
+    "raw": "/api/reviews",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const all = useApi<{ reviews: ReviewRow[]; counts: Record<string, number> }>(\"/api/reviews\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 48,
+    "raw": "/api/runs?module=mars&limit=40",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const marsRuns = useApi<Run[]>(\"/api/runs?module=mars&limit=40\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 49,
+    "raw": "/api/runs?module=workbench&limit=60",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const wbRuns = useApi<Run[]>(\"/api/runs?module=workbench&limit=60\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 119,
+    "raw": "/api/runs/${r.id}/files/input.png",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<img src={`/api/runs/${r.id}/files/input.png`} onError={(e) => { (e.target as HTMLImageElement).src = `/api/runs/${r.id}/files/source.png`; }} alt=\"\" className=\"aspect-square w-full object-cover\" />"
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 119,
+    "raw": "/api/runs/${r.id}/files/source.png",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<img src={`/api/runs/${r.id}/files/input.png`} onError={(e) => { (e.target as HTMLImageElement).src = `/api/runs/${r.id}/files/source.png`; }} alt=\"\" className=\"aspect-square w-full object-cover\" />"
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 147,
+    "raw": "/api/reviews/queue?limit=1",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const allQ = useApi<{ by_module: Record<string, number>; pending: number }>(\"/api/reviews/queue?limit=1\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 160,
+    "raw": "/api/runs/${it.run_id}/reviews/${encodeURIComponent(it.item)}",
+    "method": "PUT",
+    "quote": "`",
+    "line_text": "await api(`/api/runs/${it.run_id}/reviews/${encodeURIComponent(it.item)}`, { method: \"PUT\", body: JSON.stringify({ verdict: v, note }) });"
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 236,
+    "raw": "/api/reviews/evidence?run_id=${encodeURIComponent(it.run_id)}&item=${encodeURIComponent(it.item)}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const ev = useApi<Evidence>(`/api/reviews/evidence?run_id=${encodeURIComponent(it.run_id)}&item=${encodeURIComponent(it.item)}`, [it.run_id, it.item]);"
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 321,
+    "raw": "/api/missions/${mission}/series?item=${encodeURIComponent(target)}&max_points=800",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "`/api/missions/${mission}/series?item=${encodeURIComponent(target)}&max_points=800`, [mission, target]);"
+  },
+  {
+    "file": "frontend\\src\\pages\\Runs.tsx",
+    "line": 21,
+    "raw": "/api/runs/${id}",
+    "method": "DELETE",
+    "quote": "`",
+    "line_text": "await api(`/api/runs/${id}`, { method: \"DELETE\" });"
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 93,
+    "raw": "/api/spaceweather/forecast?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}&horizon=${h}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const fc = useApi<Fc>(model ? `/api/spaceweather/forecast?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}&horizon=${h}` : null, [h, start, end]);"
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 136,
+    "raw": "/api/spaceweather/status",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const st = useApi<Status>(\"/api/spaceweather/status\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 137,
+    "raw": "/api/spaceweather/events",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const ev = useApi<{ catalog: Ev[]; annotations: Ann[] }>(\"/api/spaceweather/events\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 138,
+    "raw": "/api/evaluation",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const evals = useApi<ModuleEvaluation[]>(\"/api/evaluation\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 151,
+    "raw": "/api/spaceweather/series?start=${encodeURIComponent(win.start)}&end=${encodeURIComponent(win.end)}&vars=V,Bz,N,Pdyn,Dst,Kp",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const series = useApi<Series>(win ? `/api/spaceweather/series?start=${encodeURIComponent(win.start)}&end=${encodeURIComponent(win.end)}&vars=V,Bz,N,Pdyn,Dst,Kp` : null, [win?.start, win?.end]);"
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 159,
+    "raw": "/api/spaceweather/annotations",
+    "method": "POST",
+    "quote": "\"",
+    "line_text": "await api(\"/api/spaceweather/annotations\", { method: \"POST\", body: JSON.stringify({ start: win.start, end: win.end, label: ann.label, note: ann.note }) });"
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 213,
+    "raw": "/api/spaceweather/annotations/${a.id}",
+    "method": "DELETE",
+    "quote": "`",
+    "line_text": "<button className=\"text-ink-faint hover:text-rose-600\" onClick={async () => { await api(`/api/spaceweather/annotations/${a.id}`, { method: \"DELETE\" }); ev.reload(); }}><Trash2 className=\"h-3 w-3\" /></button>"
+  },
+  {
+    "file": "frontend\\src\\pages\\Telemetry.tsx",
+    "line": 145,
+    "raw": "/api/telemetry/channels",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const channels = useApi<Channel[]>(\"/api/telemetry/channels\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\TelemetryHub.tsx",
+    "line": 31,
+    "raw": "/api/runs/${runId}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "api<{ module: string; input_ref: { mission?: string } }>(`/api/runs/${runId}`).then((r) => {"
+  },
+  {
+    "file": "frontend\\src\\pages\\Traverse.tsx",
+    "line": 74,
+    "raw": "/api/mars/traverse",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const ov = useApi<Overview>(\"/api/mars/traverse\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Traverse.tsx",
+    "line": 75,
+    "raw": "/api/models",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const models = useApi<Record<string, { active: string | null }>>(\"/api/models\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Traverse.tsx",
+    "line": 89,
+    "raw": "/api/mars/traverse/sections?${qs}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const sections = useApi<Sections>(ov.data?.status.downloaded ? `/api/mars/traverse/sections?${qs}` : null, [qs, ov.data?.status.downloaded]);"
+  },
+  {
+    "file": "frontend\\src\\pages\\Traverse.tsx",
+    "line": 109,
+    "raw": "/api/mars/traverse/waypoint?sol=${p.sol}&site=${p.site}&drive=${p.drive}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "try { setWp(await api<WaypointInfo>(`/api/mars/traverse/waypoint?sol=${p.sol}&site=${p.site}&drive=${p.drive}`)); }"
+  },
+  {
+    "file": "frontend\\src\\pages\\Traverse.tsx",
+    "line": 152,
+    "raw": "/api/mars/traverse/download",
+    "method": "POST",
+    "quote": "\"",
+    "line_text": "try { await api(\"/api/mars/traverse/download\", { method: \"POST\" }); ov.reload(); }"
+  },
+  {
+    "file": "frontend\\src\\pages\\Traverse.tsx",
+    "line": 239,
+    "raw": "/api/mars/traverse/raw/${img.imageid}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<img src={`/api/mars/traverse/raw/${img.imageid}`} loading=\"lazy\" alt={`Navcam ${img.imageid}`} className=\"aspect-[4/3] w-full bg-slate-800 object-cover transition hover:scale-[1.03]\""
+  },
+  {
+    "file": "frontend\\src\\pages\\Traverse.tsx",
+    "line": 285,
+    "raw": "/api/mars/traverse/raw/${zoom}?thumb=false",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<img src={`/api/mars/traverse/raw/${zoom}?thumb=false`} alt={`Navcam ${zoom}`} className=\"max-h-[85vh] w-auto rounded-2xl object-contain shadow-2xl\" />"
+  },
+  {
+    "file": "frontend\\src\\pages\\Welcome.tsx",
+    "line": 91,
+    "raw": "/api/catalog",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const catalog = useApi<CatalogData>(\"/api/catalog\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Welcome.tsx",
+    "line": 92,
+    "raw": "/api/overview",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const overview = useApi<OverviewT>(\"/api/overview\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Welcome.tsx",
+    "line": 93,
+    "raw": "/api/live/webb",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const liveWebb = useApi<LiveWebb>(\"/api/live/webb\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Welcome.tsx",
+    "line": 94,
+    "raw": "/api/health",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const health = useApi<HealthResponse>(\"/api/health\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 79,
+    "raw": "/api/workbench/datasets/${ds.id}/images/${im.id}/thumb",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<img src={`/api/workbench/datasets/${ds.id}/images/${im.id}/thumb`} alt={im.file} className=\"aspect-square w-full object-cover\" />"
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 100,
+    "raw": "/api/runs/${runId}/files/input.png",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<OverlayCanvas imageUrl={`/api/runs/${runId}/files/input.png`} maskUrl={`/api/runs/${runId}/files/mask.png`} opacity={opacity} enabled={enabled} />"
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 100,
+    "raw": "/api/runs/${runId}/files/mask.png",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "<OverlayCanvas imageUrl={`/api/runs/${runId}/files/input.png`} maskUrl={`/api/runs/${runId}/files/mask.png`} opacity={opacity} enabled={enabled} />"
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 146,
+    "raw": "/api/runs/${id}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "Promise.all(ids.map((id) => api<Run<WorkbenchResult>>(`/api/runs/${id}`))).then((r) => alive && setRuns(r)).catch(() => {});"
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 209,
+    "raw": "/api/runs?module=workbench&limit=200",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const runs = useApi<Run[]>(\"/api/runs?module=workbench&limit=200\", [refreshKey]);"
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 251,
+    "raw": "/api/workbench/datasets/${id}",
+    "method": "GET",
+    "quote": "`",
+    "line_text": "const ds = useApi<WbDataset>(`/api/workbench/datasets/${id}`, [id]);"
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 252,
+    "raw": "/api/workbench/analyses",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const catalog = useApi<AnalysisSpec[]>(\"/api/workbench/analyses\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 351,
+    "raw": "/api/workbench/datasets",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "const list = useApi<WbDatasetListItem[]>(\"/api/workbench/datasets\");"
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 376,
+    "raw": "/api/workbench/datasets",
+    "method": "GET",
+    "quote": "\"",
+    "line_text": "<DropZone url=\"/api/workbench/datasets\" fields={{ kind }}"
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 409,
+    "raw": "/api/exoplanet/datasets/${d.id}",
+    "method": "DELETE",
+    "quote": "`",
+    "line_text": "await api(d.kind === \"lightcurve\" ? `/api/exoplanet/datasets/${d.id}` : `/api/workbench/datasets/${d.id}`, { method: \"DELETE\" });"
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 409,
+    "raw": "/api/workbench/datasets/${d.id}",
+    "method": "DELETE",
+    "quote": "`",
+    "line_text": "await api(d.kind === \"lightcurve\" ? `/api/exoplanet/datasets/${d.id}` : `/api/workbench/datasets/${d.id}`, { method: \"DELETE\" });"
+  }
+]

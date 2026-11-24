@@ -1,0 +1,585 @@
+{
+  "routes_tested": [
+    {
+      "route": "/",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "route": "/welcome",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "route": "/telemetry",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "route": "/exoplanet",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "route": "/mars",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "route": "/mars/traverse",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "route": "/replay",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "route": "/workbench",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "route": "/space-weather",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "route": "/review",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "route": "/runs",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "route": "/evaluation",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "route": "/datasets",
+      "theme": "dark",
+      "status": 200
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "route": "/welcome",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "route": "/telemetry",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "route": "/exoplanet",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "route": "/mars",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "route": "/mars/traverse",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "route": "/replay",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "route": "/workbench",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "route": "/space-weather",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "route": "/review",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "route": "/runs",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "route": "/evaluation",
+      "theme": "light",
+      "status": 200
+    },
+    {
+      "route": "/datasets",
+      "theme": "light",
+      "status": 200
+    }
+  ],
+  "controls_tested": [
+    {
+      "control": "Command Palette (Ctrl+K)",
+      "action": "Open with Ctrl+K",
+      "success": true
+    },
+    {
+      "control": "Theme Toggle",
+      "action": "Click toggle",
+      "success": true
+    },
+    {
+      "control": "Mission Switcher (SMAP -> MSL)",
+      "action": "Click MSL switch",
+      "success": true
+    },
+    {
+      "control": "Workbench Segmented Kind Tab",
+      "action": "Switch to Images tab",
+      "success": true
+    }
+  ],
+  "axe_violations": {
+    "/ (dark)": 0,
+    "/welcome (dark)": 0,
+    "/telemetry (dark)": 0,
+    "/exoplanet (dark)": 0,
+    "/mars (dark)": 0,
+    "/mars/traverse (dark)": 0,
+    "/replay (dark)": 0,
+    "/workbench (dark)": 0,
+    "/space-weather (dark)": 0,
+    "/review (dark)": 0,
+    "/runs (dark)": 0,
+    "/evaluation (dark)": 0,
+    "/datasets (dark)": 0,
+    "/ (light)": 0,
+    "/welcome (light)": 0,
+    "/telemetry (light)": 0,
+    "/exoplanet (light)": 0,
+    "/mars (light)": 0,
+    "/mars/traverse (light)": 0,
+    "/replay (light)": 0,
+    "/workbench (light)": 0,
+    "/space-weather (light)": 0,
+    "/review (light)": 0,
+    "/runs (light)": 0,
+    "/evaluation (light)": 0,
+    "/datasets (light)": 0
+  },
+  "overflow_checks": {
+    "/@375px (dark)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/@768px (dark)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/@1280px (dark)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/welcome@375px (dark)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/welcome@768px (dark)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/welcome@1280px (dark)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/telemetry@375px (dark)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/telemetry@768px (dark)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/telemetry@1280px (dark)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/exoplanet@375px (dark)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/exoplanet@768px (dark)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/exoplanet@1280px (dark)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/mars@375px (dark)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/mars@768px (dark)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/mars@1280px (dark)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/mars/traverse@375px (dark)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/mars/traverse@768px (dark)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/mars/traverse@1280px (dark)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/replay@375px (dark)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/replay@768px (dark)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/replay@1280px (dark)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/workbench@375px (dark)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/workbench@768px (dark)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/workbench@1280px (dark)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/space-weather@375px (dark)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/space-weather@768px (dark)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/space-weather@1280px (dark)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/review@375px (dark)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/review@768px (dark)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/review@1280px (dark)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/runs@375px (dark)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/runs@768px (dark)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/runs@1280px (dark)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/evaluation@375px (dark)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/evaluation@768px (dark)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/evaluation@1280px (dark)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/datasets@375px (dark)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/datasets@768px (dark)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/datasets@1280px (dark)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/@375px (light)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/@768px (light)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/@1280px (light)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/welcome@375px (light)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/welcome@768px (light)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/welcome@1280px (light)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/telemetry@375px (light)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/telemetry@768px (light)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/telemetry@1280px (light)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/exoplanet@375px (light)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/exoplanet@768px (light)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/exoplanet@1280px (light)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/mars@375px (light)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/mars@768px (light)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/mars@1280px (light)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/mars/traverse@375px (light)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/mars/traverse@768px (light)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/mars/traverse@1280px (light)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/replay@375px (light)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/replay@768px (light)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/replay@1280px (light)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/workbench@375px (light)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/workbench@768px (light)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/workbench@1280px (light)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/space-weather@375px (light)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/space-weather@768px (light)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/space-weather@1280px (light)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/review@375px (light)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/review@768px (light)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/review@1280px (light)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/runs@375px (light)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/runs@768px (light)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/runs@1280px (light)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/evaluation@375px (light)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/evaluation@768px (light)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/evaluation@1280px (light)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    },
+    "/datasets@375px (light)": {
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "overflow": false
+    },
+    "/datasets@768px (light)": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflow": false
+    },
+    "/datasets@1280px (light)": {
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "overflow": false
+    }
+  },
+  "console_errors": [
+    "[dark] http://127.0.0.1:8085/exoplanet: Failed to load resource: the server responded with a status of 409 (Conflict)",
+    "[light] http://127.0.0.1:8085/exoplanet: Failed to load resource: the server responded with a status of 409 (Conflict)"
+  ],
+  "failed_requests": [
+    "[dark] http://127.0.0.1:8085/api/exoplanet/tces?q=&limit=60&cached_only=true -> 409",
+    "[light] http://127.0.0.1:8085/api/exoplanet/tces?q=&limit=60&cached_only=true -> 409"
+  ],
+  "jobs_lifecycle": "passed (started, progress observed, cancelled cleanly)"
+}

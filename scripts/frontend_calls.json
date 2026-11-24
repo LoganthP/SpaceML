@@ -1,0 +1,810 @@
+[
+  {
+    "file": "frontend\\src\\components\\Catalog.tsx",
+    "line": 53,
+    "type": "api",
+    "method": "GET",
+    "path": "/api/catalog",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\Catalog.tsx",
+    "line": 102,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/jobs/${id}/cancel",
+    "options": "{ method: \"POST\" }"
+  },
+  {
+    "file": "frontend\\src\\components\\Catalog.tsx",
+    "line": 103,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/jobs/${id}/retry",
+    "options": "{ method: \"POST\" }"
+  },
+  {
+    "file": "frontend\\src\\components\\Catalog.tsx",
+    "line": 104,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/jobs/${id}/dismiss",
+    "options": "{ method: \"POST\" }"
+  },
+  {
+    "file": "frontend\\src\\components\\Catalog.tsx",
+    "line": 160,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/workbench/samples/${encodeURIComponent(name)}",
+    "options": "{ method: \"POST\" }"
+  },
+  {
+    "file": "frontend\\src\\components\\CommandPalette.tsx",
+    "line": 26,
+    "type": "api",
+    "method": "GET",
+    "path": "/api/telemetry/channels",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\ContextGlobe.tsx",
+    "line": 23,
+    "type": "fetch",
+    "method": "GET",
+    "path": "/earth-land-points.json",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\Evidence.tsx",
+    "line": 45,
+    "type": "api",
+    "method": "GET",
+    "path": "/api/runs/${runId}/manifest",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\Evidence.tsx",
+    "line": 49,
+    "type": "api",
+    "method": "GET",
+    "path": "/api/runs/${rep.id}/reproducibility",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\Evidence.tsx",
+    "line": 56,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/runs/${runId}/repeat",
+    "options": "{ method: \"POST\" }"
+  },
+  {
+    "file": "frontend\\src\\components\\Evidence.tsx",
+    "line": 73,
+    "type": "template_attr",
+    "method": "GET",
+    "path": "/api/runs/${runId}/evidence.zip",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\Evidence.tsx",
+    "line": 76,
+    "type": "template_attr",
+    "method": "GET",
+    "path": "/api/runs/${runId}/report?format=md",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\Jobs.tsx",
+    "line": 17,
+    "type": "api",
+    "method": "GET",
+    "path": "/api/jobs?limit=40",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\Jobs.tsx",
+    "line": 32,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/jobs",
+    "options": "{ method: \"POST\", body: JSON.stringify({ task, params }) }"
+  },
+  {
+    "file": "frontend\\src\\components\\Jobs.tsx",
+    "line": 76,
+    "type": "api",
+    "method": "GET",
+    "path": "/api/jobs/${jobId}?lines=300",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\Jobs.tsx",
+    "line": 122,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/jobs/${job.id}/cancel",
+    "options": "{ method: \"POST\" }); refresh(); }}"
+  },
+  {
+    "file": "frontend\\src\\components\\Jobs.tsx",
+    "line": 128,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/jobs/${job.id}/retry",
+    "options": "{ method: \"POST\" }); } catch { /* busy */ } refresh(); }}"
+  },
+  {
+    "file": "frontend\\src\\components\\Layout.tsx",
+    "line": 111,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/health",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\MaskEditor.tsx",
+    "line": 108,
+    "type": "fetch",
+    "method": "PUT",
+    "path": "/api/runs/${runId}/mask",
+    "options": "{ method: \"PUT\", body: fd }"
+  },
+  {
+    "file": "frontend\\src\\components\\RunTools.tsx",
+    "line": 10,
+    "type": "template_attr",
+    "method": "GET",
+    "path": "/api/runs/${runId}/report?format=md",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\RunTools.tsx",
+    "line": 13,
+    "type": "template_attr",
+    "method": "GET",
+    "path": "/api/runs/${runId}/report?format=json",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\RunTools.tsx",
+    "line": 28,
+    "type": "api",
+    "method": "GET",
+    "path": "/api/runs/${runId}/reviews",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\RunTools.tsx",
+    "line": 34,
+    "type": "api",
+    "method": "DELETE",
+    "path": "/api/runs/${runId}/reviews/${item}",
+    "options": "{ method: \"DELETE\" }"
+  },
+  {
+    "file": "frontend\\src\\components\\RunTools.tsx",
+    "line": 35,
+    "type": "api",
+    "method": "PUT",
+    "path": "/api/runs/${runId}/reviews/${item}",
+    "options": "{ method: \"PUT\", body: JSON.stringify({ verdict, note }) }"
+  },
+  {
+    "file": "frontend\\src\\components\\Setup.tsx",
+    "line": 20,
+    "type": "api",
+    "method": "GET",
+    "path": "/api/setup",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\Setup.tsx",
+    "line": 27,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/setup/run",
+    "options": "{ method: \"POST\", body: JSON.stringify({ steps, force: true }) }"
+  },
+  {
+    "file": "frontend\\src\\components\\Setup.tsx",
+    "line": 191,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/models/mars/upload",
+    "options": "{ method: \"POST\", body: fd }"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 63,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/missions/${mission}",
+    "options": "[mission]"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 125,
+    "type": "useApi",
+    "method": "GET",
+    "path": "m.dataset.installed ? \"/api/reviews/queue?module=missions&limit=500\" : null",
+    "options": "[m.id, m.model.version]"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 146,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/missions/${m.id}/versions/${encodeURIComponent(vid)}/activate",
+    "options": "{ method: \"POST\" }); reloadCatalog(); onChanged(); }"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 342,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/missions/${m.id}/items?${qs}",
+    "options": "[m.id, q, split, label, channel]"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 408,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/missions/${m.id}/items?q=${encodeURIComponent(itemId)}&limit=20",
+    "options": "[m.id, itemId]"
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 414,
+    "type": "useApi",
+    "method": "GET",
+    "path": "cols.length ? `/api/missions/${m.id}/series?item=${encodeURIComponent(itemId",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 629,
+    "type": "api",
+    "method": "GET",
+    "path": "/api/runs/${runId}",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\MissionWorkspace.tsx",
+    "line": 692,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/missions",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\TelescopeLive.tsx",
+    "line": 49,
+    "type": "api",
+    "method": "GET",
+    "path": "/api/live/${mission}${refresh ? ",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\missions\\TelescopeLive.tsx",
+    "line": 88,
+    "type": "template_attr",
+    "method": "GET",
+    "path": "/api/live/${mission}/sky/${encodeURIComponent(o.id)}?fov=${fov}",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\workbench\\ParamForm.tsx",
+    "line": 93,
+    "type": "template_attr",
+    "method": "GET",
+    "path": "/api/workbench/datasets/${dataset.id}/images/${im.id}/thumb",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\components\\workbench\\Samples.tsx",
+    "line": 36,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/workbench/datasets/${ds.id}/class-profile?param=${encodeURIComponent(param)}",
+    "options": "[param]"
+  },
+  {
+    "file": "frontend\\src\\lib\\api.ts",
+    "line": 18,
+    "type": "api",
+    "method": "GET",
+    "path": "path: string",
+    "options": "init?: RequestInit"
+  },
+  {
+    "file": "frontend\\src\\lib\\api.ts",
+    "line": 21,
+    "type": "fetch",
+    "method": "GET",
+    "path": "path",
+    "options": "{"
+  },
+  {
+    "file": "frontend\\src\\lib\\api.ts",
+    "line": 42,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/runs",
+    "options": "{ method: \"POST\", body: JSON.stringify({ module, input }) }"
+  },
+  {
+    "file": "frontend\\src\\lib\\api.ts",
+    "line": 46,
+    "type": "useApi",
+    "method": "GET",
+    "path": "path: string | null",
+    "options": "deps: unknown[] = []"
+  },
+  {
+    "file": "frontend\\src\\lib\\api.ts",
+    "line": 54,
+    "type": "api",
+    "method": "GET",
+    "path": "path",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\lib\\api.ts",
+    "line": 119,
+    "type": "usePoll",
+    "method": "GET",
+    "path": "path: string",
+    "options": "ms: number, active = true"
+  },
+  {
+    "file": "frontend\\src\\lib\\api.ts",
+    "line": 120,
+    "type": "useApi",
+    "method": "GET",
+    "path": "path",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Datasets.tsx",
+    "line": 61,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/starter",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Datasets.tsx",
+    "line": 127,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/datasets",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Datasets.tsx",
+    "line": 128,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/models",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Datasets.tsx",
+    "line": 138,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/admin/rescan",
+    "options": "{ method: \"POST\" }); await Promise.all([models.reload(), ds.reload()]); } finally { setScanning(false); }"
+  },
+  {
+    "file": "frontend\\src\\pages\\Evaluation.tsx",
+    "line": 117,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/evaluation",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Exoplanet.tsx",
+    "line": 48,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/exoplanet/featured",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Exoplanet.tsx",
+    "line": 85,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/exoplanet/tces?${qs}",
+    "options": "[]"
+  },
+  {
+    "file": "frontend\\src\\pages\\Exoplanet.tsx",
+    "line": 157,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/exoplanet/datasets",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Exoplanet.tsx",
+    "line": 185,
+    "type": "api",
+    "method": "DELETE",
+    "path": "/api/exoplanet/datasets/${d.id}",
+    "options": "{ method: \"DELETE\" }); list.reload(); }}"
+  },
+  {
+    "file": "frontend\\src\\pages\\Exoplanet.tsx",
+    "line": 202,
+    "type": "useApi",
+    "method": "GET",
+    "path": "tab === \"sky\" ? \"/api/exoplanet/sky\" : null",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Mars.tsx",
+    "line": 117,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/mars/samples",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Mars.tsx",
+    "line": 140,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/mars/uploads",
+    "options": "{ method: \"POST\", body: fd }"
+  },
+  {
+    "file": "frontend\\src\\pages\\Mars.tsx",
+    "line": 189,
+    "type": "template_attr",
+    "method": "GET",
+    "path": "/api/mars/samples/${s.id}/thumb",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\MissionReplay.tsx",
+    "line": 280,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/spaceweather/events",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\MissionReplay.tsx",
+    "line": 281,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/spaceweather/status",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\MissionReplay.tsx",
+    "line": 282,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/spaceweather/replays?event_id=${eventId}",
+    "options": "[eventId]"
+  },
+  {
+    "file": "frontend\\src\\pages\\MissionReplay.tsx",
+    "line": 284,
+    "type": "useApi",
+    "method": "GET",
+    "path": "ev ? `/api/spaceweather/quality?start=${ev.start}&end=${ev.end}` : null",
+    "options": "[ev?.id]"
+  },
+  {
+    "file": "frontend\\src\\pages\\MissionReplay.tsx",
+    "line": 307,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/runs",
+    "options": "{ method: \"POST\", body: JSON.stringify({ module: \"spaceweather\", input: { event_id: eventId } }) }"
+  },
+  {
+    "file": "frontend\\src\\pages\\MissionReplay.tsx",
+    "line": 409,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/spaceweather/import",
+    "options": "{ method: \"POST\", body: fd }"
+  },
+  {
+    "file": "frontend\\src\\pages\\Overview.tsx",
+    "line": 56,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/telemetry/preview",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Overview.tsx",
+    "line": 74,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/spaceweather/replays?event_id=2024-05&limit=5",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Overview.tsx",
+    "line": 75,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/starter",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Overview.tsx",
+    "line": 115,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/overview",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 48,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/runs?module=mars&limit=40",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 49,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/runs?module=workbench&limit=60",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 119,
+    "type": "template_attr",
+    "method": "GET",
+    "path": "/api/runs/${r.id}/files/input.png",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 160,
+    "type": "api",
+    "method": "PUT",
+    "path": "/api/runs/${it.run_id}/reviews/${encodeURIComponent(it.item)}",
+    "options": "{ method: \"PUT\", body: JSON.stringify({ verdict: v, note }) }"
+  },
+  {
+    "file": "frontend\\src\\pages\\ReviewStudio.tsx",
+    "line": 236,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/reviews/evidence?run_id=${encodeURIComponent(it.run_id)}&item=${encodeURIComponent(it.item)}",
+    "options": "[it.run_id, it.item]"
+  },
+  {
+    "file": "frontend\\src\\pages\\Runs.tsx",
+    "line": 11,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/runs?limit=200${module !== ",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Runs.tsx",
+    "line": 21,
+    "type": "api",
+    "method": "DELETE",
+    "path": "/api/runs/${id}",
+    "options": "{ method: \"DELETE\" }"
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 93,
+    "type": "useApi",
+    "method": "GET",
+    "path": "model ? `/api/spaceweather/forecast?start=${encodeURIComponent(start",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 136,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/spaceweather/status",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 137,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/spaceweather/events",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 138,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/evaluation",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 151,
+    "type": "useApi",
+    "method": "GET",
+    "path": "win ? `/api/spaceweather/series?start=${encodeURIComponent(win.start",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 159,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/spaceweather/annotations",
+    "options": "{ method: \"POST\", body: JSON.stringify({ start: win.start, end: win.end, label: ann.label, note: ann.note }) }"
+  },
+  {
+    "file": "frontend\\src\\pages\\SpaceWeather.tsx",
+    "line": 213,
+    "type": "api",
+    "method": "DELETE",
+    "path": "/api/spaceweather/annotations/${a.id}",
+    "options": "{ method: \"DELETE\" }); ev.reload(); }}"
+  },
+  {
+    "file": "frontend\\src\\pages\\Telemetry.tsx",
+    "line": 145,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/telemetry/channels",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\TelemetryHub.tsx",
+    "line": 31,
+    "type": "api",
+    "method": "GET",
+    "path": "/api/runs/${runId}",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Traverse.tsx",
+    "line": 74,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/mars/traverse",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Traverse.tsx",
+    "line": 89,
+    "type": "useApi",
+    "method": "GET",
+    "path": "ov.data?.status.downloaded ? `/api/mars/traverse/sections?${qs}` : null",
+    "options": "[qs, ov.data?.status.downloaded]"
+  },
+  {
+    "file": "frontend\\src\\pages\\Traverse.tsx",
+    "line": 109,
+    "type": "api",
+    "method": "GET",
+    "path": "/api/mars/traverse/waypoint?sol=${p.sol}&site=${p.site}&drive=${p.drive}",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Traverse.tsx",
+    "line": 152,
+    "type": "api",
+    "method": "POST",
+    "path": "/api/mars/traverse/download",
+    "options": "{ method: \"POST\" }); ov.reload(); }"
+  },
+  {
+    "file": "frontend\\src\\pages\\Traverse.tsx",
+    "line": 239,
+    "type": "template_attr",
+    "method": "GET",
+    "path": "/api/mars/traverse/raw/${img.imageid}",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Traverse.tsx",
+    "line": 285,
+    "type": "template_attr",
+    "method": "GET",
+    "path": "/api/mars/traverse/raw/${zoom}?thumb=false",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Welcome.tsx",
+    "line": 91,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/catalog",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Welcome.tsx",
+    "line": 92,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/overview",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Welcome.tsx",
+    "line": 93,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/live/webb",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Welcome.tsx",
+    "line": 94,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/health",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 79,
+    "type": "template_attr",
+    "method": "GET",
+    "path": "/api/workbench/datasets/${ds.id}/images/${im.id}/thumb",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 209,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/runs?module=workbench&limit=200",
+    "options": "[refreshKey]"
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 251,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/workbench/datasets/${id}",
+    "options": "[id]"
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 252,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/workbench/analyses",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 351,
+    "type": "useApi",
+    "method": "GET",
+    "path": "/api/workbench/datasets",
+    "options": ""
+  },
+  {
+    "file": "frontend\\src\\pages\\Workbench.tsx",
+    "line": 409,
+    "type": "api",
+    "method": "DELETE",
+    "path": "d.kind === \"lightcurve\" ? `/api/exoplanet/datasets/${d.id}` : `/api/workbench/datasets/${d.id}",
+    "options": "{ method: \"DELETE\" }"
+  }
+]

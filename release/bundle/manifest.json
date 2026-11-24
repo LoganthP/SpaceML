@@ -1,0 +1,208 @@
+{
+  "schema": 1,
+  "bundle_version": "2026.11.22-0714",
+  "created_at": "2026-11-22T07:14:16+00:00",
+  "datasets": [
+    {
+      "id": "traverse",
+      "title": "Curiosity traverse waypoints (+ cached Navcam image lists)",
+      "module": "mars",
+      "source": "NASA/JPL MMGIS mission map (MSL_waypoints) and raw-image API",
+      "source_url": "https://mars.nasa.gov/maps/location/?mission=Curiosity",
+      "attribution": "NASA/JPL-Caltech",
+      "terms": "NASA/JPL public imagery and data",
+      "redistribution": "yes",
+      "details": {
+        "waypoints": 1389,
+        "sol_range": [
+          3,
+          5073
+        ]
+      },
+      "file_count": 2,
+      "bytes": 665421,
+      "files": [
+        {
+          "path": "mars/traverse/MSL_waypoints.json",
+          "bytes": 665124,
+          "sha256": "5a32324f4b8ba22ebdfac50a503e195f47ccdc876ad4c15b19e29dc7cef15a09"
+        },
+        {
+          "path": "mars/traverse/MSL_waypoints.json.source.json",
+          "bytes": 297,
+          "sha256": "b760b6730b78bf4661b57918d30032aed61c80da676c6afdfc24d8a24ee8837e"
+        }
+      ]
+    },
+    {
+      "id": "flood",
+      "title": "Before/after satellite scenes for change detection (Lake Mead, Indus flood)",
+      "module": "workbench",
+      "source": "NASA GIBS MODIS Terra corrected reflectance (WMS)",
+      "source_url": "https://gibs.earthdata.nasa.gov",
+      "attribution": "Imagery: NASA Worldview / GIBS, part of NASA EOSDIS.",
+      "terms": "NASA EOSDIS imagery, no restrictions; acknowledge GIBS",
+      "redistribution": "yes",
+      "details": {
+        "scenes": [
+          "indus-flood.zip",
+          "lake-mead.zip"
+        ]
+      },
+      "file_count": 2,
+      "bytes": 4432822,
+      "files": [
+        {
+          "path": "workbench_samples/indus-flood.zip",
+          "bytes": 3262269,
+          "sha256": "8d198b96fdeedc9ef0afa5c466ecfdb8de0247b2b1fa22fe0ad87297072c0d77"
+        },
+        {
+          "path": "workbench_samples/lake-mead.zip",
+          "bytes": 1170553,
+          "sha256": "7aeb241871bd5e99838eab79521661fb2340ca8ed0fbd0ac1722b49a673d0d27"
+        }
+      ]
+    },
+    {
+      "id": "mission-webb",
+      "title": "James Webb Space Telescope - prepared telemetry",
+      "module": "missions",
+      "source": "JWST FGS guider products (*_gs-fg_*_cal.fits, *_gs-track_*_cal.fits) from MAST",
+      "source_url": "https://jwst-docs.stsci.edu/jwst-observatory-characteristics/jwst-pointing-performance/jwst-fine-guide-stability",
+      "attribution": "STScI / MAST",
+      "terms": "public MAST data",
+      "redistribution": "yes (public archive data; cite MAST)",
+      "optional": true,
+      "details": {
+        "source": "JWST FGS guider products (MAST)",
+        "source_version": "as downloaded",
+        "doi": null,
+        "scope": "10 visits from 10 guider files",
+        "counts": {
+          "visits": 10,
+          "files": 10,
+          "skipped": 0
+        },
+        "date_range": [
+          "2022-06-11T16:09:26.999997+00:00",
+          "2022-06-30T23:58:18+00:00"
+        ],
+        "time_basis": "UTC derived from each file's end-of-data stamp and the POINTING 'Time' column (ms)",
+        "source_files": {
+          "jw02732001001_gs-fg_2022162160927_cal.fits": {
+            "sha256": "45aa6cead7783ddb17adf43d4651d4c32782cb87780c659b66c79a85eb86aafe",
+            "bytes": 5702400
+          },
+          "jw02732001002_gs-fg_2022162182251_cal.fits": {
+            "sha256": "903af8aaf0a1c3ea3a3e1cc3d22e0336fb38cf9883b380ae945337a858c2ceb5",
+            "bytes": 9037440
+          },
+          "jw02732001003_gs-fg_2022162194014_cal.fits": {
+            "sha256": "bd77ad21deef644714446a101a815031e9cee10562203b2ef2c5ac1c52e3a132",
+            "bytes": 5685120
+          },
+          "jw02732001004_gs-fg_2022162214257_cal.fits": {
+            "sha256": "029a3dfecd1f1dce5c89cd7697ec2614df2e575d4c2861851da823ae58e543f2",
+            "bytes": 5803200
+          },
+          "jw02732002001_gs-fg_2022163180758_cal.fits": {
+            "sha256": "663da9245334f3f483053b79986020633d8259e62c43eb6ccd0fb16796580611",
+            "bytes": 3574080
+          },
+          "jw02732002002_gs-fg_2022163212047_cal.fits": {
+            "sha256": "9408b00b49e4ca614060de44bd2a92e44dc2a6d9c28f92a2c6bd1fbfde1df1ea",
+            "bytes": 3605760
+          },
+          "jw02732003001_gs-fg_2022166161647_cal.fits": {
+            "sha256": "4f3c6b7fcc0e96e6ed589046e4d6a68261bddf25e4dbeec3c0301239b4f0333e",
+            "bytes": 4135680
+          },
+          "jw02732004001_gs-fg_2022171100414_cal.fits": {
+            "sha256": "06407bbf3a2e8f5079f4cea84ffd43aac97bfe8bb94e422a5f30c452d1183fb9",
+            "bytes": 4242240
+          },
+          "jw02732005001_gs-fg_2022171114054_cal.fits": {
+            "sha256": "ec0a82e731b478dca8b2c86d24bdac77f5c4a70a0283645172ff4220e4034537",
+            "bytes": 4708800
+          },
+          "jw02732006001_gs-fg_2022181235818_cal.fits": {
+            "sha256": "7d8e87d81cf33c0607db192cb8179d44cb5aadf41c973efb2b1287380b4915b9",
+            "bytes": 3058560
+          }
+        },
+        "split": null
+      },
+      "file_count": 13,
+      "bytes": 469301,
+      "files": [
+        {
+          "path": "missions/webb/events.json",
+          "bytes": 2,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        {
+          "path": "missions/webb/items.json",
+          "bytes": 9943,
+          "sha256": "5adb3137c8c726ff21b043da4bfad33d606748168ac8fccd7baf2e0b471fa877"
+        },
+        {
+          "path": "missions/webb/manifest.json",
+          "bytes": 2956,
+          "sha256": "fa1d57d2ecfc15a177127ad40d3ee83150e45b13f8d885974d6882166678d96d"
+        },
+        {
+          "path": "missions/webb/series/jw02732001001.npz",
+          "bytes": 47032,
+          "sha256": "7445dff6077500cfaa7bfbd184955d2ebbf9fb42e35d4fbdd66ec5d64b227331"
+        },
+        {
+          "path": "missions/webb/series/jw02732001002.npz",
+          "bytes": 77238,
+          "sha256": "2bd7853cd10669a8c9e1119c5950f7eae78fa30753ca6c73d16e34c0b9a59a17"
+        },
+        {
+          "path": "missions/webb/series/jw02732001003.npz",
+          "bytes": 46673,
+          "sha256": "9265a31b8d26b45513fe509f665c42c574ff71a42a103d9ba6b2621f4b78b905"
+        },
+        {
+          "path": "missions/webb/series/jw02732001004.npz",
+          "bytes": 49604,
+          "sha256": "21cdd6dc67833b1c800933dac5d5d159f018bc1343015f23d84d3684674c6b6d"
+        },
+        {
+          "path": "missions/webb/series/jw02732002001.npz",
+          "bytes": 34257,
+          "sha256": "a44cd77da6e9c6ebe9ec4a9a809217d69c77d5236b6e7db0029d8e04e2479542"
+        },
+        {
+          "path": "missions/webb/series/jw02732002002.npz",
+          "bytes": 35433,
+          "sha256": "776a952c1e314efc6c18eda46f8ab392aff716c36041abf9f016ef21c97d5f2f"
+        },
+        {
+          "path": "missions/webb/series/jw02732003001.npz",
+          "bytes": 41571,
+          "sha256": "c7fa4a23bd50b2b35cee84e07d1a7ae3bb31194e85f22c439dfa9e5f6468d73a"
+        },
+        {
+          "path": "missions/webb/series/jw02732004001.npz",
+          "bytes": 46365,
+          "sha256": "5e4533b17d5ae7a09408f6fcb079375e6424fc275234779289b950f2f2c9d0bc"
+        },
+        {
+          "path": "missions/webb/series/jw02732005001.npz",
+          "bytes": 49610,
+          "sha256": "8b797c83ef74e5665b3e1d1b2a18cb0a4e9f30c2ef422af4e66d3711bd328c8d"
+        },
+        {
+          "path": "missions/webb/series/jw02732006001.npz",
+          "bytes": 28617,
+          "sha256": "9ed6f4269cbba7401f58cb75018518fd83d1cfa18266fcf3650a458304612f19"
+        }
+      ]
+    }
+  ],
+  "total_bytes": 5567544
+}

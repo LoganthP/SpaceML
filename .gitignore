@@ -1,0 +1,17 @@
+# datasets and runtime state (models/ is versioned on purpose; add large checkpoints to LFS if needed)
+data/
+storage/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+node_modules/
+frontend/dist/
+.DS_Store
+
+# local configuration and secrets (SATNOGS_TOKEN) - never commit or package
+.env
+.env.*
+!.env.example
+storage/secrets/

@@ -1,0 +1,17 @@
+# Offline / audit override: the app cannot reach the internet. Port: set SMC_PORT=8081 (in .env or the shell).
+#   docker compose -f docker-compose.yml -f docker-compose.offline.yml up -d
+# Every outbound HTTP(S) request from Python (urllib, requests, httpx, huggingface_hub, lightkurve/astroquery)
+# goes to a dead proxy, and the Hugging Face libraries run in offline mode. Requests to localhost still work.
+# For a physical air-gap test, also disconnect the machine from the network - nothing else changes.
+services:
+  app:
+    environment:
+      HTTP_PROXY: http://127.0.0.1:9
+      HTTPS_PROXY: http://127.0.0.1:9
+      http_proxy: http://127.0.0.1:9
+      https_proxy: http://127.0.0.1:9
+      NO_PROXY: localhost,127.0.0.1
+      no_proxy: localhost,127.0.0.1
+      HF_HUB_OFFLINE: "1"
+      HF_DATASETS_OFFLINE: "1"
+      SPACEML_AUTOSETUP: "off"

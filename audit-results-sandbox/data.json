@@ -1,0 +1,306 @@
+{
+  "rows": [
+    {
+      "module": "telemetry",
+      "ok": true,
+      "counts": {
+        "channels": 81,
+        "by_spacecraft": {
+          "SMAP": 54,
+          "MSL": 27
+        },
+        "anomaly_sequences": 105,
+        "channels_without_arrays": []
+      },
+      "splits": "per channel: train array / test array (labels on test)",
+      "problems": [],
+      "scope": "82 SMAP/MSL channels in the NASA release (81 used by this project), 105 labeled anomaly sequences",
+      "subset": false,
+      "seconds": 0.4
+    },
+    {
+      "module": "kepler",
+      "ok": true,
+      "counts": {
+        "catalog_labeled_tces": 207,
+        "stars_with_views": 140,
+        "tces_with_views": 207,
+        "planet_candidates": 71,
+        "false_positives": 136,
+        "raw_lightcurve_files": 0,
+        "targets_manifest": true
+      },
+      "splits": {
+        "train_stars": 48,
+        "val_stars": 16,
+        "test_stars": 16,
+        "overlap": 0
+      },
+      "problems": [],
+      "scope": "release default: 1000 stars \u00d7 8 quarters (DR24 labeled TCEs on those stars); full DR24 has ~15k labeled TCEs",
+      "subset": true,
+      "seconds": 3.1
+    },
+    {
+      "module": "ai4mars",
+      "ok": true,
+      "counts": {
+        "splits": {
+          "test_min3": 273,
+          "train": 600
+        },
+        "expert_samples": 36,
+        "image_sizes": [
+          [
+            256,
+            256
+          ]
+        ],
+        "class_ids_present": [
+          0,
+          1,
+          2,
+          3,
+          255
+        ],
+        "build_stats": {
+          "test_min3": {
+            "rows_read": 273,
+            "kept": 273,
+            "skipped": {},
+            "requested": null,
+            "pairs": 273
+          },
+          "train": {
+            "rows_read": 600,
+            "kept": 600,
+            "skipped": {},
+            "requested": null,
+            "pairs": 600
+          }
+        }
+      },
+      "field_mapping": "image \u2190 image; label \u2190 label_mask (rover_mask / range_mask \u2192 255 ignore); rows with has_labels = False skipped",
+      "splits": {
+        "train_test_overlap": 0
+      },
+      "problems": [],
+      "source": {
+        "dataset": "hassanjbara/AI4MARS",
+        "revision": null
+      },
+      "scope": "release default: 3000 train pairs + all 322 test_min3 images; full AI4Mars NAVCAM train has ~16k labeled images",
+      "subset": true,
+      "seconds": 2.9
+    },
+    {
+      "module": "omni2",
+      "ok": true,
+      "counts": {
+        "years": [
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2024
+        ],
+        "coverage": {
+          "2010": {
+            "hours": 8760,
+            "dst_valid": 1.0
+          },
+          "2011": {
+            "hours": 8760,
+            "dst_valid": 1.0
+          },
+          "2012": {
+            "hours": 8784,
+            "dst_valid": 1.0
+          },
+          "2013": {
+            "hours": 8760,
+            "dst_valid": 1.0
+          },
+          "2014": {
+            "hours": 8760,
+            "dst_valid": 1.0
+          },
+          "2015": {
+            "hours": 8760,
+            "dst_valid": 1.0
+          },
+          "2016": {
+            "hours": 8784,
+            "dst_valid": 1.0
+          },
+          "2017": {
+            "hours": 8760,
+            "dst_valid": 1.0
+          },
+          "2024": {
+            "hours": 8784,
+            "dst_valid": 1.0
+          }
+        }
+      },
+      "splits": "train 2010-2016 \u00b7 test 2017 \u00b7 replay May 2024",
+      "problems": [],
+      "scope": "release default: OMNI2 hourly 2003, 2010-2017, 2024",
+      "subset": false,
+      "seconds": 0.1
+    },
+    {
+      "module": "traverse",
+      "ok": true,
+      "counts": {
+        "waypoints": 400,
+        "sols": [
+          3,
+          3993
+        ],
+        "sections": 11
+      },
+      "splits": "n/a (analysis only)",
+      "problems": [],
+      "scope": "Curiosity waypoints (full MSL traverse, ~4k+ waypoints)",
+      "seconds": 0.0
+    },
+    {
+      "module": "flood",
+      "ok": true,
+      "counts": {
+        "scenes": {
+          "lake-test": 2
+        }
+      },
+      "splits": "n/a (analysis only)",
+      "problems": [],
+      "scope": "2 GIBS before/after scenes (lake-mead, indus-flood)",
+      "subset": true,
+      "seconds": 0.0
+    }
+  ],
+  "release": {
+    "present": true,
+    "bundle_version": "2026.11.21-1307",
+    "total_bytes": 325888767,
+    "installed": {
+      "bundle_version": "2026.11.21-1307",
+      "installed_at": "2026-11-21T15:29:37+00:00",
+      "copied": 388,
+      "already_ok": 176,
+      "problems": [],
+      "n_problems": 0,
+      "complete": true,
+      "datasets": [
+        "telemetry",
+        "kepler",
+        "ai4mars",
+        "omni2",
+        "traverse",
+        "flood",
+        "models"
+      ]
+    }
+  },
+  "manifest": {
+    "telemetry": {
+      "files": 163,
+      "bytes": 172890932,
+      "details": {
+        "channels": 81,
+        "labeled_anomalies": 105,
+        "spacecraft": [
+          "MSL",
+          "SMAP"
+        ]
+      }
+    },
+    "kepler": {
+      "files": 209,
+      "bytes": 10458837,
+      "details": {
+        "tces_in_catalog": 207,
+        "tces_with_views": 207,
+        "stars_with_views": 140,
+        "labels": "PC vs AFP/NTP (av_training_set)",
+        "quarters_per_star": null,
+        "targets_file": "exoplanet/targets.json"
+      }
+    },
+    "ai4mars": {
+      "files": 126,
+      "bytes": 1009817,
+      "details": {
+        "dataset": "hassanjbara/AI4MARS",
+        "revision": null,
+        "image_size": 128,
+        "splits": {
+          "test_min3": 16,
+          "train": 30
+        },
+        "skipped": {
+          "test_min3": {},
+          "train": {
+            "unlabeled": 30
+          }
+        }
+      }
+    },
+    "omni2": {
+      "files": 18,
+      "bytes": 1957844,
+      "details": {
+        "years": [
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2024
+        ],
+        "date_range": "2010-01-01 .. 2024-12-31",
+        "cadence": "hourly"
+      }
+    },
+    "traverse": {
+      "files": 15,
+      "bytes": 1114651,
+      "details": {
+        "waypoints": 400,
+        "sol_range": [
+          3,
+          3993
+        ]
+      }
+    },
+    "flood": {
+      "files": 1,
+      "bytes": 584,
+      "details": {
+        "scenes": [
+          "lake-test.zip"
+        ]
+      }
+    },
+    "models": {
+      "files": 32,
+      "bytes": 138456102,
+      "details": {
+        "versions": [
+          "telemetry/v1-sandbox",
+          "exoplanet/v20261121-052104",
+          "mars/vqa-cpu",
+          "spaceweather/v20261121-052435"
+        ]
+      }
+    }
+  }
+}

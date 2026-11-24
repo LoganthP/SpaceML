@@ -1,0 +1,21 @@
+{
+  "id": "ref-de7ff02d36",
+  "module": "telemetry",
+  "input_ref": {
+    "chan_id": "P-1"
+  },
+  "input_label": "P-1 \u00b7 SMAP",
+  "model_version": "v1-sandbox",
+  "summary": {
+    "headline": "0 intervals flagged for review",
+    "flags": 0,
+    "tp": 0,
+    "fp": 0,
+    "fn": 3,
+    "spacecraft": "SMAP"
+  },
+  "created_at": "2026-11-20T13:04:46+00:00",
+  "started_at": "2026-11-20T13:04:46+00:00",
+  "finished_at": "2026-11-20T13:04:50+00:00",
+  "duration_ms": 4061
+}

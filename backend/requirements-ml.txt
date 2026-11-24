@@ -1,0 +1,8 @@
+# Deep-learning part (installed after CPU torch in the image; locally via requirements.txt)
+# torch + torchvision must be a MATCHED pair of the same build (CPU or CUDA). The Docker image installs both
+# from the PyTorch CPU index and locks them with a constraints file; a PyPI torchvision next to a CPU torch
+# fails with "operator torchvision::nms does not exist".
+torch==2.6.0
+torchvision==0.21.0
+segmentation-models-pytorch>=0.3.4
+datasets>=2.20         # AI4Mars from Hugging Face
