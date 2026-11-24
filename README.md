@@ -659,19 +659,3 @@ docker compose up -d --build app   # never add -v: volumes hold your data, model
 ```
 
 <img src="assets/divider.svg" width="100%" alt=""/>
-
-## 🙏 Acknowledgements
-
-Data from **NASA** (JPL, GSFC SPDF / OMNIWeb, Exoplanet Archive, GIBS, MMGIS), **ESA** and KP Labs (OPS-SAT-AD), **STScI / MAST** and Space Telescope Live, the **AI4Mars** team, and **CDS** (hips2fits). Telemetry anomaly methodology from Hundman et al., [telemanom](https://github.com/khundman/telemanom). Each dataset keeps its own licence and attribution, which are recorded in the release manifest.
-
-<div align="center">
-
-<br/>
-
-**Built by [Loganth P](https://github.com/LoganthP)** &nbsp;·&nbsp; [LinkedIn](https://www.linkedin.com/in/loganth-p-158667280/)
-
-<sub>If this project helped you, consider giving it a ⭐</sub>
-
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:22d3ee,50:a78bfa,100:fb923c&height=110&section=footer" width="100%" alt=""/>
-
-</div>
