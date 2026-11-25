@@ -1,0 +1,9 @@
+{
+  "simulated_health": true,
+  "live_training_verified": false,
+  "setup_blocks_inference": true,
+  "anonymous_ready_requires_sign_in": true,
+  "authenticated_ready_enables_inference": true,
+  "startup_error_recovers_without_reload": true,
+  "existing_model_not_misreported_as_missing": true
+}

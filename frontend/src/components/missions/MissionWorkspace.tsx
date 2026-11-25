@@ -437,6 +437,7 @@ function Viewer({ m, itemId, onAnnounce, runId, onRun }: { m: MissionStatus; ite
   }
   const res = run.run?.status === "succeeded" ? (run.run.result as ScoreResult | undefined) ?? null : null;
   const canScore = canRun && (m.family !== "segments" || m.model.ready);
+  const blockedReason = !canRun ? caps?.hint ?? "Compute or operator sign-in is required" : "Train a model first";
   void runId;
   return (
     <Glass className="space-y-3 p-4">
@@ -446,12 +447,12 @@ function Viewer({ m, itemId, onAnnounce, runId, onRun }: { m: MissionStatus; ite
         {item?.published_label && <span className={`chip ${item.anomaly ? "bg-rose-100 text-rose-800" : "bg-emerald-100 text-emerald-800"}`}>published label: {item.anomaly ? "anomaly" : "nominal"} ({item.published_label})</span>}
         {item?.guiding_modes && <span className="chip bg-sky-100 text-sky-900">guiding: {item.guiding_modes.join(", ")}</span>}
         <button className="btn-primary ml-auto px-3 py-1.5 text-xs" onClick={score} disabled={busy || !canScore || run.run?.status === "running" || run.run?.status === "queued"}
-          title={frozenUnavailable ? READ_ONLY_HINT : canScore ? undefined : "Train a model first"}>
+          title={frozenUnavailable ? READ_ONLY_HINT : canScore ? undefined : blockedReason}>
           {busy || run.run?.status === "running" || run.run?.status === "queued" ? <Spinner className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" aria-hidden="true" />}
           {frozenUnavailable ? READ_ONLY_HINT : m.family === "segments" ? "Predict this segment" : `Score this ${m.item_label}`}
         </button>
       </div>
-      {!canScore && <p className="text-xs text-ink-soft">Prediction needs a trained model - press <b>Quick train</b> above (takes seconds).</p>}
+      {!canScore && <p className="text-xs text-ink-soft">{!canRun ? blockedReason : <>Prediction needs a trained model - press <b>Quick train</b> above.</>}</p>}
       {allCols.length > 1 && (
         <fieldset className="flex flex-wrap gap-x-3 gap-y-1 text-xs">
           <legend className="mb-1 text-xs font-semibold">Channels to plot</legend>

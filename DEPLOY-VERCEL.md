@@ -1,5 +1,10 @@
 # Space ML Mission Control — Vercel only
 
+For the current disabled deployment and detailed PowerShell/dashboard steps, use
+[VERCEL-SANDBOX-SETUP.md](VERCEL-SANDBOX-SETUP.md). It covers credentials,
+Drive sizing, deployment protection, redeployment, operator sign-in and a real
+OPS-SAT train/persist/restart acceptance check.
+
 The active configuration runs the frontend, API gateway, scientific backend,
 training worker and persistent storage on Vercel. No external backend URL,
 Docker host or hosted database is required. Existing local/Docker commands remain
@@ -43,14 +48,15 @@ selector. Their original files and source adapters are retained.
    vercel link
    vercel env pull .env.local
    sandbox login
-   sandbox drives get-or-create spaceml-data --region iad1
+   vercel drives get-or-create spaceml-data --region iad1 --max-size 10GiB
    vercel --prod
    ```
 
    Install the optional Sandbox CLI if `sandbox` is unavailable, following the
-   [official Drive guide](https://vercel.com/kb/guide/vercel-drives). Select the
+   [current Drive CLI guide](https://vercel.com/docs/drives/cli-reference). Select the
    same team and `spaceml` project in both CLIs. The SDK can also create the named
-   Drive on the first request, so manual creation is optional. An existing
+   Drive on the first request, but the default 1 GB on Hobby/trial is too small
+   for this stack: explicitly allocate adequate storage first. An existing
    Drive's region must match `SMC_REGION` (default `iad1`). Keep Preview's Drive
    separate by leaving `SMC_DRIVE_NAME` unset there. Production OIDC is automatic;
    `.env.local` is for local testing and must not be committed.
@@ -125,7 +131,7 @@ another Drive and does not migrate files.
 
 Vercel Sandbox and Drive usage consumes account quotas and may be billed. Sandbox
 and Drive capacity must accommodate dependencies as well as datasets. The
-current Hobby default of 1 GiB is insufficient for this Python training stack;
+current Hobby/trial default of 1 GB is insufficient for this Python training stack;
 check your plan and Drive size before installing large datasets. The app never
 represents a placeholder or filesystem estimate as remaining Drive quota.
 Session duration/capacity depend on the plan. The default session is 45 minutes. Set
@@ -151,8 +157,9 @@ restart behavior must be checked after connecting your Vercel account.
 
 Optional settings: `SMC_REGION=iad1`, `SMC_SANDBOX_SECONDS=2700`,
 `SMC_LIVE_MAX_AGE=120`, `SMC_SOURCE_ORIGIN` (explicit HTTPS source deployment
-origin). Protected deployment asset URLs need `SMC_DEPLOYMENT_BYPASS`, or a public
-production source origin. Keep these values backend-only and correctly scoped.
+origin). Normally leave the source origin unset to use this exact deployment.
+Protected deployment assets use `VERCEL_AUTOMATION_BYPASS_SECRET` automatically,
+or the explicit `SMC_DEPLOYMENT_BYPASS` override. Keep these values backend-only.
 For local SDK testing, use `vercel link && vercel env pull`. If OIDC is unavailable,
 the SDK supports backend-only `VERCEL_TOKEN`, `VERCEL_PROJECT_ID`, `VERCEL_TEAM_ID`;
 never commit or paste them into source.
@@ -206,8 +213,10 @@ inside the ZIP. No original archive is deleted or replaced.
 held-out metrics. Actual published weights/data are in `release/mission-results`.
 `persistent-workflow-validation.json` reports the prior local process restart
 check, not a cloud Sandbox/Drive check.
+`readiness-ui-validation.json` records simulated setup/sign-in/startup recovery
+transitions against the real frontend; it does not represent live cloud inference.
 
-Local validation for this revision: 35 Vercel/fallback/gateway/security/archive
+Local validation for this revision: 48 Vercel/fallback/gateway/security/archive
 tests and 16 local mission/catalog/job/artifact/recovery tests passed. TypeScript
 and the Vite production build passed. All 15 pages passed the browser audit with
 zero console, HTTP, click or overflow errors. The authenticated local OPS-SAT

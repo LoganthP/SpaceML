@@ -101,6 +101,15 @@ def test_compute_is_not_advertised_until_ready(gateway, monkeypatch):
     assert client.post("/api/jobs", json={}).status_code == 409
 
 
+def test_source_archive_uses_exact_deployment_not_production_alias(gateway, monkeypatch):
+    module, _ = gateway
+    monkeypatch.delenv("SMC_SOURCE_ORIGIN", raising=False)
+    monkeypatch.setenv("VERCEL_ENV", "production")
+    monkeypatch.setenv("VERCEL_URL", "current-revision.vercel.app")
+    monkeypatch.setenv("VERCEL_PROJECT_PRODUCTION_URL", "old-alias.vercel.app")
+    assert module.source_origin() == "https://current-revision.vercel.app"
+
+
 @pytest.mark.parametrize("writable,expected", [(False, "storage_error"), (True, "ready")])
 def test_runtime_requires_worker_drive_write_proof(gateway, monkeypatch, tmp_path, writable, expected):
     import asyncio
@@ -146,6 +155,7 @@ def test_sdk_creates_one_project_owned_drive_and_persistent_runtime(gateway, mon
     module, _ = gateway
     monkeypatch.setenv("VERCEL_ENV", "production")
     monkeypatch.setenv("VERCEL_URL", "space.example.vercel.app")
+    monkeypatch.setenv("VERCEL_AUTOMATION_BYPASS_SECRET", "test-automation-bypass")
     if drive_name:
         monkeypatch.setenv("SMC_DRIVE_NAME", drive_name)
     else:
@@ -184,3 +194,4 @@ def test_sdk_creates_one_project_owned_drive_and_persistent_runtime(gateway, mon
     command = calls[-1]
     assert "a" * 48 not in str(command[1])
     assert command[2]["env"]["SMC_INTERNAL_TOKEN"] == "a" * 48
+    assert command[2]["env"]["SMC_DEPLOYMENT_BYPASS"] == "test-automation-bypass"

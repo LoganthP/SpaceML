@@ -11,7 +11,41 @@ import signal
 import subprocess
 import tarfile
 import time
+import urllib.error
 import urllib.request
+from urllib.parse import urlsplit
+
+
+class SourceRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, request, fp, code, msg, headers, newurl):
+        old, new = urlsplit(request.full_url), urlsplit(newurl)
+        if (old.scheme, old.netloc) != (new.scheme, new.netloc):
+            raise RuntimeError("Runtime source redirected outside the deployment. Configure the deployment-protection automation bypass before starting Sandbox.")
+        return super().redirect_request(request, fp, code, msg, headers, newurl)
+
+
+def download_source(url, archive, revision):
+    headers = {"x-smc-internal-token": os.environ["SMC_INTERNAL_TOKEN"]}
+    if os.environ.get("SMC_DEPLOYMENT_BYPASS"):
+        headers["x-vercel-protection-bypass"] = os.environ["SMC_DEPLOYMENT_BYPASS"]
+    try:
+        opener = urllib.request.build_opener(SourceRedirect())
+        with opener.open(urllib.request.Request(url, headers=headers), timeout=120) as response:
+            if "text/html" in response.headers.get("Content-Type", "").lower():
+                raise RuntimeError("Runtime source returned a login/HTML page. Set SMC_DEPLOYMENT_BYPASS for protected Vercel deployments, then redeploy.")
+            with archive.open("wb") as output:
+                digest = hashlib.sha256()
+                while block := response.read(1 << 20):
+                    digest.update(block)
+                    output.write(block)
+    except urllib.error.HTTPError as error:
+        if error.code in (401, 403):
+            raise RuntimeError(f"Runtime source denied (HTTP {error.code}). Verify the shared SMC_INTERNAL_TOKEN and SMC_DEPLOYMENT_BYPASS for deployment protection.") from None
+        if error.code == 404:
+            raise RuntimeError("Runtime source archive not found. Unset stale SMC_SOURCE_ORIGIN and redeploy both services together.") from None
+        raise
+    if digest.hexdigest() != revision:
+        raise ValueError("Training source checksum failed")
 
 
 def main():
@@ -62,16 +96,7 @@ def main():
         if not (source / ".complete").is_file():
             source.mkdir(parents=True, exist_ok=True)
             archive = root / (revision + ".tar.gz")
-            headers = {"x-smc-internal-token": os.environ["SMC_INTERNAL_TOKEN"]}
-            if os.environ.get("SMC_DEPLOYMENT_BYPASS"):
-                headers["x-vercel-protection-bypass"] = os.environ["SMC_DEPLOYMENT_BYPASS"]
-            with urllib.request.urlopen(urllib.request.Request(os.environ["SMC_SOURCE_URL"], headers=headers), timeout=120) as response, archive.open("wb") as output:
-                digest = hashlib.sha256()
-                while block := response.read(1 << 20):
-                    digest.update(block)
-                    output.write(block)
-            if digest.hexdigest() != revision:
-                raise ValueError("Training source checksum failed")
+            download_source(os.environ["SMC_SOURCE_URL"], archive, revision)
             with tarfile.open(archive, "r:gz") as package:
                 for member in package.getmembers():
                     if not (source / member.name).resolve().is_relative_to(source.resolve()) or member.issym() or member.islnk():

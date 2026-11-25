@@ -42,8 +42,9 @@ def missing_configuration():
 
 
 def source_origin():
-    domain = os.environ.get("VERCEL_PROJECT_PRODUCTION_URL") if os.environ.get("VERCEL_ENV") == "production" else None
-    origin = os.environ.get("SMC_SOURCE_ORIGIN") or "https://" + (domain or os.environ.get("VERCEL_URL", ""))
+    # Bootstrap must fetch the archive from this revision. The production alias
+    # can still point at the previous deployment during a rollout.
+    origin = os.environ.get("SMC_SOURCE_ORIGIN") or "https://" + os.environ.get("VERCEL_URL", "")
     parsed = urlsplit(origin)
     if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password or parsed.path not in ("", "/") or parsed.query or parsed.fragment:
         raise ValueError("Training source must use an HTTPS deployment origin")
@@ -116,6 +117,9 @@ class Runtime:
             for name in ("SMC_DEPLOYMENT_BYPASS", "SMC_PUBLIC_ORIGIN", "SMC_LIVE_MAX_AGE", "SPACEML_MARS_WEIGHTS_URL"):
                 if os.environ.get(name):
                     environment[name] = os.environ[name]
+            bypass = os.environ.get("SMC_DEPLOYMENT_BYPASS") or os.environ.get("VERCEL_AUTOMATION_BYPASS_SECRET")
+            if bypass:
+                environment["SMC_DEPLOYMENT_BYPASS"] = bypass
             environment["SPACEML_CORS_ORIGINS"] = os.environ.get("SMC_PUBLIC_ORIGIN", source_origin())
             # Secrets are passed via environment, never command arguments.
             await box.create_command("python3", ["-c", launcher], env=environment)

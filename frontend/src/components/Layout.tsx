@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ChevronDown, Command, Menu as MenuIcon, Moon, Search, Sun, SquareTerminal } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useCapabilities, useReadOnly } from "../lib/capabilities";
+import { refreshCapabilities, useCapabilities, useReadOnly } from "../lib/capabilities";
 import { MOBILE_NAV, NAV_GROUPS } from "../lib/nav";
 import { usePrefs } from "../lib/theme";
 import CommandPalette from "./CommandPalette";
@@ -213,10 +213,14 @@ export default function Layout({ children }: { children: ReactNode }) {
         <div className="flex h-5 justify-between text-xs font-semibold text-ink-soft sm:hidden"><span>{caps?.execution === "managed" ? "Vercel compute" : readOnly ? "Published results" : ""}</span>
           {caps?.authentication?.required && !caps.authentication.authenticated && (caps.mode !== "vercel" || caps.state === "ready") && <a href="/api/session" className="underline">Sign in to train</a>}
         </div>
-        {caps?.execution === "managed" && <div className="glass-inset mx-auto mb-4 max-w-[1400px] p-3 text-sm" role="status">
-          <b>{caps.state === "ready" ? "Vercel compute ready" : caps.state === "starting" || caps.state === "updating" ? "Preparing Vercel training compute" : "Vercel setup required"}</b>
-          <p className="mt-1 text-xs text-ink-soft">Sandbox: {caps.checks?.sandbox.available ? "available" : "not connected"} · Drive: {caps.checks?.drive.writable === true ? "writable" : caps.checks?.drive.writable === false && caps.checks.drive.mounted ? "write check failed" : "not verified"}{caps.checks?.drive.name ? ` (${caps.checks.drive.name})` : ""}</p>
+        {(caps?.execution === "managed" || caps?.error) && <div className="glass-inset mx-auto mb-4 max-w-[1400px] p-3 text-sm" role="status">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <b>{caps.error ? "API connection interrupted" : caps.state === "ready" ? "Vercel compute ready" : caps.state === "starting" || caps.state === "updating" ? "Preparing Vercel training compute" : "Vercel setup required"}</b>
+            <button className="btn-ghost px-2 py-1 text-xs" onClick={refreshCapabilities}>Check connection</button>
+          </div>
+          {caps.execution === "managed" && <p className="mt-1 text-xs text-ink-soft">Sandbox: {caps.checks?.sandbox.available ? "available" : "not connected"} · Drive: {caps.checks?.drive.writable === true ? "writable" : caps.checks?.drive.writable === false && caps.checks.drive.mounted ? "write check failed" : "not verified"}{caps.checks?.drive.name ? ` (${caps.checks.drive.name})` : ""}</p>}
           {caps.state !== "ready" && <p className="mt-1 text-xs text-ink-soft">{caps.hint}. Published results remain browsable. Install and Train become available after both checks pass.</p>}
+          {caps.state === "ready" && !caps.capabilities.write && <p className="mt-1 text-xs text-ink-soft">{caps.error ? caps.hint : <>Compute is connected. <a className="underline" href="/api/session">Sign in</a> to run inference, downloads and training.</>}</p>}
           {caps.startup_error && <p className="mt-1 text-xs text-ink-soft">Startup stage: {caps.startup_error.stage} · {caps.startup_error.type}</p>}
           {caps.state === "error" && caps.detail && <p className="mt-1 break-words text-xs text-ink-soft">{caps.detail}</p>}
           {!!caps.setup_required?.length && <p className="mt-1 break-words text-xs text-ink-soft">{caps.setup_required.join(" · ")}</p>}
