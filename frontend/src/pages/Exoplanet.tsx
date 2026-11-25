@@ -1,3 +1,4 @@
+import { WriteButton } from "../lib/capabilities";
 import { EvidencePanel } from "../components/Evidence";
 import { Database, FlaskConical, Globe2, Orbit, Search, SlidersHorizontal, Sparkles, Star, Trash2, UploadCloud } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
@@ -162,7 +163,7 @@ function UploadPanel({ busy, onRun }: { busy: boolean; onRun: (ds: string, t: Up
         <DropZone url="/api/workbench/datasets" fields={{ kind: "auto" }}
           title="Upload light curves"
           hint={<>FITS (Kepler, K2, TESS…), CSV/TSV/TXT/XLSX/JSON/Parquet with time + flux or mag, or a .zip/.tar.gz of many files · up to 1 GB</>}
-          onError={(m) => setMsg(m ? { tone: "error", text: m } : null)}
+          onError={(m) => setMsg({ tone: "error", text: m })}
           onDone={(r) => {
             const res = r as { kind: string; id: string; name: string };
             if (res.kind === "lightcurve") { setMsg(null); list.reload(); }
@@ -181,10 +182,10 @@ function UploadPanel({ busy, onRun }: { busy: boolean; onRun: (ds: string, t: Up
               <div className="truncate text-sm font-bold">{d.filename}</div>
               <div className="text-[11px] text-ink-soft">{d.targets.length} target(s) · {d.n_files} file(s){d.skipped.length ? ` · ${d.skipped.length} skipped` : ""}</div>
             </div>
-            <button className="rounded-xl p-1.5 text-ink-faint hover:bg-rose-50 hover:text-rose-600" title="Delete dataset"
+            <WriteButton className="rounded-xl p-1.5 text-ink-faint hover:bg-rose-50 hover:text-rose-600" title="Delete dataset"
               onClick={async () => { await api(`/api/exoplanet/datasets/${d.id}`, { method: "DELETE" }); list.reload(); }}>
               <Trash2 className="h-3.5 w-3.5" />
-            </button>
+            </WriteButton>
           </div>
           {d.warnings.slice(0, 3).map((w) => <p key={w} className="text-[11px] text-amber-700">{w}</p>)}
           <div className="scroll-thin max-h-[300px] space-y-1.5 overflow-y-auto pr-1">
@@ -346,8 +347,8 @@ function NoModelHint() {
       <p className="font-semibold">No exoplanet CNN trained yet - views, diagnostics and the 3D system still work.</p>
       {job ? (<><div className="text-ink-soft">{job.title}: {job.step ?? job.status}</div><ProgressBar value={job.progress} /></>) : (
         <div className="flex flex-wrap gap-1.5">
-          <button className="btn-primary px-3 py-1.5 text-xs" onClick={() => start("exoplanet.setup", { n_stars: 300 })}><FlaskConical className="h-3.5 w-3.5" /> Download 300 stars + train</button>
-          <button className="btn-ghost px-3 py-1.5 text-xs" onClick={() => start("exoplanet.train", {})}>Train on cached stars</button>
+          <WriteButton className="btn-primary px-3 py-1.5 text-xs" onClick={() => start("exoplanet.setup", { n_stars: 300 })}><FlaskConical className="h-3.5 w-3.5" /> Download 300 stars + train</WriteButton>
+          <WriteButton className="btn-ghost px-3 py-1.5 text-xs" onClick={() => start("exoplanet.train", {})}>Train on cached stars</WriteButton>
         </div>
       )}
     </div>

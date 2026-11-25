@@ -7,6 +7,7 @@ import { MotionConfig } from "framer-motion";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Boundary, { PageBoundary } from "./components/ErrorBoundary";
 import { JobsProvider } from "./components/Jobs";
+import { CapabilitiesProvider } from "./lib/capabilities";
 import Layout from "./components/Layout";
 import "./index.css";
 import "./theme-dark.css";
@@ -23,9 +24,6 @@ import SpaceWeather from "./pages/SpaceWeather";
 import ReviewStudio from "./pages/ReviewStudio";
 import MissionReplay from "./pages/MissionReplay";
 import Traverse from "./pages/Traverse";
-import { Spinner } from "./components/ui";
-
-const Welcome = React.lazy(() => import("./pages/Welcome"));
 
 applyStoredTheme();
 window.addEventListener("load", () => window.setTimeout(() => sessionStorage.removeItem("smc-chunk-reload"), 10000));
@@ -36,12 +34,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <MotionConfig reducedMotion="user">
     <PrefsProvider>
     <BrowserRouter>
+      <CapabilitiesProvider>
       <JobsProvider>
       <Layout>
         <PageBoundary>
         <Routes>
           <Route path="/" element={<Overview />} />
-          <Route path="/welcome" element={<React.Suspense fallback={<div className="flex min-h-[50vh] items-center justify-center"><Spinner className="h-8 w-8 text-violet-500" /></div>}><Welcome /></React.Suspense>} />
           <Route path="/telemetry" element={<Telemetry />} />
           <Route path="/exoplanet" element={<Exoplanet />} />
           <Route path="/mars" element={<Mars />} />
@@ -58,6 +56,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </PageBoundary>
       </Layout>
       </JobsProvider>
+      </CapabilitiesProvider>
     </BrowserRouter>
     </PrefsProvider>
     </MotionConfig>

@@ -7,10 +7,12 @@ import { usePrefs } from "../lib/theme";
 import type { Channel } from "../lib/types";
 import { useJobs } from "./Jobs";
 import { NAV } from "../lib/nav";
+import { useCapabilities, READ_ONLY_HINT } from "../lib/capabilities";
 
 interface Item { id: string; group: string; label: string; hint?: string; icon: React.ComponentType<{ className?: string }>; run: () => void }
 
 export default function CommandPalette({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const readOnly = useCapabilities()?.capabilities.write === false;
   const { theme, toggleTheme, showCommands, setShowCommands } = usePrefs();
   const nav = useNavigate();
   const { start } = useJobs();
@@ -28,7 +30,7 @@ export default function CommandPalette({ open, onClose }: { open: boolean; onClo
 
   const items = useMemo<Item[]>(() => {
     const go = (to: string) => () => { nav(to); onClose(); };
-    const job = (task: string, params = {}) => () => { start(task, params).catch(() => {}); nav("/datasets"); onClose(); };
+    const job = (task: string, params = {}) => () => { if (readOnly) return; start(task, params).catch(() => {}); nav("/datasets"); onClose(); };
     const base: Item[] = [
       ...NAV.map((n) => ({ id: n.to, group: "Go to", label: n.label, icon: n.icon, run: go(n.to) })),
       { id: "upload", group: "Actions", label: "Upload light-curve dataset", hint: "FITS · CSV · ZIP", icon: Upload, run: go("/exoplanet?source=upload") },
@@ -53,7 +55,7 @@ export default function CommandPalette({ open, onClose }: { open: boolean; onClo
     channels.filter((c) => t && c.chan_id.toLowerCase().includes(t)).slice(0, 6).forEach((c) =>
       extra.push({ id: c.chan_id, group: "Telemetry channels", label: `${c.chan_id} · ${c.spacecraft}`, hint: c.has_model ? "model ready" : "no model", icon: Activity, run: go(`/telemetry?chan=${c.chan_id}`) }));
     return [...extra, ...base.filter((i) => !t || `${i.label} ${i.hint ?? ""} ${i.group}`.toLowerCase().includes(t))];
-  }, [q, channels, nav, onClose, start, theme, toggleTheme, showCommands, setShowCommands]);
+  }, [q, channels, nav, onClose, start, theme, toggleTheme, showCommands, setShowCommands, readOnly]);
 
   useEffect(() => setSel(0), [q]);
   const groups = [...new Set(items.map((i) => i.group))];
@@ -86,6 +88,8 @@ export default function CommandPalette({ open, onClose }: { open: boolean; onClo
                     const idx = items.indexOf(i);
                     return (
                       <button key={i.id} onMouseEnter={() => setSel(idx)} onClick={i.run}
+                        disabled={readOnly && (i.group === "Background jobs" || i.id === "upload" || i.id === "wb")}
+                        title={readOnly && i.group === "Background jobs" ? READ_ONLY_HINT : i.hint}
                         className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm transition ${idx === sel ? "bg-white shadow-sm" : ""}`}>
                         <i.icon className="h-4 w-4 text-violet-600" />
                         <span className="flex-1 font-medium">{i.label}</span>

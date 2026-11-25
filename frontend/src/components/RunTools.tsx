@@ -1,3 +1,4 @@
+import { WriteButton, FileInput, useCapabilities, READ_ONLY_HINT } from "../lib/capabilities";
 import { Check, CircleHelp, Download, FileJson, FileText, UploadCloud, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { api, uploadWithProgress } from "../lib/api";
@@ -47,10 +48,10 @@ export function ReviewToggle({ item, review, onSet }: { item: string; review?: R
   return (
     <div className="inline-flex rounded-full border border-white/80 bg-white/60 p-0.5">
       {opts.map((o) => (
-        <button key={o.v} title={o.title} onClick={() => onSet(item, review?.verdict === o.v ? null : o.v)}
+        <WriteButton key={o.v} title={o.title} onClick={() => onSet(item, review?.verdict === o.v ? null : o.v)}
           className={`grid h-6 w-6 place-items-center rounded-full transition ${review?.verdict === o.v ? o.cls : "text-ink-faint hover:bg-white"}`}>
           {o.icon}
-        </button>
+        </WriteButton>
       ))}
     </div>
   );
@@ -61,13 +62,14 @@ export function DropZone({ url, accept, hint, onDone, onError, fields, title = "
   url: string; accept?: string; hint: ReactNode; title?: string; compact?: boolean;
   onDone: (res: unknown) => void; onError: (msg: string) => void; fields?: Record<string, string>;
 }) {
+  const readOnly = useCapabilities()?.capabilities.write === false;
   const input = useRef<HTMLInputElement>(null);
   const [progress, setProgress] = useState<number | null>(null);
   const [over, setOver] = useState(false);
   const [name, setName] = useState("");
 
   async function send(f: File) {
-    onError("");
+    if (readOnly) return;
     setName(f.name);
     setProgress(0);
     const fd = new FormData();
@@ -84,6 +86,7 @@ export function DropZone({ url, accept, hint, onDone, onError, fields, title = "
   const busy = progress !== null;
   return (
     <div
+      title={readOnly ? READ_ONLY_HINT : undefined} aria-disabled={readOnly}
       onDragOver={(e) => { e.preventDefault(); setOver(true); }} onDragLeave={() => setOver(false)}
       onDrop={(e) => { e.preventDefault(); setOver(false); const f = e.dataTransfer.files[0]; if (f && !busy) send(f); }}
       onClick={() => !busy && input.current?.click()}
@@ -93,7 +96,7 @@ export function DropZone({ url, accept, hint, onDone, onError, fields, title = "
       <div className="text-sm font-semibold">{busy ? (progress! < 1 ? `Uploading ${name}… ${Math.round(progress! * 100)}%` : `Parsing ${name}…`) : title}</div>
       <div className="text-[11px] text-ink-soft">{hint}</div>
       {busy && <div className="absolute inset-x-0 bottom-0 h-1 bg-violet-100"><div className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 transition-all" style={{ width: `${(progress ?? 0) * 100}%` }} /></div>}
-      <input ref={input} type="file" accept={accept} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) send(f); e.target.value = ""; }} />
+      <FileInput ref={input} type="file" accept={accept} className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) send(f); e.target.value = ""; }} />
     </div>
   );
 }

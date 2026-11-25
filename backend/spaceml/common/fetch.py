@@ -17,7 +17,14 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from .utils import now_iso
+from spaceml.config import IS_VERCEL
+if IS_VERCEL:
+    from datetime import datetime, timezone
+
+    def now_iso() -> str:
+        return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+else:
+    from .utils import now_iso
 
 USER_AGENT = "space-ml-mission-control/3.0 (+https://github.com/)"
 

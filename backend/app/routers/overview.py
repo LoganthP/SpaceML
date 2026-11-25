@@ -89,7 +89,10 @@ def datasets() -> list[dict]:
 
 @router.get("/health")
 def health():
-    return {"status": "ok", "data_dir": str(DATA_DIR), "models_dir": str(MODELS_DIR)}
+    from ..manifest import APP_VERSION
+    return {"status": "ok", "mode": "local", "version": APP_VERSION,
+            "read_only": [], "capabilities": {"write": True, "train": True, "live": True},
+            "data_dir": str(DATA_DIR), "models_dir": str(MODELS_DIR)}
 
 
 @router.get("/datasets")

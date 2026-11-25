@@ -1,0 +1,73 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "backend": {
+      "root": ".",
+      "runtime": "python",
+      "framework": "fastapi",
+      "entrypoint": "api.index:app",
+      "buildCommand": "python3 scripts/build_static_data.py",
+      "functions": {
+        "api/index.py": {
+          "maxDuration": 30,
+          "memory": 1024,
+          "excludeFiles": "{frontend/**,starter/**,models/**,data/**,storage/**,release/**,samples/**,notebooks/**,docs/**,audit*/**,deployment/**,scripts/**,tests*/**,backend/tests/**,**/*.zip,**/node_modules/**,**/.venv/**,**/.vercel/**}"
+        }
+      }
+    },
+    "frontend": {
+      "root": "frontend",
+      "framework": "vite",
+      "installCommand": "npm ci --no-audit --no-fund",
+      "buildCommand": "python3 ../scripts/build_static_data.py && npm run build",
+      "devCommand": "node ../scripts/vercel_frontend_dev.cjs",
+      "outputDirectory": "dist",
+      "headers": [
+        {
+          "source": "/assets/(.*)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=31536000, immutable"
+            }
+          ]
+        },
+        {
+          "source": "/data/(.*)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=300, stale-while-revalidate=86400"
+            }
+          ]
+        }
+      ],
+      "rewrites": [
+        {
+          "source": "/((?!assets/|data/|src/|node_modules/|@|favicon[.]svg$).*)",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "frontend"
+      }
+    }
+  ]
+}

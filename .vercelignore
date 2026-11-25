@@ -1,0 +1,20 @@
+/.git/
+/.venv*/
+/.vercel/
+/data/
+/storage/
+/models/
+/deployment/
+/build/
+/audit-results*/
+/frontend/node_modules/
+/frontend/dist/
+/frontend/public/data/*.json
+/*.zip
+/*.verification.json
+/vercel-preview.png
+/.env
+/.env.local
+/.env.production
+# starter/ and release/bundle/ intentionally stay in the build context so the
+# offline compiler can verify their original dataset checksums.

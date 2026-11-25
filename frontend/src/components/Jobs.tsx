@@ -1,3 +1,4 @@
+import { WriteButton } from "../lib/capabilities";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlertTriangle, CheckCircle2, ChevronDown, CircleStop, Play, RotateCcw, TerminalSquare, XCircle } from "lucide-react";
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
@@ -118,16 +119,16 @@ export function JobCard({ job, compact = false }: { job: Job; compact?: boolean 
             </div>)}
         </div>
         {live && (
-          <button className="rounded-xl p-1.5 text-ink-faint transition hover:bg-rose-50 hover:text-rose-600" title="Cancel"
+          <WriteButton className="rounded-xl p-1.5 text-ink-faint transition hover:bg-rose-50 hover:text-rose-600" title="Cancel"
             onClick={async () => { await api(`/api/jobs/${job.id}/cancel`, { method: "POST" }); refresh(); }}>
             <CircleStop className="h-4 w-4" />
-          </button>
+          </WriteButton>
         )}
         {!live && job.status !== "succeeded" && (
-          <button className="rounded-xl p-1.5 text-ink-faint transition hover:bg-violet-50 hover:text-violet-600" title="Retry with the same settings"
+          <WriteButton className="rounded-xl p-1.5 text-ink-faint transition hover:bg-violet-50 hover:text-violet-600" title="Retry with the same settings"
             onClick={async () => { try { await api(`/api/jobs/${job.id}/retry`, { method: "POST" }); } catch { /* busy */ } refresh(); }}>
             <RotateCcw className="h-4 w-4" />
-          </button>
+          </WriteButton>
         )}
         <button className="rounded-xl p-1.5 text-ink-faint transition hover:bg-white hover:text-ink" onClick={() => setOpen((o) => !o)} title={open ? "Hide log" : "Show log"}>
           <ChevronDown className={`h-4 w-4 transition ${open ? "rotate-180" : ""}`} />
@@ -159,10 +160,10 @@ export function JobButton({ task, params, label, module, className = "btn-primar
   const [pending, setPending] = useState(false);
   return (
     <div className="space-y-1">
-      <button className={className} disabled={disabled || !!busy || pending}
+      <WriteButton className={className} disabled={disabled || !!busy || pending}
         onClick={async () => { setErr(null); setPending(true); try { await start(task, params); } catch (e) { setErr((e as Error).message); } finally { setPending(false); } }}>
         {pending || busy?.task === task ? <Spinner /> : <Play className="h-4 w-4" />} {label}
-      </button>
+      </WriteButton>
       {err && <p className="text-[11px] text-rose-600">{err}</p>}
     </div>
   );

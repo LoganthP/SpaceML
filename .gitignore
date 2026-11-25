@@ -1,12 +1,19 @@
 # datasets and runtime state (models/ is versioned on purpose; add large checkpoints to LFS if needed)
-data/
-storage/
+/data/
+/storage/
 __pycache__/
 *.pyc
 .pytest_cache/
 .venv/
+.venv-tools/
 venv/
 node_modules/
+.vercel/
+space-ml-mission-control-*-vercel.zip
+/vercel-preview.png
+*.egg-info/
+/build/
+/frontend/public/data/*.json
 frontend/dist/
 .DS_Store
 

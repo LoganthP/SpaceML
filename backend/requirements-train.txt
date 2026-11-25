@@ -1,0 +1,5 @@
+# Optional local/offline preparation environment. Never installed by Vercel.
+-r requirements-core.txt
+-r requirements-ml.txt
+# Current Starlette's in-process client is used by the offline compiler.
+httpx2>=2,<3

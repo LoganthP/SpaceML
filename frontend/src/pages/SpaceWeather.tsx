@@ -1,3 +1,4 @@
+import { WriteButton } from "../lib/capabilities";
 import { CalendarRange, CloudLightning, Pause, Play, Plus, SkipBack, Trash2, Wind, Zap } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { JobButton, activeJob, useJobs, useOnJobFinished, JobCard } from "../components/Jobs";
@@ -99,7 +100,7 @@ function Forecast({ start, end, model, evalHorizons }: { start: string; end: str
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <div className="kicker">Forecast experiment · model {model.version}</div>
-          <h2 className="mt-1 text-lg font-bold">Dst {h} h ahead: gradient boosting vs persistence</h2>
+          <h3 className="mt-1 text-lg font-bold">Dst {h} h ahead: gradient boosting vs persistence</h3>
           <p className="text-xs text-ink-soft">Trained on {model.train_years[0]}–{model.train_years[model.train_years.length - 1]}, tested on {model.test_years.join(", ")}. Each forecast uses only data available at its issue time.</p>
         </div>
         <Segmented value={String(h)} onChange={(v) => setH(+v)} options={hs.map((x) => ({ value: String(x), label: `+${x} h` }))} />
@@ -205,12 +206,12 @@ export default function SpaceWeather() {
               <div className="kicker">Annotate this window</div>
               <input className="input py-2 text-sm" placeholder="Label, e.g. CME shock arrival" value={ann.label} onChange={(e) => setAnn({ ...ann, label: e.target.value })} />
               <textarea className="input py-2 text-xs" rows={2} placeholder="Note (optional)" value={ann.note} onChange={(e) => setAnn({ ...ann, note: e.target.value })} />
-              <button className="btn-primary w-full py-2 text-xs" disabled={!ann.label.trim() || !win} onClick={addAnnotation}><Plus className="h-3.5 w-3.5" /> Save annotation</button>
+              <WriteButton className="btn-primary w-full py-2 text-xs" disabled={!ann.label.trim() || !win} onClick={addAnnotation}><Plus className="h-3.5 w-3.5" /> Save annotation</WriteButton>
               {ev.data?.annotations.map((a) => (
                 <div key={a.id} className="flex items-center gap-2 rounded-xl bg-white/50 px-2 py-1.5 text-xs">
                   <button className="min-w-0 flex-1 truncate text-left font-semibold" onClick={() => setWin({ start: a.start, end: a.end, label: a.label })}>{a.label}</button>
                   <span className="text-[10px] text-ink-faint">{a.start.slice(0, 10)}</span>
-                  <button className="text-ink-faint hover:text-rose-600" onClick={async () => { await api(`/api/spaceweather/annotations/${a.id}`, { method: "DELETE" }); ev.reload(); }}><Trash2 className="h-3 w-3" /></button>
+                  <WriteButton className="text-ink-faint hover:text-rose-600" onClick={async () => { await api(`/api/spaceweather/annotations/${a.id}`, { method: "DELETE" }); ev.reload(); }}><Trash2 className="h-3 w-3" /></WriteButton>
                 </div>))}
             </Glass>
           </div>

@@ -1,0 +1,9 @@
+{
+  "name": "space-ml-mission-control-vercel",
+  "version": "3.1.10",
+  "private": true,
+  "scripts": {
+    "dev": "node scripts/vercel_frontend_dev.cjs",
+    "build": "python3 scripts/build_static_data.py && npm --prefix frontend run build"
+  }
+}

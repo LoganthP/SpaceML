@@ -28,9 +28,10 @@ function Tile({ className = "", children, to, kicker, icon: Icon, accent }: {
       {kicker && <div className="kicker flex items-center gap-1.5">{Icon && <Icon className="h-3.5 w-3.5" style={accent ? { color: accent } : undefined} />}{kicker}</div>}
       {children}
       {to && <ArrowUpRight className="absolute right-4 top-4 h-4 w-4 text-ink-faint" />}
+      {to && <Link to={to} aria-label={kicker ?? "Open workspace"} className="absolute inset-0" />}
     </motion.div>
   );
-  return to ? <Link to={to} className="block h-full">{body}</Link> : body;
+  return to ? <div className="block h-full">{body}</div> : body;
 }
 
 /** A tile whose data is not installed yet: one centred hint plus the action, so the tile never looks empty. */
@@ -158,21 +159,14 @@ export default function Overview() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_55%,rgba(255,255,255,0.7),transparent_65%)] dark:bg-[radial-gradient(ellipse_at_50%_55%,rgba(76,29,149,0.35),transparent_65%)]" />
         <div className="pointer-events-none relative z-10 flex flex-col gap-3 p-6 pb-0 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="kicker flex items-center gap-2"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" /> Live mission map · inner Solar System</div>
-              <div className="pointer-events-auto flex items-center gap-1.5 rounded-full border border-violet-200/80 bg-violet-50/90 px-2.5 py-0.5 text-[11px] font-semibold text-violet-900 shadow-sm backdrop-blur dark:border-violet-500/30 dark:bg-violet-950/70 dark:text-violet-200">
-                <Sparkles className="h-3 w-3 text-violet-500" aria-hidden="true" />
-                <Link to="/welcome" className="hover:underline">Explore landing page &amp; tour →</Link>
-              </div>
-            </div>
+            <div className="kicker flex items-center gap-2"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" /> Live mission map · inner Solar System</div>
             <h1 className="mt-2 text-3xl font-bold leading-tight sm:text-[2.6rem]">
               Every model, <span className="bg-gradient-to-r from-cyan-500 via-violet-500 to-orange-500 bg-clip-text text-transparent">where its data was born.</span>
             </h1>
             <p className="mt-2 max-w-lg text-sm text-ink-soft">Earth, Mars and the spacecraft are placed for today's date (distances schematic). Drag to rotate, scroll to zoom, pick a spacecraft below to fly to it, and click a label to open its data and model.</p>
           </div>
           <div className="pointer-events-auto flex shrink-0 flex-wrap gap-2 sm:flex-col">
-            <Link to="/welcome" className="btn-primary"><Sparkles className="h-4 w-4" /> Welcome &amp; Tour</Link>
-            <Link to="/workbench" className="btn-ghost"><FlaskConical className="h-4 w-4" /> Bring your data</Link>
+            <Link to="/workbench" className="btn-primary"><FlaskConical className="h-4 w-4" /> Bring your data</Link>
             <Link to="/evaluation" className="btn-ghost"><BarChart3 className="h-4 w-4" /> Scoreboard</Link>
             <span className="hidden items-center gap-1 font-mono text-[10px] text-ink-faint sm:flex"><Command className="h-3 w-3" />K · jump anywhere</span>
           </div>
@@ -284,7 +278,7 @@ export default function Overview() {
             {[["series", wb?.by_kind.timeseries ?? 0], ["images", wb?.by_kind.images ?? 0], ["light curves", wb?.by_kind.lightcurve ?? 0]].map(([k, v]) => (
               <div key={k} className="glass-inset py-2"><div className="font-display text-xl font-bold">{v}</div><div className="text-[9px] text-ink-faint">{k}</div></div>))}
           </div>
-          <Link to="/review" className="mt-3 flex items-center gap-2 text-[11px] text-ink-soft hover:text-ink">
+          <Link to="/review" className="relative z-10 mt-3 flex items-center gap-2 text-[11px] text-ink-soft hover:text-ink">
             <Highlighter className="h-3.5 w-3.5 text-violet-500" /> {wb?.reviews.confirmed ?? 0} confirmed · {wb?.reviews.dismissed ?? 0} dismissed · {wb?.reviews.corrected ?? 0} masks corrected
           </Link>
         </Tile>

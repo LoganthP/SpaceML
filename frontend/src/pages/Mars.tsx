@@ -1,3 +1,4 @@
+import { FileInput, useCapabilities } from "../lib/capabilities";
 import { EvidencePanel } from "../components/Evidence";
 import { ImagePlus, Mountain, Paintbrush, Upload } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
@@ -112,6 +113,7 @@ function MarsExtras({ runId }: { runId: string }) {
 }
 
 export default function Mars() {
+  const readOnly = useCapabilities()?.capabilities.write === false;
   const [params, setParams] = useSearchParams();
   const runId = params.get("run");
   const samples = useApi<MarsSample[]>("/api/mars/samples");
@@ -132,6 +134,7 @@ export default function Mars() {
     try { setParams({ run: (await createRun("mars", { sample_id })).id }); } catch (e) { setSubmitError((e as Error).message); }
   }
   async function upload(file: File) {
+    if (readOnly) return;
     setSubmitError(null);
     setUploading(true);
     try {
@@ -172,7 +175,7 @@ export default function Mars() {
               {uploading ? <Spinner className="h-6 w-6 text-mars-600" /> : <Upload className="h-6 w-6 text-mars-600" />}
               <div className="text-sm font-semibold">Upload a rover image</div>
               <div className="text-[11px] text-ink-soft">PNG/JPEG, grayscale NAVCAM works best · max 15 MB</div>
-              <input ref={fileRef} type="file" accept="image/png,image/jpeg" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = ""; }} />
+              <FileInput ref={fileRef} type="file" accept="image/png,image/jpeg" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = ""; }} />
             </div>
           </Glass>
           <Glass className="p-4">

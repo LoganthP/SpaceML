@@ -1,3 +1,4 @@
+import { WriteButton, FileInput } from "../lib/capabilities";
 import { CheckCircle2, CircleDashed, Clock, CloudOff, Play, RotateCcw, Rocket, Upload, XCircle } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "../lib/api";
@@ -57,9 +58,9 @@ export function SetupPanel({ modules, compact = false }: { modules?: Module[]; c
         <div className="kicker">Automatic setup</div>
         <span className="chip bg-white/70 text-ink-soft">{steps.filter((s) => s.state === "done").length}/{steps.length} ready</span>
         {data.running && <span className="chip bg-violet-100 text-violet-700"><Spinner className="h-3 w-3" /> working in the background</span>}
-        <button className="btn-primary ml-auto px-3 py-1.5 text-xs" disabled={busy || data.running || !missing.length} onClick={() => go()}>
+        <WriteButton className="btn-primary ml-auto px-3 py-1.5 text-xs" disabled={busy || data.running || !missing.length} onClick={() => go()}>
           {busy ? <Spinner /> : <Play className="h-3.5 w-3.5" />} {missing.length ? "Download & train everything missing" : "All set"}
-        </button>
+        </WriteButton>
       </div>
       {!compact && <p className="text-xs text-ink-soft">Runs by itself when the app starts. Downloads and model training run side by side in the background
         (training uses every CPU core), with no terminal needed. Finished steps are skipped on the next start, and a step that stops making progress is
@@ -79,10 +80,10 @@ export function SetupPanel({ modules, compact = false }: { modules?: Module[]; c
                 </div>
                 <span className={`text-[11px] font-semibold ${st.cls}`}>{st.label}</span>
                 {!live && s.state !== "done" && (
-                  <button className="btn-ghost px-2 py-1 text-[11px]" disabled={busy || data.running} onClick={() => go([s.id])}
+                  <WriteButton className="btn-ghost px-2 py-1 text-[11px]" disabled={busy || data.running} onClick={() => go([s.id])}
                     title={s.state === "pending" ? "Start this step now" : "Try this step again"}>
                     {s.state === "pending" ? <Play className="h-3 w-3" /> : <RotateCcw className="h-3 w-3" />} {s.state === "pending" ? "Start" : "Retry"}
-                  </button>)}
+                  </WriteButton>)}
               </div>
               {s.state === "running" && <ProgressBar value={s.progress} />}
               {s.error && s.state !== "done" && !live && (
@@ -112,10 +113,10 @@ export function ModuleSetup({ module, stepIds, title }: { module: Module; stepId
       <div className="flex flex-wrap items-center gap-2 font-semibold">
         {live || job ? <Spinner className="h-4 w-4" /> : <Rocket className="h-4 w-4" />} {title}
         {!live && !job && (
-          <button className="btn-primary ml-auto px-3 py-1.5 text-xs" disabled={busy || data.running}
+          <WriteButton className="btn-primary ml-auto px-3 py-1.5 text-xs" disabled={busy || data.running}
             onClick={async () => { setBusy(true); try { await run(open.map((s) => s.id)); } finally { setBusy(false); } }}>
             {busy ? <Spinner /> : failed ? <RotateCcw className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />} {failed ? "Retry now" : "Prepare it now"}
-          </button>)}
+          </WriteButton>)}
       </div>
       <div className="mt-2 space-y-1.5 text-[13px] opacity-90">
         {live || job ? (
@@ -195,10 +196,10 @@ export function MarsModelUpload({ onDone }: { onDone?: () => void }) {
   }
   return (
     <div className="space-y-1">
-      <button className="btn-ghost px-3 py-1.5 text-xs" disabled={state === "busy"} onClick={() => ref.current?.click()}>
+      <WriteButton className="btn-ghost px-3 py-1.5 text-xs" disabled={state === "busy"} onClick={() => ref.current?.click()}>
         {state === "busy" ? <Spinner /> : <Upload className="h-3.5 w-3.5" />} Upload a trained model (.zip)
-      </button>
-      <input ref={ref} type="file" accept=".zip,application/zip" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) up(f); e.target.value = ""; }} />
+      </WriteButton>
+      <FileInput ref={ref} type="file" accept=".zip,application/zip" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) up(f); e.target.value = ""; }} />
       {msg && <p className={`text-[11px] ${state === "err" ? "text-rose-600" : "text-emerald-700"}`}>{msg}</p>}
     </div>
   );

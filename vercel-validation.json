@@ -1,0 +1,78 @@
+{
+  "base_url": "http://127.0.0.1:4173",
+  "pages": [
+    {
+      "path": "/",
+      "visible_buttons_clicked": 8
+    },
+    {
+      "path": "/telemetry",
+      "visible_buttons_clicked": 13
+    },
+    {
+      "path": "/telemetry?mission=opssat",
+      "visible_buttons_clicked": 17
+    },
+    {
+      "path": "/telemetry?mission=hubble",
+      "visible_buttons_clicked": 14
+    },
+    {
+      "path": "/telemetry?mission=webb",
+      "visible_buttons_clicked": 15
+    },
+    {
+      "path": "/exoplanet",
+      "visible_buttons_clicked": 8
+    },
+    {
+      "path": "/mars",
+      "visible_buttons_clicked": 6
+    },
+    {
+      "path": "/mars/traverse",
+      "visible_buttons_clicked": 10
+    },
+    {
+      "path": "/replay",
+      "visible_buttons_clicked": 16
+    },
+    {
+      "path": "/workbench",
+      "visible_buttons_clicked": 11
+    },
+    {
+      "path": "/space-weather",
+      "visible_buttons_clicked": 6
+    },
+    {
+      "path": "/review",
+      "visible_buttons_clicked": 18
+    },
+    {
+      "path": "/runs",
+      "visible_buttons_clicked": 13
+    },
+    {
+      "path": "/evaluation",
+      "visible_buttons_clicked": 6
+    },
+    {
+      "path": "/datasets",
+      "visible_buttons_clicked": 21
+    }
+  ],
+  "console_errors": [],
+  "page_errors": [],
+  "http_errors": [],
+  "click_errors": [],
+  "overflow": [],
+  "resolved_click_errors": [
+    {
+      "page": "/",
+      "label": "Ground segment \u00b7 your data\n0 datasets",
+      "error": "ElementHandle.click: Timeout 1200ms exceeded.\nCall log:\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is not stable\n    ",
+      "resolution": "Visible enabled animated HUD control clicked; navigated to /workbench"
+    }
+  ]
+}

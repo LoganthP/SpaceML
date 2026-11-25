@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ChevronDown, Command, Menu as MenuIcon, Moon, Search, Sun, SquareTerminal } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useApi } from "../lib/api";
+import { useCapabilities } from "../lib/capabilities";
 import { MOBILE_NAV, NAV_GROUPS } from "../lib/nav";
 import { usePrefs } from "../lib/theme";
 import CommandPalette from "./CommandPalette";
@@ -108,7 +108,9 @@ function CommandsToggle() {
 }
 
 function ApiPulse() {
-  const { data, error } = useApi<{ status: string }>("/api/health");
+  const caps = useCapabilities();
+  const data = caps && !caps.error ? caps : null;
+  const error = caps?.error;
   return (
     <span title={data ? "API connected" : error ? "API offline - start the backend on port 8000" : "Connecting…"}
       className={`h-2.5 w-2.5 rounded-full ${data ? "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.9)]" : error ? "bg-rose-500" : "bg-amber-400"}`} />
@@ -173,7 +175,7 @@ function MobileDock() {
               </div>))}
           </nav>
         </div>)}
-      <nav aria-label="Main" className="fixed inset-x-3 bottom-3 z-40 grid grid-cols-6 gap-1 rounded-[24px] border border-white/80 bg-white/90 p-1.5 shadow-glass-lg backdrop-blur-2xl dark:border-white/10 dark:bg-[#11152f]/90 lg:hidden">
+      <nav aria-label="Main" className="fixed inset-x-3 bottom-3 z-40 grid grid-cols-5 gap-1 rounded-[24px] border border-white/80 bg-white/90 p-1.5 shadow-glass-lg backdrop-blur-2xl dark:border-white/10 dark:bg-[#11152f]/90 lg:hidden">
         {MOBILE_NAV.map(({ to, icon: Icon, end, label }) => (
           <NavLink key={to} to={to} end={end}
             className={({ isActive }) => `flex flex-col items-center gap-0.5 rounded-2xl py-1.5 text-[10px] font-semibold leading-tight ${isActive ? "bg-slate-900 text-white dark:bg-indigo-600" : "text-ink-soft"}`}>

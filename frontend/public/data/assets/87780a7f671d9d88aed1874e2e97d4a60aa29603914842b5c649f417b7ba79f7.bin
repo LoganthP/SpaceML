@@ -1,0 +1,1 @@
+run_id,module,analysis,kind,item,verdict,note,updated_at,input,model_version,chan_id,kepid,tce_plnt_num,dataset_id,target_id,file,detector,start,end,x0,x1,bbox,pixels,area_km2,period_days,score

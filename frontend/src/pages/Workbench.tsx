@@ -1,3 +1,4 @@
+import { WriteButton } from "../lib/capabilities";
 import { EvidencePanel } from "../components/Evidence";
 import { Activity, ArrowRight, FileSpreadsheet, FlaskConical, Image as ImageIcon, Orbit, Play, RefreshCw, SunMedium, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -219,7 +220,7 @@ function Experiments({ datasetId, current, onOpen, refreshKey }: { datasetId: st
       </div>
       <div className="scroll-thin mt-3 overflow-x-auto">
         <table className="w-full min-w-[700px] text-xs">
-          <thead><tr className="text-left text-ink-faint"><th className="pb-2" aria-label="Select"><span className="sr-only">Select</span></th><th className="pb-2">Run</th><th>Analysis</th><th>Key settings</th><th>Result</th><th>Status</th><th aria-label="Actions"><span className="sr-only">Actions</span></th></tr></thead>
+          <thead><tr className="text-left text-ink-faint"><th className="pb-2" /><th className="pb-2">Run</th><th>Analysis</th><th>Key settings</th><th>Result</th><th>Status</th><th /></tr></thead>
           <tbody>
             {mine.map((r) => {
               const inp = r.input_ref as { analysis: string; params: Record<string, unknown> };
@@ -361,7 +362,6 @@ export default function Workbench() {
 
   const open = (item: WbDatasetListItem) => {
     if (item.kind === "lightcurve") return;
-    setMsg(null);
     setParams({ dataset: item.id });
   };
 
@@ -372,11 +372,11 @@ export default function Workbench() {
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[330px_minmax(0,1fr)]">
         <div className="space-y-4">
           <Glass className="space-y-3 p-4">
-            <Segmented value={kind} onChange={(k) => { setKind(k); setMsg(null); }} options={[
+            <Segmented value={kind} onChange={setKind} options={[
               { value: "auto", label: "Auto" }, { value: "timeseries", label: "Series" }, { value: "samples", label: "Windows" }, { value: "images", label: "Images" }, { value: "lightcurve", label: "Light curve" }]} />
             <DropZone url="/api/workbench/datasets" fields={{ kind }}
               hint={<>CSV · TSV · TXT · XLSX · JSON / JSON Lines · Parquet · NPY · FITS · PNG · JPEG · TIFF/GeoTIFF · .zip/.tar.gz · ≤ 1 GB</>}
-              onError={(m) => setMsg(m || null)}
+              onError={setMsg}
               onDone={(r) => {
                 const res = r as { id: string; kind: string };
                 setMsg(null);
@@ -405,12 +405,12 @@ export default function Workbench() {
                     {d.kind === "lightcurve"
                       ? <Link to="/exoplanet?source=upload" className="flex min-w-0 flex-1 items-center gap-2">{inner}<ArrowRight className="h-3.5 w-3.5 text-exo-500" /></Link>
                       : <button onClick={() => open(d)} className="flex min-w-0 flex-1 items-center gap-2 text-left">{inner}</button>}
-                    <button title="Delete dataset" className="rounded-lg p-1 text-ink-faint opacity-0 transition hover:text-rose-600 group-hover:opacity-100"
+                    <WriteButton title="Delete dataset" className="rounded-lg p-1 text-ink-faint opacity-0 transition hover:text-rose-600 group-hover:opacity-100"
                       onClick={async () => {
                         await api(d.kind === "lightcurve" ? `/api/exoplanet/datasets/${d.id}` : `/api/workbench/datasets/${d.id}`, { method: "DELETE" });
                         if (d.id === datasetId) setParams({});
                         list.reload();
-                      }}><Trash2 className="h-3.5 w-3.5" /></button>
+                      }}><Trash2 className="h-3.5 w-3.5" /></WriteButton>
                   </div>);
               })}
             </div>
@@ -428,7 +428,7 @@ export default function Workbench() {
                 ].map((c) => (
                   <Glass key={c.t} hover className="p-5">
                     <IconBadge gradient={c.cls}><c.icon className="h-6 w-6" /></IconBadge>
-                    <h2 className="mt-3 font-bold text-base">{c.t}</h2>
+                    <h3 className="mt-3 font-bold">{c.t}</h3>
                     <p className="mt-1 text-xs leading-relaxed text-ink-soft">{c.d}</p>
                   </Glass>))}
                 <div className="md:col-span-2">

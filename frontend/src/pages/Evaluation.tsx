@@ -44,7 +44,7 @@ function ModuleCard({ e }: { e: ModuleEvaluation }) {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <div className="label" style={{ color: meta.color }}>{meta.title}</div>
-          <h2 className="mt-1 text-lg font-bold">{a ? a.model_name : "Not evaluated yet"}</h2>
+          <h3 className="mt-1 text-lg font-bold">{a ? a.model_name : "Not evaluated yet"}</h3>
           {a && <p className="text-xs text-ink-soft">vs <b>{a.baseline_name}</b></p>}
         </div>
         {a && (

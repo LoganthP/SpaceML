@@ -1,3 +1,4 @@
+import { WriteButton, useCapabilities } from "../lib/capabilities";
 import { CheckCheck, ExternalLink, FileJson, FileSpreadsheet, FolderArchive, Highlighter, Inbox, RefreshCw, Tag } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
@@ -89,7 +90,7 @@ export default function ReviewStudio() {
         {!!data.data?.reviews.length && (
           <div className="scroll-thin max-h-[360px] overflow-auto">
             <table className="w-full min-w-[760px] text-sm">
-              <thead className="sticky top-0 bg-white/95 dark:bg-slate-900/95"><tr className="text-left text-xs text-ink-faint"><th className="px-2 py-2">Module</th><th>Item</th><th>Run input</th><th>Verdict</th><th>Note</th><th>When</th><th aria-label="Actions"><span className="sr-only">Actions</span></th></tr></thead>
+              <thead className="sticky top-0 bg-white/95 dark:bg-slate-900/95"><tr className="text-left text-xs text-ink-faint"><th className="px-2 py-2">Module</th><th>Item</th><th>Run input</th><th>Verdict</th><th>Note</th><th>When</th><th /></tr></thead>
               <tbody>
                 {data.data.reviews.map((r) => (
                   <tr key={`${r.run_id}-${r.item}`} className="border-t border-slate-200/60 dark:border-white/10">
@@ -143,6 +144,7 @@ interface Evidence {
 const MODULES: Module[] = ["missions", "telemetry", "workbench", "exoplanet", "mars"];
 
 function ReviewQueue({ module, setModule, onChange, onMask }: { module: "all" | Module; setModule: (m: "all" | Module) => void; onChange: () => void; onMask: (runId: string) => void }) {
+  const readOnly = useCapabilities()?.capabilities.write === false;
   const q = useApi<{ items: QueueItem[]; pending: number; runs_scanned: number; by_module: Record<string, number> }>(`/api/reviews/queue?limit=150${module !== "all" ? `&module=${module}` : ""}`, [module]);
   const allQ = useApi<{ by_module: Record<string, number>; pending: number }>("/api/reviews/queue?limit=1");
   const [done, setDone] = useState<Record<string, string>>({});
@@ -155,6 +157,7 @@ function ReviewQueue({ module, setModule, onChange, onMask }: { module: "all" | 
   const current = left.find((it) => key(it) === sel) ?? left[0] ?? null;
   useEffect(() => { setNote(""); }, [current && key(current)]); // eslint-disable-line react-hooks/exhaustive-deps
   async function verdict(it: QueueItem, v: "confirmed" | "dismissed" | "unsure") {
+    if (readOnly) return;
     setErr(null);
     try {
       await api(`/api/runs/${it.run_id}/reviews/${encodeURIComponent(it.item)}`, { method: "PUT", body: JSON.stringify({ verdict: v, note }) });
@@ -238,7 +241,7 @@ function ReviewDetail({ it, note, setNote, onVerdict, onMask }: { it: QueueItem;
     <section className="glass-inset min-w-0 space-y-3 p-4" aria-label={`Evidence for ${it.title}`}>
       <div className="flex flex-wrap items-start gap-2">
         <div className="min-w-0 flex-1">
-          <h2 className="font-display text-base font-bold">{it.title}</h2>
+          <h3 className="font-display text-base font-bold">{it.title}</h3>
           <p className="text-xs text-ink-soft">{it.detail} · run of “{it.input_label}” · {timeAgo(it.created_at)}</p>
         </div>
         <Link to={`${MODULE_META[it.module].path}?run=${it.run_id}`} className="btn-ghost px-2.5 py-1 text-[11px]"><ExternalLink className="h-3 w-3" aria-hidden="true" /> Open run</Link>
@@ -255,7 +258,7 @@ function ReviewDetail({ it, note, setNote, onVerdict, onMask }: { it: QueueItem;
       {it.mask ? (
         <div className="flex flex-wrap gap-2">
           <button className="btn-primary px-3 py-1.5 text-sm" onClick={() => onMask(it.run_id)}><Highlighter className="h-4 w-4" aria-hidden="true" /> Correct the mask</button>
-          <button className="btn-ghost px-3 py-1.5 text-sm" onClick={() => onVerdict("confirmed")}>✓ Mask looks right</button>
+          <WriteButton className="btn-ghost px-3 py-1.5 text-sm" onClick={() => onVerdict("confirmed")}>✓ Mask looks right</WriteButton>
         </div>
       ) : (
         <div className="space-y-2">
@@ -263,9 +266,9 @@ function ReviewDetail({ it, note, setNote, onVerdict, onMask }: { it: QueueItem;
           <input id="review-note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="why - e.g. thruster firing, known safe mode, sensor glitch"
             className="w-full rounded-xl border border-slate-300 bg-white/80 px-2 py-1.5 text-sm dark:border-white/15 dark:bg-white/5" />
           <div className="grid grid-cols-3 gap-2">
-            <button className="rounded-xl bg-emerald-700 px-3 py-2 text-sm font-bold text-white hover:bg-emerald-800" onClick={() => onVerdict("confirmed")}>✓ Real (1)</button>
-            <button className="rounded-xl bg-rose-700 px-3 py-2 text-sm font-bold text-white hover:bg-rose-800" onClick={() => onVerdict("dismissed")}>✕ False alarm (2)</button>
-            <button className="rounded-xl bg-amber-400 px-3 py-2 text-sm font-bold hover:bg-amber-300" style={{ color: "#1c1917" }} onClick={() => onVerdict("unsure")}>? Unsure (3)</button>
+            <WriteButton className="rounded-xl bg-emerald-700 px-3 py-2 text-sm font-bold text-white hover:bg-emerald-800" onClick={() => onVerdict("confirmed")}>✓ Real (1)</WriteButton>
+            <WriteButton className="rounded-xl bg-rose-700 px-3 py-2 text-sm font-bold text-white hover:bg-rose-800" onClick={() => onVerdict("dismissed")}>✕ False alarm (2)</WriteButton>
+            <WriteButton className="rounded-xl bg-amber-400 px-3 py-2 text-sm font-bold hover:bg-amber-300" style={{ color: "#1c1917" }} onClick={() => onVerdict("unsure")}>? Unsure (3)</WriteButton>
           </div>
         </div>)}
     </section>

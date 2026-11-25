@@ -1,3 +1,4 @@
+import { WriteButton } from "../lib/capabilities";
 import { Brush, Eraser, Redo2, Save, Undo2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { TERRAIN_COLORS } from "../lib/format";
@@ -128,7 +129,7 @@ export default function MaskEditor({ runId, onSaved }: { runId: string; onSaved?
           <input type="range" min={3} max={60} value={brush} onChange={(e) => setBrush(+e.target.value)} className="slider w-28" /></label>
         <button className="btn-ghost px-2 py-1.5" title="Undo" onClick={() => { const p = history.current.pop(); if (p && ids.current) { future.current.push(ids.current.slice()); ids.current = p; render(); } }}><Undo2 className="h-3.5 w-3.5" /></button>
         <button className="btn-ghost px-2 py-1.5" title="Redo" onClick={() => { const n = future.current.pop(); if (n && ids.current) { history.current.push(ids.current.slice()); ids.current = n; render(); } }}><Redo2 className="h-3.5 w-3.5" /></button>
-        <button className="btn-primary ml-auto px-3 py-1.5 text-xs" onClick={save} disabled={!ready || saving}>{saving ? <Spinner /> : <Save className="h-3.5 w-3.5" />} Save corrected mask</button>
+        <WriteButton className="btn-primary ml-auto px-3 py-1.5 text-xs" onClick={save} disabled={!ready || saving}>{saving ? <Spinner /> : <Save className="h-3.5 w-3.5" />} Save corrected mask</WriteButton>
       </div>
       {!ready && !msg && <div className="flex items-center gap-2 text-sm text-ink-soft"><Spinner /> Loading image and mask…</div>}
       <canvas ref={view} className={`w-full cursor-crosshair touch-none rounded-2xl ${ready ? "" : "hidden"}`}

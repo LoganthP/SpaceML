@@ -1,3 +1,4 @@
+import { FileInput } from "../lib/capabilities";
 import { ChevronLeft, ChevronRight, Clapperboard, Eye, EyeOff, Pause, Play, Radar, Rewind, Sparkles, Telescope, Trophy } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -399,7 +400,7 @@ function OmniImport() {
     <div className="space-y-1">
       <label className="btn-ghost cursor-pointer px-3 py-1.5 text-xs">
         {busy ? <Spinner /> : <Play className="h-3.5 w-3.5" />} Upload omni2_YYYY.dat files
-        <input type="file" multiple accept=".dat,.txt" className="hidden" onChange={async (e) => {
+        <FileInput type="file" multiple accept=".dat,.txt" className="hidden" onChange={async (e) => {
           const files = Array.from(e.target.files ?? []);
           if (!files.length) return;
           setBusy(true); setMsg(null);

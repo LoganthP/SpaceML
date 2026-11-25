@@ -1,3 +1,4 @@
+import { WriteButton } from "../lib/capabilities";
 import { CheckCircle2, Container, Database, ExternalLink, Laptop, Package, Play, RefreshCw, SquareTerminal, TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { activeJob, JobCard, useJobs, useOnJobFinished } from "../components/Jobs";
@@ -100,10 +101,10 @@ function ActionRow({ a, module, env }: { a: Action; module: ModelModule; env: En
   return (
     <div className="glass-inset space-y-2 p-3">
       <div className="flex flex-wrap items-center gap-2">
-        <button className={a.primary ? "btn-primary px-3 py-1.5 text-xs" : "btn-ghost px-3 py-1.5 text-xs"} disabled={busy}
+        <WriteButton className={a.primary ? "btn-primary px-3 py-1.5 text-xs" : "btn-ghost px-3 py-1.5 text-xs"} disabled={busy}
           onClick={async () => { setErr(null); try { await start(a.task, vals); } catch (e) { setErr((e as Error).message); } }}>
           <Play className="h-3.5 w-3.5" /> {a.label}
-        </button>
+        </WriteButton>
         {a.params?.map((p) => (
           <label key={p.key} className="flex items-center gap-1 text-[11px] text-ink-soft">
             {p.label}
@@ -147,7 +148,7 @@ export default function Datasets() {
           {showCommands && <Segmented value={env} onChange={pickEnv} options={[
             { value: "local", label: <span className="flex items-center gap-1.5"><Laptop className="h-3.5 w-3.5" /> Local (backend/)</span> },
             { value: "docker", label: <span className="flex items-center gap-1.5"><Container className="h-3.5 w-3.5" /> Docker</span> }]} />}
-          <button className="btn-ghost" onClick={rescan} disabled={scanning}>{scanning ? <Spinner /> : <RefreshCw className="h-4 w-4" />} Rescan</button>
+          <WriteButton className="btn-ghost" onClick={rescan} disabled={scanning}>{scanning ? <Spinner /> : <RefreshCw className="h-4 w-4" />} Rescan</WriteButton>
         </div>}>
       {(ds.error || models.error) && <ErrorNotice message={(ds.error ?? models.error)!.message} />}
       <Catalog />
@@ -167,7 +168,7 @@ export default function Datasets() {
                 <span className={`chip ${meta.soft}`}>{meta.title}</span>
                 {d.ready ? <CheckCircle2 className="h-5 w-5 text-emerald-500" /> : <TriangleAlert className="h-5 w-5 text-amber-500" />}
               </div>
-              <h2 className="mt-3 text-lg font-bold">{d.name}</h2>
+              <h3 className="mt-3 text-lg font-bold">{d.name}</h3>
               <p className="mt-1 text-xs text-ink-soft">{d.description}</p>
               <a href={d.source_url} target="_blank" rel="noreferrer" className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-violet-600 hover:underline">
                 Source <ExternalLink className="h-3 w-3" />

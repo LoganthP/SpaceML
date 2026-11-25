@@ -1,3 +1,4 @@
+import { WriteButton, FileInput, useCapabilities, READ_ONLY_HINT } from "../../lib/capabilities";
 import { CheckCircle2, CircleDashed, ClipboardCheck, Download, ExternalLink, Gauge, Inbox, Play, Satellite, Search, Table2, Upload } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -146,6 +147,7 @@ function StepStrip({ m, item, onChanged }: { m: MissionStatus; item: string | nu
     try { await api(`/api/missions/${m.id}/versions/${encodeURIComponent(vid)}/activate`, { method: "POST" }); reloadCatalog(); onChanged(); }
     catch (x) { setErr((x as Error).message); }
   };
+  const readOnly = useCapabilities()?.capabilities.write === false;
   const vers = m.versions ?? [];
   const auto = m.auto_install;
   return (
@@ -157,12 +159,12 @@ function StepStrip({ m, item, onChanged }: { m: MissionStatus; item: string | nu
               {vers.length > 1 && (
                 <label className="flex items-center gap-1.5"><span className="shrink-0">Version</span>
                   <select aria-label="Data version" className="input min-w-0 flex-1 px-1.5 py-0.5 text-[11px]" value={vers.find((v) => v.active)?.id}
-                    disabled={!!job} onChange={(e) => switchTo(e.target.value)}>
+                    disabled={!!job || readOnly} title={readOnly ? READ_ONLY_HINT : undefined} onChange={(e) => switchTo(e.target.value)}>
                     {vers.map((v) => <option key={v.id} value={v.id}>{v.active ? "● " : ""}{v.label || v.id}</option>)}
                   </select>
                 </label>)}
-              {auto && !job && <button className="btn-ghost px-2 py-1 text-[11px]" onClick={newest} title={`${auto.label} (${auto.size}); the current data is kept as an earlier version`}>
-                <Download className="h-3 w-3" aria-hidden="true" /> Get newest data</button>}
+              {auto && !job && <WriteButton className="btn-ghost px-2 py-1 text-[11px]" onClick={newest} title={`${auto.label} (${auto.size}); the current data is kept as an earlier version`}>
+                <Download className="h-3 w-3" aria-hidden="true" /> Get newest data</WriteButton>}
             </div>
           : job ? <span role="status"><Spinner className="mr-1 inline h-3 w-3" />{job.title} {job.progress ? `${Math.round(job.progress * 100)}%` : ""}</span>
             : <a href="#install" className="btn-primary mt-1 px-3 py-1.5 text-xs"><Download className="h-3.5 w-3.5" aria-hidden="true" /> Install data</a>)}
@@ -173,8 +175,8 @@ function StepStrip({ m, item, onChanged }: { m: MissionStatus; item: string | nu
                   {m.model.ready && <div>Model {m.model.version}{m.model.headline ? ` · ${m.model.headline.metric}: ${fmtHeadline(m.model.headline.model)} vs baseline ${fmtHeadline(m.model.headline.baseline)}` : ""}</div>}
                   {m.model.stale && <div className="text-amber-800 dark:text-amber-300">The last model was trained on another data version - train again on this one.</div>}
                   <div className="flex flex-wrap gap-1.5">
-                    <button className={`${m.model.ready ? "btn-ghost" : "btn-primary"} px-2.5 py-1 text-[11px]`} onClick={() => train("quick")}><Play className="h-3 w-3" aria-hidden="true" /> Quick train</button>
-                    <button className="btn-ghost px-2.5 py-1 text-[11px]" onClick={() => train("full")}>Full training</button>
+                    <WriteButton className={`${m.model.ready ? "btn-ghost" : "btn-primary"} px-2.5 py-1 text-[11px]`} onClick={() => train("quick")}><Play className="h-3 w-3" aria-hidden="true" /> Quick train</WriteButton>
+                    <WriteButton className="btn-ghost px-2.5 py-1 text-[11px]" onClick={() => train("full")}>Full training</WriteButton>
                   </div>
                 </div>)}
         {step(3, "Analyze", !!item, !m.dataset.installed ? "Replay and scoring open once data is installed."
@@ -201,7 +203,7 @@ function RepairBanner({ repair }: { repair: NonNullable<MissionStatus["repair"]>
     <Glass className="flex flex-wrap items-center gap-3 border border-amber-300/60 p-4" role="status">
       <p className="min-w-0 flex-1 text-sm text-amber-900 dark:text-amber-200">{repair.reason}</p>
       {state === "started" ? <span className="text-sm">Re-import started - this page updates when it finishes.</span>
-        : <button className="btn-primary px-3 py-1.5 text-sm" disabled={state === "busy"} onClick={go}><Download className="h-4 w-4" aria-hidden="true" /> {repair.label}</button>}
+        : <WriteButton className="btn-primary px-3 py-1.5 text-sm" disabled={state === "busy"} onClick={go}><Download className="h-4 w-4" aria-hidden="true" /> {repair.label}</WriteButton>}
       {!["idle", "busy", "started"].includes(state) && <p role="alert" className="w-full text-xs text-rose-700 dark:text-rose-300">{state}</p>}
     </Glass>
   );
@@ -273,9 +275,9 @@ function InstallPanel({ m, embedded = false }: { m: MissionStatus; embedded?: bo
             <p className="text-sm text-ink-soft">{auto.label} · {auto.size}. The importer checks schema, units, timestamps and gaps and records the
               source IDs and checksums; after that everything works offline.{auto.automatic ? " This starts by itself when the app runs online." : ""}</p>
           </div>
-          <button className="btn-primary px-4 py-2 text-sm" onClick={oneClick} disabled={!!busy || !!jobNow}>
+          <WriteButton className="btn-primary px-4 py-2 text-sm" onClick={oneClick} disabled={!!busy || !!jobNow}>
             {busy === "download" ? <Spinner className="h-4 w-4" /> : <Download className="h-4 w-4" aria-hidden="true" />} Install data
-          </button>
+          </WriteButton>
         </div>)}
       {!embedded && !auto && <h3 id={`install-h-${m.id}`} className="font-display text-lg font-bold">Install {m.name} data</h3>}
       {jobNow && (
@@ -304,22 +306,22 @@ function InstallPanel({ m, embedded = false }: { m: MissionStatus; embedded?: bo
               <div className="flex items-center gap-2 font-semibold"><Download className="h-4 w-4 text-indigo-600" aria-hidden="true" /> {dl.label}</div>
               <p className="text-xs text-ink-soft">Needs internet on this computer · {dl.size}. Downloads resume if interrupted.</p>
               {specific.map(field)}
-              <button className="btn-primary px-3 py-1.5 text-xs" onClick={download} disabled={!!busy || !vals.files?.trim()}>
+              <WriteButton className="btn-primary px-3 py-1.5 text-xs" onClick={download} disabled={!!busy || !vals.files?.trim()}>
                 {busy === "download" ? <Spinner className="h-3.5 w-3.5" /> : <Download className="h-3.5 w-3.5" aria-hidden="true" />} Download these
-              </button>
+              </WriteButton>
             </div>)}
           <div className="glass-inset space-y-2 p-4">
             <div className="flex items-center gap-2 font-semibold"><Upload className="h-4 w-4 text-indigo-600" aria-hidden="true" /> Upload the source files</div>
             <p className="text-xs text-ink-soft">{spec.upload.hint}. Get them from <a className="underline" href={m.source.url} target="_blank" rel="noreferrer">{m.source.title}</a>.</p>
             <label className="block text-xs font-semibold" htmlFor={`u-${m.id}`}>Files ({spec.upload.accept})</label>
-            <input id={`u-${m.id}`} type="file" multiple accept={spec.upload.accept} onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
+            <FileInput id={`u-${m.id}`} type="file" multiple accept={spec.upload.accept} onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
               className="block w-full text-xs file:mr-2 file:rounded-lg file:border-0 file:bg-indigo-600 file:px-3 file:py-1.5 file:text-white" />
             {files.length > 0 && <p className="text-[11px] text-ink-soft">{files.length} file(s), {(files.reduce((a, f) => a + f.size, 0) / 1e6).toFixed(1)} MB</p>}
             {pct != null && <div className="h-2 overflow-hidden rounded-full bg-slate-200" role="progressbar" aria-valuenow={Math.round(pct * 100)} aria-valuemin={0} aria-valuemax={100} aria-label="Upload progress">
               <div className="h-full bg-indigo-600" style={{ width: `${pct * 100}%` }} /></div>}
-            <button className="btn-primary px-3 py-1.5 text-xs" onClick={upload} disabled={!!busy || !files.length}>
+            <WriteButton className="btn-primary px-3 py-1.5 text-xs" onClick={upload} disabled={!!busy || !files.length}>
               {busy === "upload" ? <Spinner className="h-3.5 w-3.5" /> : <Upload className="h-3.5 w-3.5" aria-hidden="true" />} Upload and install
-            </button>
+            </WriteButton>
           </div>
         </div>
         <details className="mt-3 text-xs text-ink-soft">
@@ -405,6 +407,8 @@ function ItemPicker({ m, selected, onSelect }: { m: MissionStatus; selected: str
 
 /* ---------------------------------------------------------------- viewer + scoring */
 function Viewer({ m, itemId, onAnnounce, runId, onRun }: { m: MissionStatus; itemId: string; onAnnounce: (s: string) => void; runId: string | null; onRun: (id: string | null) => void }) {
+  const caps = useCapabilities();
+  const frozenUnavailable = caps?.mode === "vercel" && !caps.precomputed_modules?.includes("missions");
   const meta = useApi<{ items: Item[] }>(`/api/missions/${m.id}/items?q=${encodeURIComponent(itemId)}&limit=20`, [m.id, itemId]);
   const item = meta.data?.items.find((x) => x.id === itemId) ?? null;
   const allCols = item?.columns.filter((c) => !c.startsWith("flag:")) ?? [];
@@ -429,7 +433,7 @@ function Viewer({ m, itemId, onAnnounce, runId, onRun }: { m: MissionStatus; ite
     finally { setBusy(false); }
   }
   const res = run.run?.status === "succeeded" ? (run.run.result as ScoreResult | undefined) ?? null : null;
-  const canScore = m.family !== "segments" || m.model.ready;
+  const canScore = !frozenUnavailable && (m.family !== "segments" || m.model.ready);
   void runId;
   return (
     <Glass className="space-y-3 p-4">
@@ -439,7 +443,7 @@ function Viewer({ m, itemId, onAnnounce, runId, onRun }: { m: MissionStatus; ite
         {item?.published_label && <span className={`chip ${item.anomaly ? "bg-rose-100 text-rose-800" : "bg-emerald-100 text-emerald-800"}`}>published label: {item.anomaly ? "anomaly" : "nominal"} ({item.published_label})</span>}
         {item?.guiding_modes && <span className="chip bg-sky-100 text-sky-900">guiding: {item.guiding_modes.join(", ")}</span>}
         <button className="btn-primary ml-auto px-3 py-1.5 text-xs" onClick={score} disabled={busy || !canScore || run.run?.status === "running" || run.run?.status === "queued"}
-          title={canScore ? undefined : "Train a model first"}>
+          title={frozenUnavailable ? READ_ONLY_HINT : canScore ? undefined : "Train a model first"}>
           {busy || run.run?.status === "running" || run.run?.status === "queued" ? <Spinner className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" aria-hidden="true" />}
           {m.family === "segments" ? "Predict this segment" : `Score this ${m.item_label}`}
         </button>

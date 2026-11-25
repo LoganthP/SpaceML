@@ -1,3 +1,4 @@
+import { WriteButton } from "../lib/capabilities";
 import { Crosshair, Download, Filter, ImageOff, MapPinned, Mountain, Route, ScanSearch, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -168,7 +169,7 @@ export default function Traverse() {
         <Glass className="space-y-3 p-5">
           <div className="font-display text-lg font-bold">Download Curiosity's waypoints</div>
           <p className="text-sm text-ink-soft">The surveyed rover positions (site, drive, sol, latitude/longitude, distance driven) from NASA/JPL's mission map layer - about 0.7 MB. Images are fetched per waypoint from NASA's raw-image service when you open it.</p>
-          <button className="btn-primary" onClick={download} disabled={downloading}>{downloading ? <Spinner /> : <Download className="h-4 w-4" />} Download waypoints</button>
+          <WriteButton className="btn-primary" onClick={download} disabled={downloading}>{downloading ? <Spinner /> : <Download className="h-4 w-4" />} Download waypoints</WriteButton>
           {dlErr && <Notice tone="warn" title="NASA/JPL could not be reached">{dlErr}</Notice>}
           {tjob && <JobCard job={tjob} />}
         </Glass>)}
@@ -179,7 +180,7 @@ export default function Traverse() {
             <MapPinned className="h-4 w-4 text-orange-500" />
             <b>{st.waypoints?.toLocaleString()}</b> waypoints · sols {st.first_sol}–{st.last_sol} · <b>{st.total_km} km</b> driven ·
             source {st.source}{st.provenance?.retrieved_at ? `, retrieved ${st.provenance.retrieved_at.slice(0, 10)}` : ""}
-            <button className="btn-ghost ml-auto px-2.5 py-1 text-[11px]" onClick={download} disabled={downloading}>{downloading ? <Spinner className="h-3 w-3" /> : <Download className="h-3 w-3" />} Update</button>
+            <WriteButton className="btn-ghost ml-auto px-2.5 py-1 text-[11px]" onClick={download} disabled={downloading}>{downloading ? <Spinner className="h-3 w-3" /> : <Download className="h-3 w-3" />} Update</WriteButton>
           </div>
           <div className="grid gap-4 xl:grid-cols-[1.5fr_1fr]">
             <Glass className="p-3">

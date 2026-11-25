@@ -10,7 +10,7 @@
 # Data, models and job history live in the named volumes below and survive restarts and upgrades.
 services:
   app:
-    image: ${SMC_IMAGE:-space-ml-mission-control:3.1.10}
+    image: ${SMC_IMAGE:-space-ml-mission-control:3.1.9}
     build:
       context: .
       args:
@@ -39,7 +39,7 @@ services:
   #   docker compose --profile tools run --rm tools python -m spaceml.release build --out /bundle-out --from-data --include-models
   tools:
     profiles: ["tools"]
-    image: ${SMC_IMAGE:-space-ml-mission-control:3.1.10}
+    image: ${SMC_IMAGE:-space-ml-mission-control:3.1.9}
     environment:
       SPACEML_AUTOSETUP: "off"
     shm_size: "1gb"

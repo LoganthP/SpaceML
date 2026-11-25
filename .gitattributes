@@ -1,0 +1,7 @@
+# Bundle manifests hash exact bytes; preserve LF on Windows checkouts too.
+starter/** -text
+release/bundle/** -text
+backend/static_data/** -text
+frontend/public/data/** -text
+*.py text eol=lf
+*.sh text eol=lf

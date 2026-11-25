@@ -79,6 +79,7 @@ export function TelescopeLive({ mission }: { mission: "hubble" | "webb" }) {
       {!data && !err && <div className="flex items-center gap-2 py-8 text-sm text-ink-soft" role="status"><Spinner /> Asking Space Telescope Live…</div>}
       {!data && err && (
         <p role="status" className="mt-3 rounded-xl bg-slate-100 p-3 text-sm text-ink-soft dark:bg-white/5">{err}</p>)}
+      {data && !o && data.notice && <p role="status" className="mt-3 rounded-xl bg-slate-100 p-3 text-sm text-ink-soft dark:bg-white/5">{data.notice}</p>}
 
       {o && (
         <div className="mt-3 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">

@@ -1,0 +1,6 @@
+omni2_2000_excerpt.dat - the first 25 hourly records of 2000 from NASA/GSFC SPDF OMNIWeb
+(low_res_omni/extended/omni2_2000.dat), as redistributed in the test suite of the
+`spaceweather` Python package 0.4.2 (PyPI, tests/omni2t_2000.dat). Real data, unmodified.
+Used to check the parser's column mapping against the official format (physics identities
+E = -V*Bz/1000 and Pdyn = 2e-6*N*V^2 must hold). OMNI acknowledgement: King & Papitashvili (2005),
+J. Geophys. Res. 110, A02104; NASA/GSFC Space Physics Data Facility OMNIWeb.

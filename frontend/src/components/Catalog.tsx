@@ -1,3 +1,4 @@
+import { WriteButton } from "../lib/capabilities";
 import { AlertTriangle, Brain, X, CheckCircle2, CircleDashed, Database, Download, FolderOpen, HardDrive, PackageCheck, Play, RotateCcw, ShieldCheck, Square, Timer, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -114,7 +115,7 @@ function JobBox({ job, onCancel, busy }: { job: CJob; onCancel: () => void; busy
       <div className="flex items-center gap-2">
         {queued ? <Timer className="h-3.5 w-3.5" /> : <Spinner className="h-3.5 w-3.5" />}
         <b className="truncate">{job.title}</b>
-        <button className="btn-ghost ml-auto px-2 py-0.5 text-[11px]" onClick={onCancel} disabled={busy} aria-label={`Cancel ${job.title}`}><Square className="h-3 w-3" aria-hidden="true" /> Cancel</button>
+        <WriteButton className="btn-ghost ml-auto px-2 py-0.5 text-[11px]" onClick={onCancel} disabled={busy} aria-label={`Cancel ${job.title}`}><Square className="h-3 w-3" aria-hidden="true" /> Cancel</WriteButton>
       </div>
       {queued ? (
         <p>Waiting for <b>{job.waiting_for ?? "another training job"}</b> to finish - one training job runs at a time so the dashboard stays responsive.</p>
@@ -164,8 +165,8 @@ export function DatasetCard({ e, reload, compact = false }: { e: CatalogEntry; r
   const primaryTask = next?.kind === "task" ? next.task : null;
   const primary = !job && next && next.kind !== "wait" && (
     next.kind === "link" ? <Link className="btn-primary px-3 py-1.5 text-xs" to={next.to!}><Play className="h-3.5 w-3.5" aria-hidden="true" /> {next.label}</Link>
-      : next.kind === "task" ? <button className="btn-primary px-3 py-1.5 text-xs" disabled={!!act.pending} onClick={() => act.startTask({ task: next.task!, label: next.label, params: next.params })}>
-          {act.pending ? <Spinner className="h-3.5 w-3.5" /> : <Zap className="h-3.5 w-3.5" aria-hidden="true" />} {next.label}</button>
+      : next.kind === "task" ? <WriteButton className="btn-primary px-3 py-1.5 text-xs" disabled={!!act.pending} onClick={() => act.startTask({ task: next.task!, label: next.label, params: next.params })}>
+          {act.pending ? <Spinner className="h-3.5 w-3.5" /> : <Zap className="h-3.5 w-3.5" aria-hidden="true" />} {next.label}</WriteButton>
         : <span className="text-xs text-ink-soft">{next.label}</span>);
   const modelSub = m?.ready ? (m.headline ? `${m.headline.metric} ${Number(m.headline.model).toFixed(2)} vs ${Number(m.headline.baseline).toFixed(2)}` : m.evaluated ? m.version ?? "" : "not evaluated yet") : undefined;
   return (
@@ -191,8 +192,8 @@ export function DatasetCard({ e, reload, compact = false }: { e: CatalogEntry; r
           : "border-rose-200/70 bg-rose-50/80 text-rose-900 dark:border-rose-400/20 dark:bg-rose-500/10 dark:text-rose-100"}`}>
           <div className="flex items-center gap-1.5 font-semibold"><AlertTriangle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
             <span className="min-w-0 truncate">{fail.title} - {soft ? "stopped by a restart" : fail.status.replace("_", " ")}</span>
-            <button className="btn-ghost ml-auto px-2 py-0.5 text-[11px]" onClick={() => act.retry(fail.id)} disabled={!!act.pending}><RotateCcw className="h-3 w-3" aria-hidden="true" /> Retry</button>
-            <button className="btn-ghost px-1.5 py-0.5 text-[11px]" title="Dismiss" aria-label="Dismiss this message" onClick={() => act.dismiss(fail.id)} disabled={!!act.pending}><X className="h-3 w-3" aria-hidden="true" /></button>
+            <WriteButton className="btn-ghost ml-auto px-2 py-0.5 text-[11px]" onClick={() => act.retry(fail.id)} disabled={!!act.pending}><RotateCcw className="h-3 w-3" aria-hidden="true" /> Retry</WriteButton>
+            <WriteButton className="btn-ghost px-1.5 py-0.5 text-[11px]" title="Dismiss" aria-label="Dismiss this message" onClick={() => act.dismiss(fail.id)} disabled={!!act.pending}><X className="h-3 w-3" aria-hidden="true" /></WriteButton>
           </div>
           <p className="break-words opacity-90">{soft ? "The app restarted while this job ran. Finished parts were kept; press Retry to continue, or dismiss this note." : failText}</p>
         </div>
@@ -203,12 +204,12 @@ export function DatasetCard({ e, reload, compact = false }: { e: CatalogEntry; r
         <div className="flex flex-wrap items-center gap-1.5">
           {primary}
           {e.train.filter((a) => !(primaryTask === a.task && JSON.stringify(next?.params ?? {}) === JSON.stringify(a.params ?? {}))).map((a, i) => (
-            <button key={i} className="btn-ghost px-3 py-1.5 text-xs" title={trainBlocked ? `Needs: ${trainBlocked}` : a.note}
+            <WriteButton key={i} className="btn-ghost px-3 py-1.5 text-xs" title={trainBlocked ? `Needs: ${trainBlocked}` : a.note}
               disabled={!!trainBlocked || !!act.pending} onClick={() => act.startTask(a)}>
               <Brain className="h-3.5 w-3.5" aria-hidden="true" /> {a.label}
-            </button>))}
-          {e.download && primaryTask !== e.download.task && <button className="btn-ghost px-3 py-1.5 text-xs" disabled={!!act.pending} onClick={() => act.startTask(e.download!)}><Download className="h-3.5 w-3.5" aria-hidden="true" /> {e.download.label}</button>}
-          {e.open_in_workbench?.map((sc) => <button key={sc} className="btn-ghost px-3 py-1.5 text-xs" onClick={() => openScene(sc)}><FolderOpen className="h-3.5 w-3.5" aria-hidden="true" /> Open {sc.replace(".zip", "")} in Workbench</button>)}
+            </WriteButton>))}
+          {e.download && primaryTask !== e.download.task && <WriteButton className="btn-ghost px-3 py-1.5 text-xs" disabled={!!act.pending} onClick={() => act.startTask(e.download!)}><Download className="h-3.5 w-3.5" aria-hidden="true" /> {e.download.label}</WriteButton>}
+          {e.open_in_workbench?.map((sc) => <WriteButton key={sc} className="btn-ghost px-3 py-1.5 text-xs" onClick={() => openScene(sc)}><FolderOpen className="h-3.5 w-3.5" aria-hidden="true" /> Open {sc.replace(".zip", "")} in Workbench</WriteButton>)}
           {st?.next.kind === "link" && st.next.to !== st.page && st.data !== "missing" && <Link className="btn-ghost px-3 py-1.5 text-xs" to={st.page}>Open page</Link>}
           {e.module === "mars" && e.id === "ai4mars" && <MarsModelUpload onDone={reload} />}
         </div>
@@ -259,8 +260,8 @@ export function ReleaseCard({ c, reload }: { c: CatalogData; reload: () => void 
         {r.installed?.complete && r.installed.bundle_version === r.bundle_version &&
           <span className="chip bg-emerald-100 text-emerald-800"><ShieldCheck className="h-3 w-3" /> installed · checksums verified</span>}
         <span className="ml-auto flex items-center gap-1 text-[11px] text-ink-faint"><HardDrive className="h-3 w-3" /> {fmtBytes(c.free_bytes)} free</span>
-        {r.present && !job && <button className="btn-ghost px-2.5 py-1 text-[11px]" disabled={!!act.pending} onClick={() => act.startTask({ task: "release.install", label: "Install" })}>
-          <RotateCcw className="h-3 w-3" /> {r.installed?.complete ? "Re-verify" : "Install"}</button>}
+        {r.present && !job && <WriteButton className="btn-ghost px-2.5 py-1 text-[11px]" disabled={!!act.pending} onClick={() => act.startTask({ task: "release.install", label: "Install" })}>
+          <RotateCcw className="h-3 w-3" /> {r.installed?.complete ? "Re-verify" : "Install"}</WriteButton>}
       </div>
       {job && <JobBox job={job} onCancel={() => act.cancel(job.id)} busy={act.pending === "cancel"} />}
       {r.installed?.n_problems ? <p className="text-[11px] text-rose-600">{r.installed.n_problems} file(s) in the bundle are missing or corrupt, e.g. {r.installed.problems?.[0]}</p> : null}

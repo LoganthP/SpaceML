@@ -16,6 +16,7 @@ import os
 import re
 import socket
 import time
+import tempfile
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -148,8 +149,10 @@ def _read(p: Path, default):
 
 
 def _write(p: Path, data) -> None:
-    tmp = p.with_name(p.name + ".tmp")
-    tmp.write_text(json.dumps(data, indent=1))
+    # Concurrent Function requests must not race on the same .tmp pathname.
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=p.parent, prefix=".live-", delete=False) as file:
+        file.write(json.dumps(data, indent=1))
+        tmp = Path(file.name)
     tmp.replace(p)
 
 
