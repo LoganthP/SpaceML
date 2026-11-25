@@ -7,7 +7,7 @@ import threading
 from contextlib import contextmanager
 from typing import Any, Iterator
 
-from spaceml.config import DB_PATH
+from spaceml.config import DB_PATH, IS_MANAGED_WORKER
 
 _lock = threading.Lock()
 
@@ -63,7 +63,9 @@ def connect() -> sqlite3.Connection:
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(DB_PATH, timeout=30, check_same_thread=False)
     conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA journal_mode=DELETE" if IS_MANAGED_WORKER else "PRAGMA journal_mode=WAL")
+    if IS_MANAGED_WORKER:
+        conn.execute("PRAGMA synchronous=FULL")
     return conn
 
 

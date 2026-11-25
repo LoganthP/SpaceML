@@ -48,15 +48,9 @@ def test_auth_blocks_writes_and_checks_origin_without_affecting_public_reads(mon
     assert client.post("/api/jobs").status_code == 200
 
 
-def test_external_config_preserves_api_prefix_and_has_no_python_service():
-    config = module("scripts/configure_persistent_backend.py", "deployment_test")
-    body = config.configuration("https://api.example/")
-    assert set(body["services"]) == {"frontend"}
-    assert body["rewrites"][1]["destination"] == "https://api.example/api/:path*"
-    for unsafe in ("http://api.example", "https://user:secret@api.example", "https://api.example/prefix"):
-        try:
-            config.configuration(unsafe)
-        except ValueError:
-            pass
-        else:
-            raise AssertionError(unsafe)
+def test_config_routes_only_to_vercel_services():
+    import json
+    body = json.loads((ROOT / "vercel.json").read_text())
+    assert set(body["services"]) == {"frontend", "backend"}
+    assert all(isinstance(rewrite["destination"], dict) for rewrite in body["rewrites"])
+    assert "build_vercel_runtime.py" in body["services"]["backend"]["buildCommand"]

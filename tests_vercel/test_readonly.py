@@ -22,7 +22,7 @@ def api(tmp_path, monkeypatch):
     for name in list(sys.modules):
         if name.startswith(("app", "spaceml")):
             del sys.modules[name]
-    main = importlib.import_module("app.main")
+    main = importlib.import_module("app.vercel_app")
     with TestClient(main.app) as client:
         yield client
 
@@ -39,10 +39,13 @@ def test_empty_tmp_cold_start_has_no_database_or_writes(api):
 def test_demo_catalog_links_only_published_results_and_marks_missing_missions(api):
     catalog = api.get("/api/catalog").json()
     entries = {e["id"]: e for e in catalog["datasets"]}
-    for mid in ("hubble", "esa-m1", "esa-m2", "esa-m3", "funcube", "satnogs"):
+    for mid in ("esa-m1", "esa-m2", "esa-m3", "funcube", "satnogs"):
+        assert "mission-" + mid not in entries
+        assert api.get("/api/missions/" + mid).status_code == 404
+    for mid in ("hubble",):
         entry = entries["mission-" + mid]
         assert entry["status"]["data"] == "missing"
-        assert entry["status"]["next"] == {"kind": "none", "label": "Available in Docker"}
+        assert entry["status"]["next"] == {"kind": "none", "label": "Connect Vercel compute"}
     for name in ("kepler", "ai4mars", "omni2"):
         assert entries[name]["status"]["next"]["kind"] == "none"
     for mid in ("opssat", "webb"):
@@ -77,7 +80,7 @@ def test_all_published_webb_visits_have_real_duration_and_spacing(api):
 def test_writes_are_rejected_before_touching_disk(api, method, path):
     response = api.request(method, path, json={})
     assert response.status_code == 409
-    assert response.json()["detail"] == "Available in local/Docker mode"
+    assert response.json()["detail"] == "Connect Vercel compute to run this operation"
 
 
 def test_stored_scoring_and_repeating_never_queue_jobs(api):

@@ -10,6 +10,8 @@
 /frontend/node_modules/
 /frontend/dist/
 /frontend/public/data/*.json
+/frontend/public/runtime/
+/backend/app/runtime_bundle.json
 /*.zip
 /*.verification.json
 /vercel-preview.png

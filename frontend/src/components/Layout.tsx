@@ -134,10 +134,10 @@ function Dock({ onSearch }: { onSearch: () => void }) {
           </div>
           <div className="hidden leading-tight sm:block">
             <div className="font-display text-[15px] font-bold">Space ML</div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">{readOnly ? "Read-only demo" : "Mission Control"}</div>
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">{caps?.execution === "managed" ? "Vercel compute" : readOnly ? "Published results" : "Mission Control"}</div>
           </div>
         </NavLink>
-        {caps?.authentication?.required && !caps.authentication.authenticated && <a href="/api/session" className="btn-ghost text-xs">Sign in to train</a>}
+        {caps?.authentication?.required && !caps.authentication.authenticated && (caps.mode !== "vercel" || caps.state === "ready") && <a href="/api/session" className="btn-ghost hidden text-xs sm:inline-flex">Sign in to train</a>}
         <nav aria-label="Main" className="mx-auto hidden items-center gap-1 rounded-[20px] bg-white/40 p-1 dark:bg-white/5 lg:flex">
           {NAV_GROUPS.map((g) => <NavMenu key={g.label} group={g} />)}
         </nav>
@@ -195,6 +195,7 @@ function MobileDock() {
 
 export default function Layout({ children }: { children: ReactNode }) {
   const readOnly = useReadOnly();
+  const caps = useCapabilities();
   const [palette, setPalette] = useState(false);
   const loc = useLocation();
   useEffect(() => {
@@ -209,7 +210,14 @@ export default function Layout({ children }: { children: ReactNode }) {
       <SpaceBackdrop />
       <Dock onSearch={() => setPalette(true)} />
       <main key={loc.pathname} className="px-4 pb-28 pt-6 sm:px-6 lg:pb-12">
-        <div className="h-5 text-xs font-semibold text-ink-soft sm:hidden">{readOnly ? "Read-only demo" : ""}</div>
+        <div className="flex h-5 justify-between text-xs font-semibold text-ink-soft sm:hidden"><span>{caps?.execution === "managed" ? "Vercel compute" : readOnly ? "Published results" : ""}</span>
+          {caps?.authentication?.required && !caps.authentication.authenticated && (caps.mode !== "vercel" || caps.state === "ready") && <a href="/api/session" className="underline">Sign in to train</a>}
+        </div>
+        {caps?.execution === "managed" && caps.state !== "ready" && <div className="glass-inset mx-auto mb-4 max-w-[1400px] p-3 text-sm" role="status">
+          <b>{caps.state === "starting" || caps.state === "updating" ? "Preparing Vercel training compute" : "Vercel setup required"}</b>
+          <p className="mt-1 text-xs text-ink-soft">{caps.hint}. Published results remain browsable. Download and Train become available when compute is ready.</p>
+          {!!caps.setup_required?.length && <p className="mt-1 break-words text-xs text-ink-soft">{caps.setup_required.join(" · ")}</p>}
+        </div>}
         <div className="mx-auto max-w-[1400px]">{children}</div>
       </main>
       <MobileDock />

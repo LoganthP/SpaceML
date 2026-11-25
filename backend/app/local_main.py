@@ -14,7 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from spaceml.config import REPO_ROOT, ensure_dirs
+from spaceml.config import REPO_ROOT, ensure_dirs, IS_MANAGED_WORKER
 
 from . import handlers  # noqa: F401  (registers module handlers with the worker)
 from . import jobs, registry
@@ -32,10 +32,20 @@ async def lifespan(_: FastAPI):
     jobs.init()
     try:
         from . import starter
-        starter.install()
+        result = starter.install()
+        if IS_MANAGED_WORKER and result.get("errors"):
+            raise RuntimeError("Bundled starter assets failed verification")
     except Exception:  # noqa: BLE001 - a broken pack must never stop the API
         logging.getLogger("starter").exception("Starter pack install failed")
+        if IS_MANAGED_WORKER:
+            raise
+    if IS_MANAGED_WORKER:
+        from .managed_worker import initialize
+        initialize()
     registry.scan()
+    if IS_MANAGED_WORKER:
+        from .managed_worker import recover
+        recover()
     jobs.bootstrap()
 
     def _warm() -> None:  # pre-load data summaries so the first page view is instant
@@ -57,6 +67,9 @@ async def lifespan(_: FastAPI):
 app = FastAPI(title="Space ML Mission Control", version="3.1.10", lifespan=lifespan)
 from .auth import install as install_auth
 install_auth(app)
+if IS_MANAGED_WORKER:
+    from .managed_security import install as install_private_runtime
+    install_private_runtime(app)
 
 origins = os.environ.get("SPACEML_CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
 app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["*"], allow_headers=["*"])

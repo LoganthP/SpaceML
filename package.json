@@ -4,6 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "node scripts/vercel_frontend_dev.cjs",
-    "build": "python3 scripts/build_static_data.py && npm --prefix frontend run build"
+    "build": "python3 scripts/build_static_data.py && python3 scripts/build_vercel_runtime.py && npm --prefix frontend run build"
+  },
+  "type": "module",
+  "dependencies": {
+    "@vercel/functions": "^3.11.3"
   }
 }

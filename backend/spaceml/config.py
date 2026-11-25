@@ -13,10 +13,11 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 MODE = os.environ.get("SMC_MODE", "local").strip().lower()
 if MODE not in ("local", "vercel"):
     raise ValueError("SMC_MODE must be local or vercel")
-IS_VERCEL = MODE == "vercel"
+IS_MANAGED_WORKER = MODE == "vercel" and os.environ.get("SMC_EXECUTION") == "worker"
+IS_VERCEL = MODE == "vercel" and not IS_MANAGED_WORKER
 
-DATA_DIR = Path(os.environ.get("SPACEML_DATA_DIR", REPO_ROOT / "data")).resolve()
-MODELS_DIR = Path(os.environ.get("SPACEML_MODELS_DIR", REPO_ROOT / "models")).resolve()
+DATA_DIR = Path(os.environ.get("SPACEML_DATA_DIR", "/smc/data" if IS_MANAGED_WORKER else REPO_ROOT / "data")).resolve()
+MODELS_DIR = Path(os.environ.get("SPACEML_MODELS_DIR", "/smc/models" if IS_MANAGED_WORKER else REPO_ROOT / "models")).resolve()
 if IS_VERCEL:
     # Ignore persistent local paths in serverless mode. These directories are
     # created only if a live cache is used, never at import/cold start.
@@ -25,7 +26,7 @@ if IS_VERCEL:
     if STORAGE_DIR != _tmp and _tmp not in STORAGE_DIR.parents:
         raise ValueError("STORAGE_DIR must be under the temporary directory in Vercel mode")
 else:
-    STORAGE_DIR = Path(os.environ.get("SPACEML_STORAGE_DIR", REPO_ROOT / "storage")).resolve()
+    STORAGE_DIR = Path(os.environ.get("SPACEML_STORAGE_DIR", "/smc/storage" if IS_MANAGED_WORKER else REPO_ROOT / "storage")).resolve()
 
 DB_PATH = STORAGE_DIR / "mission_control.db"
 RUNS_DIR = STORAGE_DIR / "runs"

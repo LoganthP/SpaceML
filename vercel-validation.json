@@ -7,19 +7,19 @@
     },
     {
       "path": "/telemetry",
-      "visible_buttons_clicked": 18
+      "visible_buttons_clicked": 12
     },
     {
       "path": "/telemetry?mission=opssat",
-      "visible_buttons_clicked": 23
+      "visible_buttons_clicked": 17
     },
     {
       "path": "/telemetry?mission=hubble",
-      "visible_buttons_clicked": 19
+      "visible_buttons_clicked": 14
     },
     {
       "path": "/telemetry?mission=webb",
-      "visible_buttons_clicked": 21
+      "visible_buttons_clicked": 15
     },
     {
       "path": "/exoplanet",

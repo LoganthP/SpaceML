@@ -1,4 +1,4 @@
-import { WriteButton, FileInput, useReadOnly } from "../lib/capabilities";
+import { WriteButton, FileInput, useReadOnly, useOnVercel } from "../lib/capabilities";
 import { CheckCircle2, CircleDashed, Clock, CloudOff, Play, RotateCcw, Rocket, Upload, XCircle } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "../lib/api";
@@ -45,6 +45,7 @@ const STATE: Record<SetupStep["state"], { label: string; cls: string; icon: type
 /** Card with every setup step: what is ready, what is running, why something failed + Retry. */
 export function SetupPanel({ modules, compact = false }: { modules?: Module[]; compact?: boolean }) {
   const readOnly = useReadOnly();
+  const onVercel = useOnVercel();
   const { data, run } = useSetup();
   const [busy, setBusy] = useState(false);
   if (!data || readOnly) return null;
@@ -63,9 +64,9 @@ export function SetupPanel({ modules, compact = false }: { modules?: Module[]; c
           {busy ? <Spinner /> : <Play className="h-3.5 w-3.5" />} {missing.length ? "Download & train everything missing" : "All set"}
         </WriteButton>
       </div>
-      {!compact && <p className="text-xs text-ink-soft">Runs by itself when the app starts. Downloads and model training run side by side in the background
+      {!compact && (onVercel ? <p className="text-xs text-ink-soft">Downloads and training run in Vercel compute when requested. Completed data, models and job history persist in Vercel storage.</p> : <p className="text-xs text-ink-soft">Runs by itself when the app starts. Downloads and model training run side by side in the background
         (training uses every CPU core), with no terminal needed. Finished steps are skipped on the next start, and a step that stops making progress is
-        stopped automatically and can be retried. You can keep using the dashboard meanwhile.</p>}
+        stopped automatically and can be retried. You can keep using the dashboard meanwhile.</p>)}
       <div className="space-y-2">
         {steps.map((s) => {
           const st = STATE[s.state] ?? STATE.pending;
@@ -108,7 +109,7 @@ export function ModuleSetup({ module, stepIds, title }: { module: Module; stepId
   const open = steps.filter((s) => s.state !== "done");
   const [busy, setBusy] = useState(false);
   if (!data || !open.length) return null;
-  if (readOnly) return <p className="text-sm text-ink-soft">Read-only demo. Preparation and training are available in Docker.</p>;
+  if (readOnly) return <p className="text-sm text-ink-soft">Published results. Preparation and training are available in Vercel compute.</p>;
   const live = open.find((s) => s.state === "running" || s.state === "waiting");
   const failed = open.find((s) => s.error && (s.state === "failed" || s.state === "source_unavailable"));
   return (

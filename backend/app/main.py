@@ -2,6 +2,6 @@
 from spaceml.config import IS_VERCEL
 
 if IS_VERCEL:
-    from .vercel_app import app
+    from .managed import app
 else:
     from .local_main import *  # noqa: F401,F403 - preserve the local entrypoint

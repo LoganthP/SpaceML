@@ -42,7 +42,7 @@ function Empty({ icon: Icon, color, text, action }: { icon: typeof Activity; col
     <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
       <span className="grid h-10 w-10 place-items-center rounded-2xl" style={{ background: `${color}1f`, color }}><Icon className="h-5 w-5" aria-hidden="true" /></span>
       <p className="max-w-[16rem] text-xs text-ink-soft">{readOnly ? "No sample result is published for this module." : text}</p>
-      <span className="text-[11px] font-semibold" style={{ color }}>{readOnly ? "Available in Docker" : `${action} →`}</span>
+      <span className="text-[11px] font-semibold" style={{ color }}>{readOnly ? "Vercel compute required" : `${action} →`}</span>
     </div>);
 }
 

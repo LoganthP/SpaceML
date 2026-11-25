@@ -1,4 +1,4 @@
-import { WriteButton } from "../lib/capabilities";
+import { WriteButton, useCapabilities } from "../lib/capabilities";
 import { EvidencePanel } from "../components/Evidence";
 import { Activity, ArrowRight, FileSpreadsheet, FlaskConical, Image as ImageIcon, Orbit, Play, RefreshCw, SunMedium, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -249,6 +249,7 @@ function Experiments({ datasetId, current, onOpen, refreshKey }: { datasetId: st
 
 /* ---------------------------------------------------------------- dataset detail */
 function DatasetView({ id, runId, setRun, autoRun = false }: { id: string; runId: string | null; setRun: (r: string | null) => void; autoRun?: boolean }) {
+  const caps = useCapabilities();
   const ds = useApi<WbDataset>(`/api/workbench/datasets/${id}`, [id]);
   const catalog = useApi<AnalysisSpec[]>("/api/workbench/analyses");
   const [analysisId, setAnalysisId] = useState<string | null>(null);
@@ -270,14 +271,14 @@ function DatasetView({ id, runId, setRun, autoRun = false }: { id: string; runId
   // right after an upload: start the recommended analysis so results and insights appear without extra clicks
   const autoDone = useRef(false);
   useEffect(() => {
-    if (!autoRun || autoDone.current || runId || !ds.data || !analysis) return;
+    if (!caps?.capabilities.write || !autoRun || autoDone.current || runId || !ds.data || !analysis) return;
     const rec = ds.data.profile?.recommended;
     if (!rec || analysis.id !== rec) return;
     if (analysis.requires_model === "mars" && !ds.data.profile?.mars_model) return;
     autoDone.current = true;
     createRun("workbench", { dataset_id: ds.data.id, analysis: analysis.id, params: values })
       .then((r) => setRun(r.id)).catch((e) => setErr((e as Error).message));
-  }, [autoRun, runId, ds.data, analysis, values]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [autoRun, runId, ds.data, analysis, values, caps?.capabilities.write]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (ds.error) return <ErrorNotice message={ds.error.message} />;
   if (!ds.data) return <div className="flex items-center gap-2 text-sm text-ink-soft"><Spinner /> Loading dataset…</div>;
@@ -325,7 +326,7 @@ function DatasetView({ id, runId, setRun, autoRun = false }: { id: string; runId
           <>
             <ParamForm analysis={analysis} dataset={d} values={values} onChange={setValues} />
             <div className="flex flex-wrap items-center gap-3">
-              <button className="btn-primary" onClick={start} disabled={submitting || busy}>{submitting ? <Spinner /> : <Play className="h-4 w-4" />} Run analysis</button>
+              <WriteButton className="btn-primary" onClick={start} disabled={submitting || busy}>{submitting ? <Spinner /> : <Play className="h-4 w-4" />} Run analysis</WriteButton>
               <button className="btn-ghost" onClick={() => setValues(initialValues(analysis, d))}>Reset settings</button>
               {analysis.requires_model === "mars" && !d.profile?.mars_model && <span className="text-xs text-amber-700">Needs the Mars terrain model - train it on Data &amp; Training (quick run: minutes).</span>}
               {analysis.requires_model === "mars (optional)" && <span className="text-xs text-ink-soft">{d.profile?.mars_model ? "Terrain model installed - soil/bedrock/sand/rock will be added." : "Works now; terrain classes are added once the Mars model is installed."}</span>}

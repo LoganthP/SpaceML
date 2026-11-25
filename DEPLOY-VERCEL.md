@@ -1,249 +1,190 @@
-# Deploy Space ML Mission Control 3.1.10 on Vercel
+# Space ML Mission Control — Vercel only
 
-This is one Vercel project with `backend` and `frontend` services. It requires no
-external backend, database, Sandbox, Drive, queue, cron, or storage account.
+The active configuration runs the frontend, API gateway, scientific backend,
+training worker and persistent storage on Vercel. No external backend URL,
+Docker host or hosted database is required. Existing local/Docker commands remain
+available for local development.
 
-This configuration is explicitly a **read-only demo**. For the optional persistent
-Docker backend and frontend-only Vercel configuration, see [DEPLOY-PERSISTENT.md](DEPLOY-PERSISTENT.md).
+ESA Missions 1–3, FUNcube-1 and SatNOGS are removed from the catalog and mission
+selector. Their original files and source adapters are retained.
 
-## Import and deploy
+## Connect and deploy
 
-1. Extract `space-ml-mission-control-3.1.10-vercel.zip`, commit the contents to your
-   repository, and import that repository into Vercel.
-2. Set the project Root Directory to the repository root. Use **Other** as the
-   project framework preset; `vercel.json` selects FastAPI and Vite per service.
-   Clear project-wide install/build/output overrides. Do not select the root
-   Dockerfile as the Vercel application.
-3. Set `SMC_MODE=vercel` for Production and Preview. Python is pinned to **3.12**
-   by the root `.python-version` and `pyproject.toml`. No secrets are required.
-4. Deploy through Git, or run from the repository root:
+1. Extract `space-ml-mission-control-3.1.10-vercel.zip` and commit its contents.
+   Preserve `.gitattributes` so dataset checksums survive Windows checkouts.
+2. Import the repository into Vercel. Root Directory: repository root. Framework
+   preset: **Other**. Clear project-wide install/build/output overrides; the
+   services in `vercel.json` specify FastAPI/Python and Vite independently.
+3. Add these backend environment variables for Production:
+
+   | Variable | Value |
+   | --- | --- |
+   | `SMC_MODE` | `vercel` |
+   | `SMC_INTERNAL_TOKEN` | A new random secret, at least 32 characters; generate with `python -c "import secrets; print(secrets.token_hex(32))"` |
+   | `SMC_AUTH_USER` | Your operator login name |
+   | `SMC_AUTH_PASSWORD` | A strong, unique operator password |
+   | `SMC_AUTH_REQUIRED` | `true` (also the Vercel gateway default) |
+   | `SMC_PUBLIC_ORIGIN` | Your public HTTPS origin, e.g. `https://spaceml.vercel.app` |
+
+   Never put secrets in `VITE_*`, Git or the ZIP. Scope Preview settings separately.
+   `SMC_INTERNAL_TOKEN` must be available to both the backend and the root routing
+   middleware; use the project's shared environment variables.
+4. Ensure your project/team permits **Vercel Sandbox and Vercel Drives**. The SDK
+   uses the Function's Vercel OIDC identity to create project-owned resources.
+   No third-party application backend or database integration is needed.
+5. Deploy through Git, or from repository root:
 
    ```sh
+   vercel login
    vercel link
    vercel --prod
    ```
 
-The public backend is `/api` and `/api/*`. All other public traffic goes to the
-frontend. React Router deep links, including `/mars/traverse`, load after refresh.
-SPA rewriting excludes actual assets, frozen data, and Vite development resources.
-Hashed build assets have immutable one-year browser caching. Frozen data has CDN
-caching and content-addressed filenames.
+The public services remain `backend` at `/api` and `/api/*`, and `frontend` at
+all other paths. The browser calls same-origin `/api/*`. There are no bindings:
+the frontend is static, and Sandbox/Drive are SDK resources rather than additional
+services. No external API rewrite is configured.
 
-There are **no service bindings**. The frontend is static browser code and calls
-same-origin `/api/*`; neither service makes server-side calls to the other. Never
-put an internal service binding URL into `VITE_*` build variables.
+The first visit starts initialization. The page shows **Preparing Vercel training
+compute** and polls readiness. Installing dependencies into persistent storage
+can take several minutes the first time. Click **Sign in to train** when compute
+is ready. HTTPS HTTP Basic credentials are managed by the browser, not stored
+by frontend JavaScript. Missing settings produce `state=setup_required` with
+the setting names in `/api/health`; training is not falsely advertised as working.
+Published results remain browsable before setup is complete.
+An unauthenticated health request intentionally reports `write=false` and
+`train=false` even after compute is ready; sign in to enable operator actions.
 
-## Settings
+## Architecture and capabilities
 
-| Environment variable | Default | Purpose |
+| Component | Vercel resource | Behavior |
 | --- | --- | --- |
-| `SMC_MODE` | `local`; the Function entrypoint defaults to `vercel` | The single application mode switch; set `vercel` in the dashboard explicitly |
-| `STORAGE_DIR` | `/tmp/smc` on Vercel | Ephemeral live-feed cache; paths outside the OS temporary directory are rejected |
-| `SMC_LIVE_MAX_AGE` | `120` seconds | Space Telescope Live refresh/cache age |
+| Vite frontend | Static frontend service | Existing pages, assets and SPA deep links |
+| `api/index.py` | Python Function/backend service | Authentication, resource startup/readiness and bounded HTTP proxy |
+| Existing FastAPI app and job worker | Vercel Sandbox | Real downloads, training, inference, analysis and reviews, outside Function request duration |
+| Datasets, models, checkpoints, uploads, SQLite job/run/review records | Vercel Drive mounted at `/smc` | Retained across Function cold starts, Sandbox suspension and API restarts |
+| Original starter assets and corrected Webb/OPS-SAT publication | Verified build source/runtime source archive | Original archives remain unchanged |
 
-Local/Docker continues using `backend/requirements.txt`, mounted data/models/
-storage, SQLite, existing job workers, and `SPACEML_STORAGE_DIR`. Existing
-`docker-compose` and `scripts/dev.sh` commands are unchanged. Leave `SMC_MODE`
-unset or `local` there. No local dataset, archive, or database is deleted by the
-mode switch. Version reporting is updated to 3.1.10.
+The managed image is supplied by Vercel (`vercel/sandbox/python:3.14`); you do not
+build or host a Docker image. Its included `uv` installs Python 3.12 and the
+existing CPU training dependencies into the Drive. Torch/torchvision stay out of
+the Function bundle. The scientific pipelines are the same implementations used
+locally. A cached result is never labeled as a new training execution.
 
-## What is read-only on Vercel, and why
+Once ready and signed in, Download/Install and Train call the live backend.
+Training still requires actual installed, validated data. Kepler, AI4Mars, OMNI2
+and Hubble need their real source downloads/imports before training. Telemetry,
+OPS-SAT, corrected Webb, traverse and scene archives have bundled assets.
+Installed, ready to train and model available remain separate states. Source
+outages or access requirements are surfaced through the existing job errors.
 
-| Operation | Vercel behavior | Reason |
-| --- | --- | --- |
-| Browse datasets, runs, models, evaluation, traverse, stored series, evidence and downloads | Works from frozen, verified outputs | Does not require durable writes or ML imports |
-| Score a bundled telemetry sample; repeat a stored result | Returns the matching precomputed run, with `execution=precomputed` | Does not launch a worker or claim a new inference happened |
-| Train/evaluate new models, install/download datasets, rescan | HTTP 409 `Available in local/Docker mode`; controls disabled with a tooltip | No persistent filesystem or background process |
-| Upload datasets/models, delete data, activate versions, save reviews/masks/annotations | Same 409 and disabled controls | These require durable writes |
-| Compute a result for an input absent from the frozen snapshot | 409 with a local/Docker hint | Torch and other scientific dependencies are optional and absent from the Function |
-| Hubble/Webb live observation and survey image proxy | Works at runtime; `/tmp` cache plus `s-maxage`/stale CDN headers | A bounded HTTP proxy is suitable for a Function |
+Runtime downloads from NASA/MAST/OMNIWeb/Hugging Face/PyPI are data/dependency
+sources, not external application backends. Normal builds perform no such
+downloads or training through the build scripts.
 
-`/api/health` reports version, mode, read-only features, capabilities, and available
-precomputed modules. The frontend reads capabilities once and preserves the
-existing layout while disabling writable actions. The live proxy preserves the
-last-known/offline notice. If a new cold instance cannot reach upstream and has
-no cached observation, it returns an explicit unavailable notice; no observation
-is invented. `/tmp` is created only when a cache is needed and may disappear.
+Browser uploads through the Function are limited to 4 MB. Use Download/Install
+for large built-in datasets: the Sandbox fetches them directly into Vercel
+storage. Responses above 4 MB redirect to a short-lived, read-only signed Sandbox
+download so the Function stays under its 4.5 MB response limit. Arbitrary
+multi-gigabyte browser uploads are not implemented by this gateway.
 
-The supplied assets contain telemetry data/models for 81 channels, OPS-SAT
-segments, ten Webb visit series, flood scene archives, and Curiosity waypoints.
-They do **not** contain Kepler folded light curves/CNN weights, AI4Mars training
-pairs/Mars weights, or OMNI2 caches. Those pages retain their existing truthful
-readiness/empty states; this release does not fabricate exoplanet candidates,
-segmentation masks, or storm forecasts. Webb's original ten MAST FITS products
-have now been re-imported with the corrected parser; every visit passes duration
-and ~64 ms sample-spacing checks. Fresh OPS-SAT and Webb models and held-out
-evaluation results are published. See `docs/mission-validation.json` for source
-checksums, per-visit timing and metrics. Hubble, ESA Missions 1–3, FUNcube-1 and
-SatNOGS are explicitly Data missing. No unavailable source is marked installed.
+## Persistence, limits and security
 
-## Offline static-data build
+Production has one stable named runtime and Drive. Previews use a separate
+identity derived from the Git branch. One Sandbox owns the writable Drive; one
+supervisor owns the API/worker. Updates use separate source folders and wait for
+active jobs/runs before restarting. Datasets and models are not removed on resume.
+The default production names are `space-ml-production` (Sandbox) and
+`space-ml-production-data` (Drive); do not delete the Drive during restart checks.
 
-The ZIP includes a frozen capsule computed from the actual starter archives and
-existing trained models. Ordinary Vercel builds run:
+Vercel Sandbox and Drive usage consumes account quotas and may be billed. Session
+duration/capacity depend on the plan. The default session is 45 minutes. Set
+`SMC_SANDBOX_SECONDS` within your plan's limit for longer sessions (up to 24 hours
+on eligible plans). Suspension stops processes; on the next request the runtime
+resumes and recovers interrupted jobs/runs using the same IDs. Existing pipeline
+checkpoints/completed artifacts are reused where supported; a step without a
+checkpoint restarts. This is not unlimited uninterrupted compute.
 
-```sh
-python3 scripts/build_static_data.py
-```
+Official references: [Sandbox persistence](https://vercel.com/docs/sandbox/concepts/persistent-sandboxes),
+[Vercel Drives](https://vercel.com/docs/drives),
+[session limits](https://vercel.com/kb/guide/vercel-sandbox-duration-and-persistence).
 
-This standard-library-only step checks every source hash against
-`DATASETS-MANIFEST.json`, checks frozen output hashes, and exports the capsule to
-`frontend/public/data`. It does not import Torch or download datasets. Both
-services run this check independently. Normal dependency installation contacts
-the npm and Python package registries; data generation has no network allowlist.
-The source ZIP stores frozen JSON once under `backend/static_data`; frontend JSON
-copies are deliberately generated by this build step instead of duplicated in
-the source upload. Static report/image/evidence assets remain in the ZIP.
+Mutating public API routes require authentication and an approved browser origin.
+The Sandbox port requires the internal token for every request. It is never sent
+to the browser. Large downloads receive a path/query-bound GET-only signature
+that expires after two minutes. To rotate the internal token, stop the Sandbox
+first, change the secret and redeploy; preserve the Drive.
 
-To regenerate the capsule on a local preparation machine:
+SQLite uses rollback-journal mode/full synchronous writes in the single mounted
+worker. The Function never opens the database. Actual mounted filesystem and
+restart behavior must be checked after connecting your Vercel account.
 
-```sh
-python -m pip install -r backend/requirements-train.txt
-python scripts/build_static_data.py --refresh
-```
+Optional settings: `SMC_REGION=iad1`, `SMC_SANDBOX_SECONDS=2700`,
+`SMC_LIVE_MAX_AGE=120`, `SMC_SOURCE_ORIGIN` (explicit HTTPS source deployment
+origin). Protected deployment asset URLs need `SMC_DEPLOYMENT_BYPASS`, or a public
+production source origin. Keep these values backend-only and correctly scoped.
+For local SDK testing, use `vercel link && vercel env pull`. If OIDC is unavailable,
+the SDK supports backend-only `VERCEL_TOKEN`, `VERCEL_PROJECT_ID`, `VERCEL_TEAM_ID`;
+never commit or paste them into source.
 
-This installs the existing starter pack and release bundle into a temporary build
-directory, runs real inference, freezes API response shapes and evidence, and
-removes only that temporary directory on completion. It never rewrites the source
-archives or their manifests. Keep Torch/torchvision on matching CPU builds, as
-documented for local installation. Commit the new capsule and static assets
-together after regeneration. Adding Kepler/Mars/OMNI outputs requires supplying
-their real prepared data/models through the release/starter pack first.
+## Verify after connecting Vercel
 
-The Function runtime dependencies are the root `requirements.txt`/`pyproject.toml`
-(FastAPI/Uvicorn and their small dependencies). Training dependencies remain
-optional under `backend/requirements-train.txt`; local/Docker requirements retain
-their original behavior. `app.main` selects the small API before importing any
-local database, job, or scientific module.
+1. Wait for `/api/health`: `state=ready`, `execution=managed`,
+   `storage=vercel-drive`. Sign in; `write` and `train` must become true.
+2. Start OPS-SAT Quick Train in the deployed UI. Reload while it runs and confirm
+   the same job ID continues; open its held-out evaluation.
+3. Stop the Sandbox session without deleting the Drive. Reopen the application;
+   verify that model weights, evaluation, job history and reviews remain.
+4. Interrupt a running job to verify same-ID recovery. Check corrected Webb
+   timing/training, then download and train Kepler, AI4Mars and OMNI2 individually.
+5. Confirm unauthenticated writes return 401 and wrong browser origins return
+   403. Verify a large result redirects without exposing the internal secret.
 
-## Verification and limits
+You selected ZIP delivery and will connect Vercel yourself. Cloud provisioning,
+dataset downloads/training, Drive filesystem behavior and Sandbox restart checks
+are therefore **not verified on Vercel** in this workspace. Local tests must not
+be interpreted as cloud deployment success.
 
-```sh
-vercel dev --local --listen 3100
-python scripts/check_vercel_browser.py
-python -m pip install -r tests_vercel/requirements.txt
-python -m pytest tests_vercel -q
-cd backend && python -m pytest -q
-cd ../frontend && npx tsc --noEmit && npm run build
-```
-
-Local Vercel development uses the isolated root Python 3.12 environment; the
-frontend port helper works on Windows and Linux. On Windows, stop/restart Vercel
-after changing API Python files if the runtime's reloader waits on open requests.
-
-The measured Linux Python 3.12 dependency wheels expand to 10.34 MiB. Backend
-source plus the frozen capsule and regenerated mission evaluations remain
-approximately **50 MiB combined**,
-well below the standard **500 MB uncompressed Python Function limit**. This is a
-measurement of the application payload, not a claim that a cloud production
-build was uploaded. A Vercel build may add a small platform launcher. The Function
-configuration excludes original models/archives and frontend/static assets from
-its bundle; they remain in the release ZIP. Function memory is 1024 MB and maximum
-duration is 30 seconds.
-
-Function JSON responses are bounded at 4,000,000 bytes. Larger prebuilt responses
-and all report/evidence binaries are served as static assets through redirects,
-so a Function never streams an oversized body. Stored mission item lists are
-filtered and paginated, and series requests honor column/range/point limits.
-Source: [Vercel Function limits](https://vercel.com/docs/functions/limitations).
-
-The local mission, catalog and job regressions and Vercel read-only/authentication
-tests are checked separately. Legacy source integration tests remain skipped
-until those import/job workflows are restored; their catalog entries truthfully
-show Data missing. See `vercel-validation.json` for browser results. The Docker
-engine was unavailable during validation. Existing Docker/Compose/dev commands
-are preserved; an optional production override adds authentication. The actual
-deployed training/reload/restart workflow still needs a persistent backend host.
-
-## Recreate and verify the ZIP
+## Local build and packaging
 
 ```sh
+npm ci
+python scripts/build_static_data.py
+python scripts/build_vercel_runtime.py
+cd frontend
+npm ci
+npm run build
+cd ..
 python scripts/make_vercel_zip.py
 ```
 
-The packager explicitly preserves nested `starter/data`, `starter/models`, and
-`starter/pack.json`. It opens the completed ZIP, validates ZIP CRCs, and verifies
-all starter/release files against the copies of `DATASETS-MANIFEST.json` and
-`starter/pack.json` **inside that ZIP**, including both `.tar.gz` archives. It
-writes `space-ml-mission-control-3.1.10-vercel.verification.json` alongside it.
+The deterministic runtime source archive contains application code, requirements,
+starter/release data and samples. It excludes `.env` files, secrets, caches, tests
+and frozen API responses. The root `proxy.js` routing middleware protects `/runtime/*` before
+the static cache using the internal token; bootstrap requests include that token.
+After deployment, verify an unauthenticated `/runtime/<hash>.tar.gz` request is
+403 before starting the runtime. Do not remove this middleware or expose the
+server source archive publicly. Build-generated runtime archives are recreated after
+ZIP extraction. The final ZIP verifier checks `DATASETS-MANIFEST.json`,
+`starter/pack.json`, frozen results and generated mission artifact hashes from
+inside the ZIP. No original archive is deleted or replaced.
 
-## Final project configuration
+`docs/mission-validation.json` records corrected Webb timing/source checksums and
+held-out metrics. Actual published weights/data are in `release/mission-results`.
+`persistent-workflow-validation.json` reports the prior local process restart
+check, not a cloud Sandbox/Drive check.
 
-Both services are public through the top-level rewrites, with API rules first
-and the frontend catch-all last. There are no internal services or bindings.
+Local validation for this revision: 29 Vercel/fallback/gateway/security/archive
+tests and 16 local mission/catalog/job/artifact/recovery tests passed. TypeScript
+and the Vite production build passed. All 15 pages passed the browser audit with
+zero console, HTTP, click or overflow errors. The authenticated local OPS-SAT
+UI training/reload/evaluation/process-restart workflow also passed. Actual Vercel
+provisioning and cloud training remain your post-connection acceptance checks.
+Native `vercel dev --local` also started both services: health/catalog/deep links
+returned 200 and the private runtime archive route returned 403 without its token.
 
-```json
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "backend": {
-      "root": ".",
-      "runtime": "python",
-      "framework": "fastapi",
-      "entrypoint": "api.index:app",
-      "buildCommand": "python3 scripts/build_static_data.py",
-      "functions": {
-        "api/index.py": {
-          "maxDuration": 30,
-          "memory": 1024,
-          "excludeFiles": "{frontend/**,starter/**,models/**,data/**,storage/**,release/**,samples/**,notebooks/**,docs/**,audit*/**,deployment/**,scripts/**,tests*/**,backend/tests/**,**/*.zip,**/node_modules/**,**/.venv/**,**/.vercel/**}"
-        }
-      }
-    },
-    "frontend": {
-      "root": "frontend",
-      "framework": "vite",
-      "installCommand": "npm ci --no-audit --no-fund",
-      "buildCommand": "python3 ../scripts/build_static_data.py && npm run build",
-      "devCommand": "node ../scripts/vercel_frontend_dev.cjs",
-      "outputDirectory": "dist",
-      "headers": [
-        {
-          "source": "/assets/(.*)",
-          "headers": [
-            {
-              "key": "Cache-Control",
-              "value": "public, max-age=31536000, immutable"
-            }
-          ]
-        },
-        {
-          "source": "/data/(.*)",
-          "headers": [
-            {
-              "key": "Cache-Control",
-              "value": "public, max-age=300, stale-while-revalidate=86400"
-            }
-          ]
-        }
-      ],
-      "rewrites": [
-        {
-          "source": "/((?!assets/|data/|src/|node_modules/|@|favicon[.]svg$).*)",
-          "destination": "/index.html"
-        }
-      ]
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/api",
-      "destination": {
-        "service": "backend"
-      }
-    },
-    {
-      "source": "/api/(.*)",
-      "destination": {
-        "service": "backend"
-      }
-    },
-    {
-      "source": "/(.*)",
-      "destination": {
-        "service": "frontend"
-      }
-    }
-  ]
-}
-```
+The Linux Python 3.12 gateway dependency wheels plus application/frozen data
+measure approximately 54 MiB, below the 500 MB Python Function limit. The large
+runtime source archive is a protected static asset, not part of the Function.
+See `vercel-runtime-size.json`; this is an application payload measurement,
+excluding Vercel's launcher, not an uploaded production bundle measurement.

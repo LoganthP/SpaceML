@@ -167,7 +167,7 @@ function StepStrip({ m, item, onChanged }: { m: MissionStatus; item: string | nu
                 <Download className="h-3 w-3" aria-hidden="true" /> Get newest data</WriteButton>}
             </div>
           : job ? <span role="status"><Spinner className="mr-1 inline h-3 w-3" />{job.title} {job.progress ? `${Math.round(job.progress * 100)}%` : ""}</span>
-            : readOnly ? "Available in Docker" : <a href="#install" className="btn-primary mt-1 px-3 py-1.5 text-xs"><Download className="h-3.5 w-3.5" aria-hidden="true" /> Install data</a>)}
+            : readOnly ? "Vercel compute required" : <a href="#install" className="btn-primary mt-1 px-3 py-1.5 text-xs"><Download className="h-3.5 w-3.5" aria-hidden="true" /> Install data</a>)}
         {step(2, "Train", !m.trainable || m.model.ready, !m.dataset.installed ? "Data missing" : !m.trainable ? "Not needed - no labels to train on; rolling detection flags intervals."
           : job ? <span role="status"><Spinner className="mr-1 inline h-3 w-3" />{job.title} {job.progress ? `${Math.round(job.progress * 100)}%` : ""}</span>
             : !m.dataset.installed ? "Available after the data is installed."
@@ -247,7 +247,7 @@ function InstallPanel({ m, embedded = false }: { m: MissionStatus; embedded?: bo
       setFiles([]);
     } catch (e) { setMsg({ ok: false, text: (e as Error).message }); } finally { setBusy(null); setPct(null); }
   };
-  if (readOnly) return <Notice title="Read-only demo">{m.dataset.installed ? "Published data can be explored above." : "Data missing: no validated dataset is published."} Installation and uploads are available in Docker.</Notice>;
+  if (readOnly) return <Notice title="Published results">{m.dataset.installed ? "Published data can be explored above." : "Data missing: no validated dataset is published."} Installation and uploads are available in Vercel compute.</Notice>;
   if (!spec) return <Notice title="Data missing">Import and validate real source data before enabling this mission.</Notice>;
   const dl = spec.download;
   const auto = m.auto_install;
@@ -411,7 +411,7 @@ function ItemPicker({ m, selected, onSelect }: { m: MissionStatus; selected: str
 function Viewer({ m, itemId, onAnnounce, runId, onRun }: { m: MissionStatus; itemId: string; onAnnounce: (s: string) => void; runId: string | null; onRun: (id: string | null) => void }) {
   const caps = useCapabilities();
   const canRun = useCanRun("missions", { mission: m.id, action: "score", item: itemId });
-  const frozenUnavailable = caps?.mode === "vercel" && !canRun;
+  const frozenUnavailable = caps?.mode === "vercel" && caps.execution !== "managed" && !canRun;
   const meta = useApi<{ items: Item[] }>(`/api/missions/${m.id}/items?q=${encodeURIComponent(itemId)}&limit=20`, [m.id, itemId]);
   const item = meta.data?.items.find((x) => x.id === itemId) ?? null;
   const allCols = item?.columns.filter((c) => !c.startsWith("flag:")) ?? [];
@@ -436,7 +436,7 @@ function Viewer({ m, itemId, onAnnounce, runId, onRun }: { m: MissionStatus; ite
     finally { setBusy(false); }
   }
   const res = run.run?.status === "succeeded" ? (run.run.result as ScoreResult | undefined) ?? null : null;
-  const canScore = !frozenUnavailable && (m.family !== "segments" || m.model.ready);
+  const canScore = canRun && (m.family !== "segments" || m.model.ready);
   void runId;
   return (
     <Glass className="space-y-3 p-4">
@@ -654,7 +654,7 @@ function Evaluation({ m, runId, onRun, onAnnounce }: { m: MissionStatus; runId: 
           {run.run && ["queued", "running"].includes(run.run.status) ? <Spinner className="h-3.5 w-3.5" /> : <ClipboardCheck className="h-3.5 w-3.5" aria-hidden="true" />} {readOnly ? (canEvaluate ? "View sample result" : READ_ONLY_HINT) : `Evaluate ${m.model.version ?? ""}`}
         </button>
       </div>
-      {!m.model.ready && <p className="text-xs text-ink-soft">{readOnly ? "No model result is published. Training is available in Docker." : <>No model yet - press <b>Quick train</b> above, then evaluate.</>}</p>}
+      {!m.model.ready && <p className="text-xs text-ink-soft">{readOnly ? "No model result is published. Training is available in Vercel compute." : <>No model yet - press <b>Quick train</b> above, then evaluate.</>}</p>}
       {err && <ErrorNotice message={err} />}
       {run.run?.status === "failed" && <ErrorNotice message={run.run.error ?? "evaluation failed"} />}
       {met && (

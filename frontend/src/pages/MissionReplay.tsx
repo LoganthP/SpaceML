@@ -1,4 +1,4 @@
-import { FileInput } from "../lib/capabilities";
+import { FileInput, WriteButton } from "../lib/capabilities";
 import { ChevronLeft, ChevronRight, Clapperboard, Eye, EyeOff, Pause, Play, Radar, Rewind, Sparkles, Telescope, Trophy } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -336,9 +336,9 @@ export default function MissionReplay() {
             <Sparkles className="h-3.5 w-3.5 text-violet-500" />
             Replay computed {timeAgo(run.data.finished_at)} with model <code>{res.model.version}</code>
             {replays.data && replays.data.length > 1 && <> · {replays.data.length} replays of this event</>}
-            <button className="btn-ghost ml-auto px-3 py-1.5 text-xs" onClick={runReplay} disabled={starting || !!pending || !haveModel}>
+            <WriteButton className="btn-ghost ml-auto px-3 py-1.5 text-xs" onClick={runReplay} disabled={starting || !!pending || !haveModel}>
               {starting || pending ? <Spinner className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />} Recompute here
-            </button>
+            </WriteButton>
           </div>
           <ReplayView run={run.data} />
           <div className="mt-4 grid gap-4 xl:grid-cols-2">
@@ -364,7 +364,7 @@ export default function MissionReplay() {
               : haveData && haveModel ? (
                 <>
                   <p className="text-sm text-ink-soft">Data and forecaster are installed. The replay issues a forecast every hour of the event using only data up to that hour, then scores it against what was observed.</p>
-                  <button className="btn-primary" onClick={runReplay} disabled={starting}>{starting ? <Spinner /> : <Play className="h-4 w-4" />} Run replay</button>
+                  <WriteButton className="btn-primary" onClick={runReplay} disabled={starting}>{starting ? <Spinner /> : <Play className="h-4 w-4" />} Run replay</WriteButton>
                 </>
               ) : (
                 <>

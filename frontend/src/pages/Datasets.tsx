@@ -1,4 +1,4 @@
-import { WriteButton, useReadOnly } from "../lib/capabilities";
+import { WriteButton, useReadOnly, useOnVercel } from "../lib/capabilities";
 import { CheckCircle2, Container, Database, ExternalLink, Laptop, Package, Play, RefreshCw, SquareTerminal, TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { activeJob, JobCard, useJobs, useOnJobFinished } from "../components/Jobs";
@@ -92,6 +92,7 @@ const cmd = (env: Env, cli: string) => cli.split(" && … ").map((c) =>
 
 function ActionRow({ a, module, env }: { a: Action; module: ModelModule; env: Env }) {
   const readOnly = useReadOnly();
+  const onVercel = useOnVercel();
   const catalog = useCatalog();
   const entry = catalog.data?.datasets.find((e) => e.module === module);
   const training = /train|retrain|setup|resume/.test(a.task);
@@ -116,21 +117,21 @@ function ActionRow({ a, module, env }: { a: Action; module: ModelModule; env: En
             <input type="number" className="input w-20 px-2 py-1 text-xs" min={p.min} max={p.max} value={vals[p.key]}
               onChange={(e) => setVals({ ...vals, [p.key]: Number(e.target.value) })} />
           </label>))}
-        {!readOnly && !showCommands && (
+        {!onVercel && !showCommands && (
           <button onClick={() => setCmdOpen((o) => !o)} title="Show the terminal command"
             className={`ml-auto grid h-7 w-7 place-items-center rounded-lg transition ${cmdOpen ? "bg-slate-800 text-emerald-300" : "text-ink-faint hover:bg-white/70 hover:text-ink"}`}>
             <SquareTerminal className="h-3.5 w-3.5" />
           </button>)}
       </div>
       {a.note && !readOnly && <p className="text-[10px] leading-snug text-ink-faint">{a.note}</p>}
-      {!readOnly && (showCommands || cmdOpen) && <div className="space-y-1">{cmd(env, cli).split("\n").map((c) => <CopyCommand key={c} cmd={c} always />)}</div>}
+      {!onVercel && (showCommands || cmdOpen) && <div className="space-y-1">{cmd(env, cli).split("\n").map((c) => <CopyCommand key={c} cmd={c} always />)}</div>}
       {err && <p className="text-xs text-rose-700">{err}</p>}
     </div>
   );
 }
 
 export default function Datasets() {
-  const readOnly = useReadOnly();
+  const onVercel = useOnVercel();
   const ds = useApi<Dataset[]>("/api/datasets");
   const models = useApi<Models>("/api/models");
   const { jobs } = useJobs();
@@ -147,11 +148,11 @@ export default function Datasets() {
 
   return (
     <Page title="Data & training"
-      subtitle={readOnly ? "Read-only demo. Explore published data and results; downloads, training and uploads are available in Docker." : "Every dataset with its status, and a Train button for each model. Nothing downloads or trains until you click - with a release bundle everything works offline."}
+      subtitle={onVercel ? "Load, train and analyze datasets on Vercel. Datasets, models and job history persist in Vercel storage." : "Every dataset with its status, and a Train button for each model. Nothing downloads or trains until you click - with a release bundle everything works offline."}
       icon={<IconBadge gradient="from-emerald-400 to-teal-500"><Database className="h-6 w-6" /></IconBadge>}
       actions={
         <div className="flex flex-wrap items-center gap-2">
-          {showCommands && <Segmented value={env} onChange={pickEnv} options={[
+          {!onVercel && showCommands && <Segmented value={env} onChange={pickEnv} options={[
             { value: "local", label: <span className="flex items-center gap-1.5"><Laptop className="h-3.5 w-3.5" /> Local (backend/)</span> },
             { value: "docker", label: <span className="flex items-center gap-1.5"><Container className="h-3.5 w-3.5" /> Docker</span> }]} />}
           <WriteButton className="btn-ghost" onClick={rescan} disabled={scanning}>{scanning ? <Spinner /> : <RefreshCw className="h-4 w-4" />} Rescan</WriteButton>

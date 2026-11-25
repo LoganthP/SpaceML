@@ -1,4 +1,5 @@
 import { Activity, CheckCircle2, CircleDashed, Play, Search, Satellite } from "lucide-react";
+import { useCanRun, useCapabilities } from "../lib/capabilities";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import type { GlobeMarker, GlobeOrbit } from "../components/ContextGlobe";
 import { EvidencePanel } from "../components/Evidence";
@@ -139,6 +140,8 @@ export default function Telemetry() {
   const [query, setQuery] = useState("");
   const [onlyTrained, setOnlyTrained] = useState(true);
   const [selected, setSelected] = useState<string | null>(params.get("chan"));
+  const canRun = useCanRun("telemetry", { chan_id: selected });
+  const caps = useCapabilities();
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [showBaseline, setShowBaseline] = useState(true);
@@ -224,7 +227,7 @@ export default function Telemetry() {
                   <div className="font-display text-2xl font-bold">{sel.chan_id}</div>
                   <div className="text-xs text-ink-soft">{sel.num_values.toLocaleString()} test steps · {sel.anomaly_sequences.length} labeled anomal{sel.anomaly_sequences.length === 1 ? "y" : "ies"} ({sel.anomaly_classes.join(", ")})</div>
                 </div>
-                <button className="btn-primary" onClick={start} disabled={submitting || !sel.has_model || run?.status === "running" || run?.status === "queued"}>
+                <button className="btn-primary" title={!canRun ? caps?.hint ?? "Waiting for backend capabilities" : undefined} onClick={start} disabled={!canRun || submitting || !sel.has_model || run?.status === "running" || run?.status === "queued"}>
                   {submitting ? <Spinner /> : <Play className="h-4 w-4" />} Run anomaly detection
                 </button>
               </div>

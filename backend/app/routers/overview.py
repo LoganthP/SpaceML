@@ -1,5 +1,6 @@
 """Dashboard overview, dataset catalog, model registry and evaluation results."""
 from __future__ import annotations
+import os
 
 from fastapi import APIRouter, Request
 
@@ -91,11 +92,14 @@ def datasets() -> list[dict]:
 def health(request: Request):
     from ..manifest import APP_VERSION
     from ..auth import required, authenticated
+    from spaceml.config import MODE, IS_MANAGED_WORKER
     allowed = authenticated(request)
-    return {"status": "ok", "mode": "local", "version": APP_VERSION,
+    return {"status": "ok", "mode": MODE, "version": APP_VERSION,
+            "execution": "managed" if IS_MANAGED_WORKER else "local",
+            "bundle_sha256": os.environ.get("SMC_BUNDLE_SHA256") if IS_MANAGED_WORKER else None,
             "read_only": [] if allowed else ["authentication_required"],
             "authentication": {"required": required(), "authenticated": allowed},
-            "storage": "persistent", "capabilities": {"write": allowed, "train": allowed, "live": True},
+            "storage": "vercel-drive" if IS_MANAGED_WORKER else "persistent", "capabilities": {"write": allowed, "train": allowed, "live": True},
             "data_dir": str(DATA_DIR), "models_dir": str(MODELS_DIR)}
 
 

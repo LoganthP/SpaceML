@@ -1,9 +1,9 @@
 {
   "environment": "isolated local process with persistent filesystem; Docker host not tested",
-  "job_id": "70b6851a0979",
+  "job_id": "bc26c820b0f8",
   "status_after_reload": "running",
-  "run_id": "d3a002dde7a6",
-  "model_version": "v20261125-144300-quick",
+  "run_id": "229796bb516e",
+  "model_version": "v20261125-160144-quick",
   "model_sha256": "0be5e70eade874ee0aa69086e19f98c1b5e54d46ef46dee7bd808fb49518b6d4",
   "restart_preserved": [
     "model weights",

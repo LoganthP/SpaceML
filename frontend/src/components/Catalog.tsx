@@ -1,4 +1,4 @@
-import { WriteButton, useReadOnly } from "../lib/capabilities";
+import { WriteButton, useReadOnly, useOnVercel } from "../lib/capabilities";
 import { AlertTriangle, Brain, X, CheckCircle2, CircleDashed, Database, Download, FolderOpen, HardDrive, PackageCheck, Play, RotateCcw, ShieldCheck, Square, Timer, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -149,6 +149,7 @@ function Pill({ tone, label, sub }: { tone: "ok" | "warn" | "off"; label: string
 
 export function DatasetCard({ e, reload, compact = false }: { e: CatalogEntry; reload: () => void; compact?: boolean }) {
   const readOnly = useReadOnly();
+  const onVercel = useOnVercel();
   const act = useAct(reload);
   const nav = useNavigate();
   const job = e.active_job;
@@ -215,7 +216,7 @@ export function DatasetCard({ e, reload, compact = false }: { e: CatalogEntry; r
           {e.module === "mars" && e.id === "ai4mars" && <MarsModelUpload onDone={reload} />}
         </div>
       )}
-      {!readOnly && !compact && !job && (e.train.length > 0 || e.notes || e.setup_help) && (
+      {!onVercel && !compact && !job && (e.train.length > 0 || e.notes || e.setup_help) && (
         <details className="text-[11px] text-ink-soft">
           <summary className="cursor-pointer font-semibold">Setup help</summary>
           <ul className="mt-1 space-y-0.5">
@@ -248,7 +249,7 @@ export function StatusCounts({ s }: { s: CatalogSummaryData }) {
 
 /* ------------------------------------------------------------------ release card */
 export function ReleaseCard({ c, reload }: { c: CatalogData; reload: () => void }) {
-  const readOnly = useReadOnly();
+  const onVercel = useOnVercel();
   const act = useAct(reload);
   const r = c.release;
   const job = r.active_job;
@@ -268,7 +269,7 @@ export function ReleaseCard({ c, reload }: { c: CatalogData; reload: () => void 
       {job && <JobBox job={job} onCancel={() => act.cancel(job.id)} busy={act.pending === "cancel"} />}
       {r.installed?.n_problems ? <p className="text-[11px] text-rose-600">{r.installed.n_problems} file(s) in the bundle are missing or corrupt, e.g. {r.installed.problems?.[0]}</p> : null}
       <p className="text-[11px] text-ink-soft">
-        {readOnly ? "Read-only demo: published datasets and results are frozen at build time. Installation and training are available in Docker."
+        {onVercel ? "Datasets, trained models and job history are stored on a persistent Vercel Drive. Download and Train run in Vercel compute."
           : r.present ? "Datasets from the bundle are copied into the app's data volume once (only missing or changed files) and work offline. The bundle itself is never modified."
           : <>No offline bundle is installed, which is fine with internet: a missing dataset downloads by itself when you press its <b>Download</b> or <b>Train</b> button. For machines without internet, prepare a bundle once (README → Release bundle).</>}
       </p>
@@ -291,7 +292,7 @@ export function Catalog() {
         <StatusCounts s={data.summary} />
         {data.heavy_jobs.length > 0 && <span className="chip bg-violet-100 text-violet-700"><Spinner className="h-3 w-3" /> {data.heavy_jobs.length} training job(s)</span>}
       </div>
-      {readOnly ? <p className="text-xs text-ink-soft">Read-only demo. Dataset installed, ready to train, and model available are separate states. Training readiness describes the data; training runs in Docker. Sample links appear only for published results.</p> : <p className="text-xs text-ink-soft">Each card shows its <b>data</b> and its <b>model</b> separately, and the highlighted button is the next step.
+      {readOnly ? <p className="text-xs text-ink-soft">Published results. Dataset installed, ready to train, and model available are separate states. Connect Vercel compute to load and train datasets.</p> : <p className="text-xs text-ink-soft">Each card shows its <b>data</b> and its <b>model</b> separately, and the highlighted button is the next step.
         Nothing downloads or trains by itself. <b>Installed</b> = on this machine and explorable · <b>ready to train</b> = meets the trainer's requirements ·
         <b> model available</b> = can produce results now. Training runs one job at a time and keeps the last working model until a new one is finished.</p>}
       <ReleaseCard c={data} reload={reload} />

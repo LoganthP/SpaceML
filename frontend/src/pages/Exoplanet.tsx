@@ -1,4 +1,4 @@
-import { WriteButton } from "../lib/capabilities";
+import { WriteButton, useCapabilities } from "../lib/capabilities";
 import { EvidencePanel } from "../components/Evidence";
 import { Database, FlaskConical, Globe2, Orbit, Search, SlidersHorizontal, Sparkles, Star, Trash2, UploadCloud } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
@@ -395,6 +395,7 @@ function ResultHeader({ r, runId }: { r: ExoplanetResult; runId: string }) {
 
 /* ---------------------------------------------------------------- page */
 export default function Exoplanet() {
+  const caps = useCapabilities();
   const [params, setParams] = useSearchParams();
   const runId = params.get("run");
   const [source, setSource] = useState<"kepler" | "upload">(params.get("source") === "upload" ? "upload" : "kepler");
@@ -404,6 +405,7 @@ export default function Exoplanet() {
 
   async function submit(input: Record<string, unknown>) {
     setSubmitError(null);
+    if (!caps?.capabilities.write) { setSubmitError(caps?.hint ?? "Sign in or connect Vercel compute to analyze this signal"); return; }
     try {
       const r = await createRun("exoplanet", input);
       setParams({ run: r.id, ...(source === "upload" ? { source: "upload" } : {}) });
@@ -413,8 +415,8 @@ export default function Exoplanet() {
   }
   const kicParam = params.get("kic");
   useEffect(() => {  // deep link from the command palette: /exoplanet?kic=11442793
-    if (kicParam && /^\d{5,9}$/.test(kicParam) && !runId) submit({ kepid: Number(kicParam), tce_plnt_num: Number(params.get("tce") ?? 1) });
-  }, [kicParam]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (caps?.capabilities.write && kicParam && /^\d{5,9}$/.test(kicParam) && !runId) submit({ kepid: Number(kicParam), tce_plnt_num: Number(params.get("tce") ?? 1) });
+  }, [kicParam, caps?.capabilities.write]); // eslint-disable-line react-hooks/exhaustive-deps
   const res = run?.status === "succeeded" ? run.result : undefined;
   const busy = !!run && (run.status === "queued" || run.status === "running");
 

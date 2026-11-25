@@ -12,7 +12,8 @@ from fastapi.responses import JSONResponse, RedirectResponse
 
 
 def required():
-    return os.environ.get("SMC_AUTH_REQUIRED", "false").lower() == "true"
+    default = "true" if os.environ.get("SMC_MODE") == "vercel" and os.environ.get("SMC_EXECUTION") != "worker" else "false"
+    return os.environ.get("SMC_AUTH_REQUIRED", default).lower() == "true"
 
 
 def authenticated(request: Request):
@@ -43,6 +44,7 @@ def install(app):
         if protected and required() and request.method not in ("GET", "HEAD", "OPTIONS"):
             origin = request.headers.get("origin")
             allowed = {s.strip().rstrip("/") for s in os.environ.get("SMC_PUBLIC_ORIGIN", "").split(",") if s.strip()}
+            allowed.update("https://" + os.environ[name] for name in ("VERCEL_URL", "VERCEL_PROJECT_PRODUCTION_URL") if os.environ.get(name))
             if origin and origin.rstrip("/") not in allowed:
                 return JSONResponse({"detail": "Origin is not allowed"}, status_code=403, headers={"Cache-Control": "no-store"})
         response = await call_next(request)

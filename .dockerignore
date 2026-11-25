@@ -21,3 +21,7 @@ release/
 .env.*
 !.env.example
 **/secrets
+
+# Generated Vercel-only training transfer; local mode reads original starter files.
+frontend/public/runtime/
+backend/app/runtime_bundle.json

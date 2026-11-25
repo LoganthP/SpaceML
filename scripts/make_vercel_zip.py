@@ -22,6 +22,8 @@ def excluded(relative: Path) -> bool:
         return True
     if len(parts) > 1 and parts[:2] == ("frontend", "dist"):
         return True
+    if parts[:3] == ("frontend", "public", "runtime") or relative.as_posix() == "backend/app/runtime_bundle.json":
+        return True
     # These JSON copies are regenerated at build time from backend/static_data.
     # Store the frozen results once, keeping the upload and ZIP small.
     if parts[:3] == ("frontend", "public", "data") and len(parts) == 4 and relative.suffix == ".json":

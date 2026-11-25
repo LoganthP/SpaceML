@@ -2,13 +2,16 @@
 
 These are explicit catalog states, never synthetic telemetry or successful imports.
 """
-SOURCES = {
+ARCHIVED_SOURCES = {
     "esa-m1": ("ESA Mission 1", "ESA", "https://zenodo.org/communities/esa-ad/"),
     "esa-m2": ("ESA Mission 2", "ESA", "https://zenodo.org/communities/esa-ad/"),
     "esa-m3": ("ESA Mission 3", "ESA", "https://zenodo.org/communities/esa-ad/"),
     "funcube": ("FUNcube-1 (AO-73)", "AMSAT", "https://warehouse.funcube.org.uk/"),
     "satnogs": ("SatNOGS", "Libre Space Foundation", "https://db.satnogs.org/"),
 }
+
+# These adapters remain on disk, but are intentionally absent from the product.
+SOURCES = {}
 
 
 def catalog_entries():

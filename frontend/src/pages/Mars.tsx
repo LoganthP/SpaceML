@@ -113,7 +113,7 @@ function MarsExtras({ runId }: { runId: string }) {
 }
 
 export default function Mars() {
-  const readOnly = useCapabilities()?.capabilities.write === false;
+  const readOnly = !useCapabilities()?.capabilities.write;
   const [params, setParams] = useSearchParams();
   const runId = params.get("run");
   const samples = useApi<MarsSample[]>("/api/mars/samples");
@@ -187,7 +187,7 @@ export default function Mars() {
             )}
             <div className="scroll-thin grid max-h-[520px] grid-cols-3 gap-2 overflow-y-auto pr-1">
               {samples.data?.map((s) => (
-                <button key={s.id} onClick={() => runSample(s.id)} disabled={!!busy || !!noModel} title={s.name}
+                <button key={s.id} onClick={() => runSample(s.id)} disabled={readOnly || !!busy || !!noModel} title={s.name}
                   className="group relative overflow-hidden rounded-xl ring-2 ring-transparent transition hover:ring-mars-400 disabled:cursor-not-allowed">
                   <img src={`/api/mars/samples/${s.id}/thumb`} alt={s.name} loading="lazy" className="aspect-square w-full object-cover transition group-hover:scale-105" />
                   {s.label_shares.sand > 0.02 && <span className="absolute left-1 top-1 rounded-md bg-rose-500/90 px-1.5 text-[9px] font-bold text-white">SAND</span>}

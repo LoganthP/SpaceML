@@ -1,16 +1,21 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "proxy": {
+    "entrypoint": "proxy.js",
+    "matcher": ["/runtime/:path*"]
+  },
   "services": {
     "backend": {
       "root": ".",
       "runtime": "python",
       "framework": "fastapi",
       "entrypoint": "api.index:app",
-      "buildCommand": "python3 scripts/build_static_data.py",
+      "buildCommand": "python3 scripts/build_static_data.py && python3 scripts/build_vercel_runtime.py",
       "functions": {
         "api/index.py": {
-          "maxDuration": 30,
+          "maxDuration": 300,
           "memory": 1024,
+          "includeFiles": "backend/app/runtime_bundle.json",
           "excludeFiles": "{frontend/**,starter/**,models/**,data/**,storage/**,release/**,samples/**,notebooks/**,docs/**,audit*/**,deployment/**,scripts/**,tests*/**,backend/tests/**,**/*.zip,**/node_modules/**,**/.venv/**,**/.vercel/**}"
         }
       }
@@ -19,7 +24,7 @@
       "root": "frontend",
       "framework": "vite",
       "installCommand": "npm ci --no-audit --no-fund",
-      "buildCommand": "python3 ../scripts/build_static_data.py && npm run build",
+      "buildCommand": "python3 ../scripts/build_static_data.py && python3 ../scripts/build_vercel_runtime.py && npm run build",
       "devCommand": "node ../scripts/vercel_frontend_dev.cjs",
       "outputDirectory": "dist",
       "headers": [
@@ -44,7 +49,7 @@
       ],
       "rewrites": [
         {
-          "source": "/((?!assets/|data/|src/|node_modules/|@|favicon[.]svg$).*)",
+          "source": "/((?!assets/|data/|runtime/|src/|node_modules/|@|favicon[.]svg$).*)",
           "destination": "/index.html"
         }
       ]

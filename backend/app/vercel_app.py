@@ -15,7 +15,7 @@ from fastapi.responses import FileResponse, JSONResponse, RedirectResponse, Resp
 from spaceml.config import REPO_ROOT, STORAGE_DIR
 
 VERSION = "3.1.10"
-HINT = "Available in local/Docker mode"
+HINT = "Connect Vercel compute to run this operation"
 ROOT = REPO_ROOT / "backend" / "static_data"
 MAX_BODY = 4_000_000
 app = FastAPI(title="Space ML Mission Control", version=VERSION)
@@ -48,7 +48,7 @@ def stored(path: str, params: dict | None = None, default=None):
                                "to": status.get("page", "/").split("?")[0] + "?" +
                                urlencode({**({"mission": mission} if mission else {}), "run": run["id"]})}
                               if run and status.get("data") != "needs_repair" else
-                              {"kind": "none", "label": "Available in Docker"})
+                              {"kind": "none", "label": "Connect Vercel compute"})
     return body
 
 

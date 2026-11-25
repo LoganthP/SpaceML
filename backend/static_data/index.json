@@ -476,7 +476,7 @@
    "type": "application/json"
   },
   "/api/missions": {
-   "file": "4d834c1af0dd1530ebea99a5326fafbdd2fd72c7f553a2caa1cd558accb7b705.json",
+   "file": "48abb2764348c95503a7c924e995300278a44c0663978d7bd331e3317fa43868.json",
    "type": "application/json"
   },
   "/api/telemetry/channels": {
@@ -556,7 +556,7 @@
    "type": "application/json"
   },
   "/api/catalog": {
-   "file": "a53d7415a2292a3afd0b7d61a75b6c0deac75e462ae3ab2db9de0d0e8d5175f1.json",
+   "file": "a45b5aeb043e625c2b247eabb6d669deda2359af3a610fca4465ab78197168a0.json",
    "type": "application/json"
   },
   "/api/starter": {
@@ -10753,26 +10753,6 @@
   },
   "/api/reviews/export?format=json": {
    "file": "3dfa7fe0c4336f9b79ef5f07b79d7a1b7bd7a555425fef75190434fe9a1c45b7.json",
-   "type": "application/json"
-  },
-  "/api/missions/esa-m1": {
-   "file": "b6ad881e613cae4102f22e5fa4e837b7ae4209b90b499e42d703f9f68597730f.json",
-   "type": "application/json"
-  },
-  "/api/missions/esa-m2": {
-   "file": "bbba26b39b7f0f77e455b3631327f34a060d971df27316efadcb383c3dc51b9c.json",
-   "type": "application/json"
-  },
-  "/api/missions/esa-m3": {
-   "file": "46bbef6f682a3cfee5dcc29ad9a04e5a1862a83548ebccb1496eb0fc45853228.json",
-   "type": "application/json"
-  },
-  "/api/missions/funcube": {
-   "file": "20ad0cef3af4f321a968d2735d5c0a7d47574e5fd5c891399873007cdbfe38f6.json",
-   "type": "application/json"
-  },
-  "/api/missions/satnogs": {
-   "file": "2f39a1f869c5fa074a3d262d6587b60e4f20c684c79f732305a3eed2a29451d8.json",
    "type": "application/json"
   },
   "/api/missions/opssat/predictions": {

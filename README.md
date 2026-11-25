@@ -667,4 +667,4 @@ docker compose up -d --build app   # never add -v: volumes hold your data, model
 </div>
 
 <!-- deployment-modes -->
-For the read-only Vercel demo, see [DEPLOY-VERCEL.md](DEPLOY-VERCEL.md). For a Vercel frontend with an authenticated persistent Docker API and worker, see [DEPLOY-PERSISTENT.md](DEPLOY-PERSISTENT.md).
+For Vercel-only downloads, training and analysis using Vercel Sandbox and Drive, see [DEPLOY-VERCEL.md](DEPLOY-VERCEL.md). No external backend is needed. Existing Docker commands remain available for local development.
