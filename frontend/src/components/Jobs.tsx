@@ -18,9 +18,9 @@ export function JobsProvider({ children }: { children: ReactNode }) {
       const j = await api<Job[]>("/api/jobs?limit=40");
       setJobs(j);
       const active = new Set(j.filter((x) => x.status === "running" || x.status === "queued").map((x) => x.id));
-      const finished = [...prevActive.current].filter((id) => !active.has(id));
+      const finished = j.filter((job) => prevActive.current.has(job.id) && !active.has(job.id)).map((job) => job.id);
       if (finished.length) window.dispatchEvent(new CustomEvent("spaceml:job-finished", { detail: finished }));
-      prevActive.current = active;
+      prevActive.current = new Set([...active, ...[...prevActive.current].filter((id) => !j.some((job) => job.id === id))]);
     } catch { /* API offline: the dock shows it */ }
   }, []);
   const anyActive = jobs.some((j) => j.status === "running" || j.status === "queued");
@@ -31,7 +31,9 @@ export function JobsProvider({ children }: { children: ReactNode }) {
   }, [refresh, anyActive]);
   const start = useCallback(async (task: string, params: Record<string, unknown> = {}) => {
     const j = await api<Job>("/api/jobs", { method: "POST", body: JSON.stringify({ task, params }) });
-    await refresh();
+    prevActive.current.add(j.id);
+    setJobs((current) => [j, ...current.filter((job) => job.id !== j.id)]);
+    void refresh();
     return j;
   }, [refresh]);
   return <Ctx.Provider value={{ jobs, refresh, start }}>{children}</Ctx.Provider>;

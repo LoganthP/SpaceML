@@ -176,7 +176,7 @@ def _entry_ai4mars() -> dict:
                        "note": "300 pairs, 3 epochs, 256 px - a pipeline check (~5-15 min on CPU)"},
                       {"task": "mars.train", "label": "Full training", "params": {"mode": "full"},
                        "note": "every local train pair, 12 epochs, 384 px - hours on a CPU; resumable; a GPU (Colab) is much faster"}],
-            "download": ({"task": "mars.dataset", "label": "Download (needs internet)", "params": {"train": "3000"}}
+            "download": ({"task": "mars.dataset", "label": "Install AI4Mars starter (400 pairs)", "params": {"train": "400"}}
                          if not ready else
                          {"task": "mars.dataset", "label": f"Download more pairs ({tr} → 3000, needs internet)",
                           "params": {"train": "3000"}, "optional": True} if tr < 3000 else None),

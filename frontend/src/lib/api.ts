@@ -23,7 +23,7 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
       headers: init?.body instanceof FormData ? init?.headers : { "Content-Type": "application/json", ...init?.headers },
     });
   } catch {
-    throw new ApiError(0, "Cannot reach the API. Is the backend running on port 8000?");
+    throw new ApiError(0, "Cannot reach Space ML. Check your connection and retry.");
   }
   if (!res.ok) {
     let msg = `${res.status} ${res.statusText}`;
@@ -44,26 +44,29 @@ export function createRun(module: Module, input: Record<string, unknown>) {
 
 /** Generic loader with refresh. */
 export function useApi<T>(path: string | null, deps: unknown[] = []) {
-  const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<ApiError | null>(null);
-  const [loading, setLoading] = useState(!!path);
+  const [result, setResult] = useState<{ path: string; data: T | null; error: ApiError | null; loading: boolean } | null>(null);
+  const request = useRef(0);
   const load = useCallback(async () => {
     if (!path) return;
-    setLoading(true);
+    const id = ++request.current;
+    const update = (data: T | undefined, error: ApiError | null, loading: boolean) => {
+      if (request.current !== id) return;
+      setResult((prior) => ({ path, data: data === undefined ? (prior?.path === path ? prior.data : null) : data, error, loading }));
+    };
+    update(undefined, null, true);
     try {
-      setData(await api<T>(path));
-      setError(null);
+      update(await api<T>(path), null, false);
     } catch (e) {
-      setError(e as ApiError);
-    } finally {
-      setLoading(false);
+      update(undefined, e as ApiError, false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path, ...deps]);
   useEffect(() => {
-    load();
+    void load();
+    return () => { ++request.current; };
   }, [load]);
-  return { data, error, loading, reload: load, setData };
+  const current = result?.path === path ? result : null;
+  return { data: current?.data ?? null, error: current?.error ?? null, loading: current?.loading ?? !!path, reload: load };
 }
 
 /** Polls a run until it finishes, then returns it with its result. */
@@ -76,14 +79,24 @@ export function useRun<R>(runId: string | null) {
     setError(null);
     if (!runId) return;
     let cancelled = false;
+    let retries = 0;
     const tick = async () => {
       try {
         const r = await api<Run<R>>(`/api/runs/${runId}`);
         if (cancelled) return;
+        retries = 0;
+        setError(null);
         setRun(r);
         if (r.status === "queued" || r.status === "running") timer.current = window.setTimeout(tick, 900);
       } catch (e) {
-        if (!cancelled) setError((e as Error).message);
+        if (cancelled) return;
+        const transient = e instanceof ApiError && (e.status === 0 || e.status === 429 || e.status >= 500);
+        if (transient && retries < 10) {
+          retries += 1;
+          timer.current = window.setTimeout(tick, Math.min(5000, 1000 * retries));
+          return;
+        }
+        setError((e as Error).message);
       }
     };
     tick();
@@ -92,7 +105,7 @@ export function useRun<R>(runId: string | null) {
       window.clearTimeout(timer.current);
     };
   }, [runId]);
-  return { run, error };
+  return { run: run?.id === runId ? run : null, error };
 }
 
 /** Upload with real progress events (fetch cannot report upload progress). */

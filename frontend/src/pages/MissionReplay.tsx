@@ -7,7 +7,7 @@ import { EvidencePanel } from "../components/Evidence";
 import { JobButton, JobCard, activeJob, useJobs, useOnJobFinished } from "../components/Jobs";
 import Plot from "../components/LazyPlot";
 import { ErrorNotice, Glass, IconBadge, Notice, OriginBadge, Page, Segmented, Spinner } from "../components/ui";
-import { api, useApi } from "../lib/api";
+import { api, useApi, useRun } from "../lib/api";
 import { num, timeAgo } from "../lib/format";
 import type { Run } from "../lib/types";
 import { ModuleStatus } from "../components/Catalog";
@@ -284,7 +284,12 @@ export default function MissionReplay() {
   const ev = events.data?.catalog.find((e) => e.id === eventId);
   const quality = useApi<Quality>(ev ? `/api/spaceweather/quality?start=${ev.start}&end=${ev.end}` : null, [ev?.id]);
   const runRow = params.get("run") ? { id: params.get("run")! } : replays.data?.find((r) => r.status === "succeeded");
-  const run = useApi<Run<ReplayResult>>(runRow ? `/api/runs/${runRow.id}` : null, [runRow?.id]);
+  const tracked = useRun<ReplayResult>(params.get("run"));
+  const existing = useApi<Run<ReplayResult>>(!params.get("run") && runRow ? `/api/runs/${runRow.id}` : null);
+  const run = params.get("run")
+    ? { data: tracked.run, error: tracked.error ?? tracked.run?.error, loading: !tracked.run && !tracked.error }
+    : { ...existing, error: existing.error?.message };
+  const matchingRun = run.data?.input_ref?.event_id === eventId ? run.data : null;
   const { jobs } = useJobs();
   const busy = activeJob(jobs, "spaceweather");
   const lastJob = jobs.find((j) => j.module === "spaceweather");
@@ -292,7 +297,7 @@ export default function MissionReplay() {
   const [err, setErr] = useState<string | null>(null);
   const reloadAll = useCallback(() => { events.reload(); status.reload(); replays.reload(); quality.reload(); }, [events, status, replays, quality]);
   useOnJobFinished(reloadAll);
-  const pending = replays.data?.find((r) => r.status === "queued" || r.status === "running");
+  const pending = (tracked.run && (tracked.run.status === "queued" || tracked.run.status === "running")) || replays.data?.some((r) => r.status === "queued" || r.status === "running");
   useEffect(() => {
     if (!pending) return;
     const t = setInterval(replays.reload, 1500);
@@ -305,17 +310,17 @@ export default function MissionReplay() {
   async function runReplay() {
     setErr(null); setStarting(true);
     try {
-      await api("/api/runs", { method: "POST", body: JSON.stringify({ module: "spaceweather", input: { event_id: eventId } }) });
-      replays.reload();
-      setParams((p) => { p.delete("run"); return p; });
+      const created = await api<Run<ReplayResult>>("/api/runs", { method: "POST", body: JSON.stringify({ module: "spaceweather", input: { event_id: eventId } }) });
+      void replays.reload();
+      setParams((current) => (current.get("event") ?? "2024-05") === eventId ? { event: eventId, run: created.id } : current);
     } catch (e) { setErr((e as Error).message); } finally { setStarting(false); }
   }
 
-  const res = run.data?.result;
+  const res = matchingRun?.status === "succeeded" ? matchingRun.result : undefined;
   return (
     <Page title="Mission Replay" subtitle="Step through a real geomagnetic storm hour by hour: what happened, what the forecaster could have said at the time, and where the simple baseline did better."
       icon={<IconBadge gradient="from-violet-600 to-rose-500"><Clapperboard className="h-6 w-6" /></IconBadge>}
-      actions={run.data && <OriginBadge origin={run.data.origin} />}>
+      actions={res && matchingRun && <OriginBadge origin={matchingRun.origin} />}>
       <ModuleStatus ids={["omni2"]} />
       <div className="mb-4 flex flex-wrap gap-2">
         {(events.data?.catalog ?? []).map((e) => (
@@ -327,22 +332,23 @@ export default function MissionReplay() {
       </div>
 
       {events.error && <ErrorNotice message={events.error.message} />}
-      {res && run.data && (
+      {err && <ErrorNotice message={err} />}
+      {res && matchingRun && (
         <>
           {res.in_sample_years.length > 0 && (
             <div className="mb-3"><Notice tone="warn" title={`In-sample: the model was trained on ${res.in_sample_years.join(", ")}`}>
               This replay is not a fair test - pick an event outside the training years (the May 2024 storm is out-of-sample for the default model).</Notice></div>)}
           <div className="mb-3 flex flex-wrap items-center gap-2 text-xs text-ink-soft">
             <Sparkles className="h-3.5 w-3.5 text-violet-500" />
-            Replay computed {timeAgo(run.data.finished_at)} with model <code>{res.model.version}</code>
+            Replay computed {timeAgo(matchingRun.finished_at)} with model <code>{res.model.version}</code>
             {replays.data && replays.data.length > 1 && <> · {replays.data.length} replays of this event</>}
-            <WriteButton className="btn-ghost ml-auto px-3 py-1.5 text-xs" onClick={runReplay} disabled={starting || !!pending || !haveModel}>
+            <WriteButton className="btn-ghost ml-auto px-3 py-1.5 text-xs" onClick={runReplay} disabled={starting || !!pending || !haveData || !haveModel}>
               {starting || pending ? <Spinner className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />} Recompute here
             </WriteButton>
           </div>
-          <ReplayView run={run.data} />
+          <ReplayView key={matchingRun.id} run={matchingRun} />
           <div className="mt-4 grid gap-4 xl:grid-cols-2">
-            <EvidencePanel runId={run.data.id} />
+            <EvidencePanel runId={matchingRun.id} />
             <DataQualityPanel q={res.quality} title="Data quality in this window" />
           </div>
           <Glass className="mt-4 p-4">
@@ -371,16 +377,18 @@ export default function MissionReplay() {
                   <p className="text-sm text-ink-soft">
                     {!haveData && <>OMNI2 {ev?.start.slice(0, 4)} is not on this machine yet. </>}
                     {!haveModel && <>No Dst forecaster is trained yet. </>}
-                    One step downloads the NASA OMNIWeb years (≈3 MB each), trains the forecaster on 2010–2016 (tested on 2017) and replays May 2024 - a few minutes on a CPU.
+                    Download the years for this event, then run the replay once the data and forecaster are ready.
                   </p>
-                  <JobButton task="spaceweather.setup" module="spaceweather" label="Download, train and replay" />
+                  {!haveData && ev && <JobButton task="spaceweather.download" module="spaceweather" label="Download data for this storm"
+                    params={{ years: [...new Set([Number(ev.start.slice(0, 4)), Number(ev.end.slice(0, 4))])] }} />}
+                  {!haveModel && <JobButton task="spaceweather.train" module="spaceweather" label="Prepare Dst forecaster" />}
                   {lastJob?.status === "source_unavailable" && (
                     <Notice tone="warn" title="NASA SPDF could not be reached from this machine">
                       <p>No result is shown until real data arrives. On a machine with internet, download <code>omni2_2024.dat</code> (and 2010–2017) from spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/ and upload them here, then press the button above again:</p>
                       <OmniImport />
                     </Notice>)}
                 </>)}
-            {err && <ErrorNotice message={err} />}
+            {(run.error || replays.error) && <ErrorNotice message={run.error ?? replays.error?.message ?? "Replay failed"} />}
             {replays.data?.filter((r) => r.status !== "succeeded" && r.status !== "queued" && r.status !== "running").slice(0, 1).map((r) => (
               <ErrorNotice key={r.id} title={`Last replay: ${r.status.replace("_", " ")}`} message={r.error ?? ""} />))}
             {busy && <JobCard job={busy} />}

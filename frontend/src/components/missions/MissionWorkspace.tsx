@@ -64,6 +64,12 @@ export default function MissionWorkspace({ mission, runId, onRun }: { mission: s
   const info = useApi<MissionStatus>(`/api/missions/${mission}`, [mission]);
   const [item, setItem] = useState<string | null>(null);
   const [announce, setAnnounce] = useState("");
+  const savedRun = useApi<{ input_ref: { mission?: string; action?: string; item?: string } }>(runId ? `/api/runs/${runId}` : null);
+  const saved = savedRun.data?.input_ref;
+  const validRun = saved?.mission === mission;
+  useEffect(() => {
+    if (validRun && saved?.action === "score" && saved.item) setItem(saved.item);
+  }, [validRun, saved?.action, saved?.item]);
   useOnJobFinished(() => info.reload());
   useEffect(() => { setItem(null); }, [mission]);
 
@@ -73,6 +79,7 @@ export default function MissionWorkspace({ mission, runId, onRun }: { mission: s
   return (
     <div className="space-y-4">
       <p className="sr-only" aria-live="polite">{announce}</p>
+      {savedRun.error && <ErrorNotice title="Could not open the saved mission result" message={savedRun.error.message} />}
       <Glass className="hud flex flex-wrap items-start gap-4 p-5">
         <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-500 text-white" aria-hidden="true"><Satellite className="h-5 w-5" /></div>
         <div className="min-w-0 flex-1 space-y-1">
@@ -100,9 +107,9 @@ export default function MissionWorkspace({ mission, runId, onRun }: { mission: s
           <div id="analyze" className="grid scroll-mt-28 grid-cols-1 gap-4 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)]">
             <ItemPicker m={m} selected={item} onSelect={(id) => { setItem(id); setAnnounce(`Selected ${m.item_label} ${id}`); }} />
             <div className="min-w-0 space-y-4">
-              {item ? <Viewer m={m} itemId={item} onAnnounce={setAnnounce} runId={runId} onRun={onRun} />
+              {item ? <Viewer m={m} itemId={item} onAnnounce={setAnnounce} runId={validRun && saved?.action === "score" && item === saved.item ? runId : null} onRun={onRun} />
                 : <Glass className="p-8 text-center text-sm text-ink-soft" role="status">Select a {m.item_label} on the left to replay its telemetry.</Glass>}
-              {m.trainable && <Evaluation m={m} runId={runId} onRun={onRun} onAnnounce={setAnnounce} />}
+              {m.trainable && <Evaluation m={m} runId={validRun && saved?.action === "evaluate" ? runId : null} onRun={onRun} onAnnounce={setAnnounce} />}
             </div>
           </div>
           <details className="glass p-4 text-sm">
@@ -422,7 +429,7 @@ function Viewer({ m, itemId, onAnnounce, runId, onRun }: { m: MissionStatus; ite
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [scoreRun, setScoreRun] = useState<string | null>(null);
-  const run = useRun<ScoreResult>(scoreRun);
+  const run = useRun<ScoreResult>(runId ?? scoreRun);
   useEffect(() => { setScoreRun(null); setErr(null); }, [itemId]);
   useEffect(() => { if (s.data) onAnnounce(`Loaded ${s.data.n_total.toLocaleString()} samples of ${itemId}`); }, [s.data]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -438,7 +445,6 @@ function Viewer({ m, itemId, onAnnounce, runId, onRun }: { m: MissionStatus; ite
   const res = run.run?.status === "succeeded" ? (run.run.result as ScoreResult | undefined) ?? null : null;
   const canScore = canRun && (m.family !== "segments" || m.model.ready);
   const blockedReason = !canRun ? caps?.hint ?? "Compute or operator sign-in is required" : "Train a model first";
-  void runId;
   return (
     <Glass className="space-y-3 p-4">
       <div className="flex flex-wrap items-center gap-2">
@@ -469,7 +475,7 @@ function Viewer({ m, itemId, onAnnounce, runId, onRun }: { m: MissionStatus; ite
         : <ErrorNotice title={`Could not load this ${m.item_label}`} message={s.error.message} />)}
       {s.loading && !s.data && <div className="flex items-center gap-2 text-sm text-ink-soft" role="status"><Spinner /> Loading telemetry…</div>}
       {s.data && <SeriesChart s={s.data} title={item?.label ?? itemId} res={res} cadence={item?.cadence_s ?? item?.sampling_s ?? null} />}
-      {err && <ErrorNotice message={err} />}
+      {(err || run.error) && <ErrorNotice message={err ?? run.error ?? "Scoring failed"} />}
       {run.run && run.run.status !== "succeeded" && run.run.status !== "queued" && run.run.status !== "running" &&
         <ErrorNotice message={run.run.error ?? "Scoring failed"} title="Scoring failed" />}
       {res && <ScorePanel res={res} m={m} runId={run.run!.id} />}
@@ -633,11 +639,7 @@ function Evaluation({ m, runId, onRun, onAnnounce }: { m: MissionStatus; runId: 
   const canEvaluate = useCanRun("missions", { mission: m.id, action: "evaluate" });
   const [rid, setRid] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
-  const run = useRun<EvalResult>(rid);
-  useEffect(() => {
-    if (!runId) return;
-    api<{ input_ref: { action?: string } }>(`/api/runs/${runId}`).then((r) => { if (r.input_ref?.action === "evaluate") setRid(runId); }).catch(() => undefined);
-  }, [runId]);
+  const run = useRun<EvalResult>(runId ?? rid);
   useEffect(() => { if (run.run?.status === "succeeded") onAnnounce("Held-out evaluation finished"); }, [run.run?.status]); // eslint-disable-line react-hooks/exhaustive-deps
   async function go() {
     setErr(null);
@@ -657,7 +659,7 @@ function Evaluation({ m, runId, onRun, onAnnounce }: { m: MissionStatus; runId: 
       </div>
       {!m.model.ready && <p className="text-xs text-ink-soft">{readOnly ? "No model result is published. Training is available in Vercel compute." : <>No model yet - press <b>Quick train</b> above, then evaluate.</>}</p>}
       {err && <ErrorNotice message={err} />}
-      {run.run?.status === "failed" && <ErrorNotice message={run.run.error ?? "evaluation failed"} />}
+      {(run.error || run.run?.error) && <ErrorNotice title="Evaluation failed" message={run.error ?? run.run?.error ?? "Evaluation failed"} />}
       {met && (
         <div className="space-y-3">
           <p className="text-xs text-ink-soft">{met.eval_split}{met.protocol ? ` · ${met.protocol}` : ""}{met.labels ? ` · ${met.labels}` : ""}</p>
@@ -696,10 +698,6 @@ function MetricsCard({ title, b }: { title: string; b: EvalBlock }) {
       </ul>
     </div>
   );
-}
-
-export function useMissions() {
-  return useApi<{ missions: MissionStatus[] }>("/api/missions");
 }
 
 export { Notice };

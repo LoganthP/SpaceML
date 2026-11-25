@@ -12,16 +12,19 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 import shutil
 import time
 import urllib.parse
 import uuid
 from functools import lru_cache
 from pathlib import Path
+from xml.etree.ElementTree import ParseError
 
 import numpy as np
 import pandas as pd
 
+from ..common import mast_cloud
 from ..common.progress import fail, report, step
 from ..common.utils import download, read_json, write_json
 from ..config import EXOPLANET_DIR, SEED
@@ -196,44 +199,71 @@ def fetch_lightcurve(kepid: int, retries: int = 3, max_quarters: int = 0) -> tup
     except Exception:  # noqa: BLE001
         pass
 
-    search = None
-    last: Exception | None = None
-    for attempt in range(retries):
-        try:
-            search = lk.search_lightcurve(f"KIC {int(kepid)}", mission="Kepler", author="Kepler", cadence="long")
-            break
-        except Exception as e:  # noqa: BLE001 - MAST hiccup: bounded retry
-            last = e
-            time.sleep(2 + 4 * attempt)
-    if search is None:
-        raise RuntimeError(f"MAST search failed after {retries} attempts: {last}")
-    if len(search) == 0:
-        raise LookupError(f"MAST has no Kepler long-cadence light curves for KIC {kepid}")
-    if max_quarters and len(search) > max_quarters:
-        keep = sorted(set(np.linspace(0, len(search) - 1, max_quarters).round().astype(int).tolist()))
-        search = search[keep]
-
+    identifier = f"{int(kepid):09d}"
+    prefix = f"kepler/public/lightcurves/{identifier[:4]}/{identifier}/"
     qdir = QUARTER_DIR / str(int(kepid))
     qdir.mkdir(parents=True, exist_ok=True)
+    try:
+        cloud_keys = [key for key in mast_cloud.keys(prefix, limit=200)
+                      if re.fullmatch(rf"kplr{identifier}-[0-9]+_llc[.]fits", Path(key).name)]
+    except (OSError, ValueError, ParseError):
+        cloud_keys = []
+
+    last = None
+    if cloud_keys:
+        products = sorted(cloud_keys)
+
+        def load_quarter(key):
+            path = qdir / Path(key).name
+            if not path.is_file():
+                download(mast_cloud.url(key), path, timeout=20)
+            try:
+                return lk.read(str(path), flux_column="pdcsap_flux")
+            except (OSError, ValueError):
+                path.unlink(missing_ok=True)
+                raise
+    else:
+        search = None
+        for attempt in range(retries):
+            try:
+                search = lk.search_lightcurve(f"KIC {int(kepid)}", mission="Kepler", author="Kepler", cadence="long")
+                break
+            except Exception as error:
+                last = error
+                if attempt + 1 < retries:
+                    time.sleep(2 + 4 * attempt)
+        if search is None:
+            raise RuntimeError(f"MAST search failed after {retries} attempts: {last}")
+        if len(search) == 0:
+            raise LookupError(f"MAST has no Kepler long-cadence light curves for KIC {kepid}")
+        products = list(range(len(search)))
+
+        def load_quarter(index):
+            return search[index].download(download_dir=str(qdir), flux_column="pdcsap_flux")
+
+    if max_quarters and len(products) > max_quarters:
+        keep = np.linspace(0, len(products) - 1, max_quarters).round().astype(int)
+        products = [products[index] for index in keep]
+
     lcs, failed_q = [], 0
-    for qi in range(len(search)):
+    for qi, product in enumerate(products):
         lc_q = None
         for attempt in range(retries):
             try:
-                # lightkurve/astroquery reuse a complete file already in download_dir (= resume)
-                lc_q = search[qi].download(download_dir=str(qdir), flux_column="pdcsap_flux")
+                lc_q = load_quarter(product)
                 break
-            except Exception as e:  # noqa: BLE001
-                last = e
-                time.sleep(1 + 3 * attempt)
+            except Exception as error:
+                last = error
+                if attempt + 1 < retries:
+                    time.sleep(1 + 3 * attempt)
         if lc_q is None:
             failed_q += 1
-            print(f"  KIC {kepid}: quarter {qi + 1}/{len(search)} unavailable ({str(last)[:120]})", flush=True)
-            continue
-        lcs.append(lc_q)
-    need = max(2, (len(search) + 1) // 2)
+            print(f"  KIC {kepid}: quarter {qi + 1}/{len(products)} unavailable ({str(last)[:120]})", flush=True)
+        else:
+            lcs.append(lc_q)
+    need = max(2, (len(products) + 1) // 2)
     if len(lcs) < need:
-        raise RuntimeError(f"only {len(lcs)} of {len(search)} quarters arrived (need {need}); the ones that did are "
+        raise RuntimeError(f"only {len(lcs)} of {len(products)} quarters arrived (need {need}); the ones that did are "
                            f"kept and the rest is retried next run. Last error: {last}")
     star = {}
     for key, name in STAR_KEYS.items():

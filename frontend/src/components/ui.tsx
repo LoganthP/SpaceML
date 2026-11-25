@@ -86,10 +86,10 @@ export function StatusBadge({ status }: { status: RunStatus }) {
 /** "Bundled reference" (shipped in the starter pack) vs "Computed here". */
 export function OriginBadge({ origin }: { origin?: string | null }) {
   const caps = useCapabilities();
-  if (caps?.mode === "vercel") return <span className="chip bg-indigo-100 text-indigo-700" title="Computed offline from the bundled data and served read-only">precomputed reference</span>;
+
   return origin === "bundled"
     ? <span className="chip bg-indigo-100 text-indigo-700" title="Reference run shipped in the starter pack">bundled reference</span>
-    : <span className="chip bg-teal-100 text-teal-700" title="Computed on this machine">computed here</span>;
+    : <span className="chip bg-teal-100 text-teal-700" title={caps?.execution === "managed" ? "Computed in the Vercel Sandbox" : "Computed on this machine"}>{caps?.execution === "managed" ? "computed on Vercel" : "computed here"}</span>;
 }
 
 function CommandLine({ cmd }: { cmd: string }) {

@@ -87,13 +87,19 @@ def health():
             "hint": HINT, "storage": "ephemeral", "static_responses": len(index()["responses"])}
 
 
+@app.get("/api/live/solar-wind")
+def solar_wind():
+    from spaceml.common.solarwind import latest
+    return JSONResponse(latest(), headers={"Cache-Control": "no-store"})
+
+
 @app.get("/api/live/{telescope}")
 def live(telescope: str, refresh: bool = False):
     from spaceml.common import stlive
     from spaceml.common.fetch import SourceUnavailable
     if telescope not in stlive.TELESCOPES:
         raise HTTPException(404, "unknown telescope")
-    headers = {"Cache-Control": f"public, s-maxage={int(stlive.MAX_AGE)}, stale-while-revalidate=86400"}
+    headers = {"Cache-Control": "no-store" if refresh else f"public, s-maxage={int(stlive.MAX_AGE)}"}
     try:
         response = JSONResponse(stlive.current(telescope, refresh), headers=headers)
         if len(response.body) > MAX_BODY:

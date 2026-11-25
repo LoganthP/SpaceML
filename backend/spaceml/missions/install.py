@@ -18,8 +18,11 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import zipfile
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from xml.etree.ElementTree import ParseError
 
+from ..common import mast_cloud
 from ..common.progress import fail, report, step
 from ..common.zipsupport import enable_deflate64
 from ..config import DATA_DIR
@@ -39,7 +42,7 @@ def auto_source(mission: str) -> dict | None:
     """What one click on "Install data" fetches when no file names are given (shown in the UI)."""
     return {
         "opssat": {"label": "Download the newest OPSSAT-AD release (v2) from Zenodo", "size": "≈ 20 MB", "automatic": True},
-        "hubble": {"label": f"Download the {AUTO_N['hubble']} newest public Hubble jitter logs from MAST", "size": "≈ 5-20 MB", "automatic": True},
+        "hubble": {"label": f"Download the {AUTO_N['hubble']} newest public Hubble jitter logs from MAST (archived sample if search is unavailable)", "size": "≈ 5-20 MB", "automatic": True},
         "webb": {"label": f"Download the newest public Webb fine-guidance data ({AUTO_N['webb']} visits) from MAST", "size": "≈ 5-50 MB", "automatic": True},
     }.get(mission)
 
@@ -225,12 +228,46 @@ def _hubble_latest(dest: Path, want: int) -> None:
     _download_some(flat, dest, want * 2, "Hubble jitter logs")
 
 
+def _hubble_archive_sample(dest: Path, want: int) -> None:
+    # STScI's public cloud bucket includes both jitter products for this ACS program.
+    # A fixed archived sample keeps the workflow usable during portal-search outages.
+    prefix = "hst/public/obqu/"
+    pairs = {}
+    for key in mast_cloud.keys(prefix):
+        name = Path(key).name
+        if re.fullmatch(r"obqu[0-9a-z]{5}_ji[ft][.]fits", name):
+            pairs.setdefault(name.rsplit("_", 1)[0], {})[name[-8:]] = key
+    complete = [pair for pair in pairs.values() if len(pair) == 2][:want]
+    if not complete:
+        raise ValueError("STScI's public cloud archive returned no complete Hubble jitter pairs")
+    step(f"MAST search unavailable; installing {len(complete)} archived Hubble exposures from STScI's public cloud archive")
+
+    def fetch_pair(pair):
+        for key in pair.values():
+            name = Path(key).name
+            _fetch(mast_cloud.url(key), dest / name, timeout=25, label=name)
+
+    with ThreadPoolExecutor(max_workers=min(4, len(complete))) as pool:
+        for index, _ in enumerate(pool.map(fetch_pair, complete), start=1):
+            report(index, len(complete), f"Downloaded {index}/{len(complete)} Hubble archive exposures")
+
+
 def _download(mission: str, dest: Path, files: list[str]) -> Path:
     if mission == "opssat":
         from . import opssat
         return opssat.download(dest, "v2")
     if not files:
-        (_webb_latest if mission == "webb" else _hubble_latest)(dest, AUTO_N[mission])
+        if mission == "webb":
+            _webb_latest(dest, AUTO_N[mission])
+        else:
+            try:
+                _hubble_latest(dest, AUTO_N[mission])
+            except (OSError, ValueError) as portal_error:
+                try:
+                    _hubble_archive_sample(dest, AUTO_N[mission])
+                except (OSError, ValueError, ParseError) as archive_error:
+                    raise ValueError(f"source_unavailable: Hubble MAST search and the public cloud archive are unavailable. "
+                                     f"Retry or upload a _jit/_jif pair. Portal: {portal_error}. Archive: {archive_error}") from archive_error
         return dest
     coll = "HST" if mission == "hubble" else "JWST"
     names = []

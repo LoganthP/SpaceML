@@ -2,19 +2,19 @@ import { Satellite } from "lucide-react";
 import { lazy, Suspense, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Spinner } from "../components/ui";
-import { api } from "../lib/api";
+import { api, useApi } from "../lib/api";
 import { useOnJobFinished } from "../components/Jobs";
 import { READINESS_LABEL, useCatalog } from "../components/Catalog";
-import { useMissions } from "../components/missions/MissionWorkspace";
-import SmapMsl from "./Telemetry";
+import type { MissionStatus } from "../components/missions/MissionWorkspace";
 
+const SmapMsl = lazy(() => import("./Telemetry"));
 const MissionWorkspace = lazy(() => import("../components/missions/MissionWorkspace"));
 
 /** Telemetry: pick a mission. NASA SMAP/MSL keeps its existing workflow; every other source opens the
  *  multi-mission workspace (replay, quick train where supported, scoring, review). */
 export default function TelemetryHub() {
   const [sp, setSp] = useSearchParams();
-  const ms = useMissions();
+  const ms = useApi<{ missions: MissionStatus[] }>("/api/missions");
   useOnJobFinished(ms.reload);
   const runId = sp.get("run");
   const asked = sp.get("mission") ?? "smap-msl";

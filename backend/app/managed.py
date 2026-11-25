@@ -10,6 +10,7 @@ import json
 import logging
 import os
 from pathlib import Path
+from starlette.concurrency import run_in_threadpool
 import re
 import time
 from urllib.parse import urlsplit
@@ -59,6 +60,9 @@ class Runtime:
         self.lock = asyncio.Lock()
         self.checks = {"sandbox": {"available": False}, "drive": {"mounted": False, "writable": None, "mount_path": "/smc"}}
         self.stage = "configuration"
+        self.probe_lock = asyncio.Lock()
+        self.ready_probe = None
+        self.ready_until = 0.0
 
     async def target(self):
         from vercel import sandbox
@@ -126,6 +130,17 @@ class Runtime:
             self.last_start = time.monotonic()
 
     async def probe(self):
+        # A page requests several API resources at once. Share one recent drive
+        # and worker check rather than probing again before every request.
+        async with self.probe_lock:
+            if self.ready_probe is not None and time.monotonic() < self.ready_until:
+                return self.ready_probe
+            result = await self.check_worker()
+            self.ready_probe = result if result[2] == "ready" else None
+            self.ready_until = time.monotonic() + 2
+            return result
+
+    async def check_worker(self):
         self.checks["drive"]["writable"] = None
         box, url = await self.target()
         self.stage = "worker_health"
@@ -158,17 +173,23 @@ runtime = Runtime()
 
 def published(path, request):
     from .vercel_app import frozen, live, sky
+    if path == "live/solar-wind":
+        from spaceml.common.solarwind import latest
+        return JSONResponse(latest(), headers={"Cache-Control": "no-store"})
     if path.startswith("live/"):
         parts = path.split("/")
         if len(parts) == 2:
-            return live(parts[1])
+            return live(parts[1], request.query_params.get("refresh") == "true")
         if len(parts) == 4 and parts[2] == "sky":
             try:
                 fov = float(request.query_params.get("fov", "0.5"))
             except ValueError:
                 return JSONResponse({"detail": "Invalid field of view"}, status_code=422)
             return sky(parts[1], parts[3], fov)
-    return frozen(path, request)
+    response = frozen(path, request)
+    response.headers["Cache-Control"] = "private, no-store"
+    response.headers["X-SpaceML-Source"] = "bundled"
+    return response
 
 
 @app.get("/api/health")
@@ -225,13 +246,18 @@ async def proxy(path: str, request: Request):
         # Published data stays browsable while the account is being connected.
         # Never advertise a working trainer before real compute is reachable.
         if request.method == "GET":
-            return published(path, request)
+            return await run_in_threadpool(published, path, request)
         return JSONResponse({"detail": "Connect Vercel Sandbox and Drive before loading or training data", "setup_required": missing}, status_code=409)
     try:
         url, _, state = await runtime.probe()
         if state != "ready" and not (state == "updating" and request.method == "GET"):
             if request.method == "GET":
-                return published(path, request)
+                if path == "jobs" or path.startswith("jobs/") or (
+                    path.startswith("runs/") and not path.split("/")[1].startswith("ref-")
+                ):
+                    return JSONResponse({"detail": "Vercel compute is reconnecting. The saved job and run history will return when it is ready."},
+                                        status_code=503, headers={"Retry-After": "5", "Cache-Control": "no-store"})
+                return await run_in_threadpool(published, path, request)
             return JSONResponse({"detail": "Vercel training compute is starting or updating. Please retry shortly.", "state": state}, status_code=409, headers={"Retry-After": "5"})
         body = bytearray()
         async for block in request.stream():
@@ -256,7 +282,7 @@ async def proxy(path: str, request: Request):
                 forwarded["Cache-Control"] = "private, no-store"
                 return Response(bytes(output), status_code=response.status_code, headers=forwarded)
     except httpx.HTTPError:
-        return JSONResponse({"detail": "Vercel compute is restarting; persisted jobs and data are retained. Retry shortly."}, status_code=409, headers={"Retry-After": "5"})
+        return JSONResponse({"detail": "Vercel compute is restarting; persisted jobs and data are retained. Retry shortly."}, status_code=503, headers={"Retry-After": "5"})
     except Exception as error:
         logger.warning("Vercel runtime request failed: %s", type(error).__name__)
         return JSONResponse({"detail": "Vercel compute is unavailable. Check Sandbox/Drive configuration and project logs."}, status_code=409)

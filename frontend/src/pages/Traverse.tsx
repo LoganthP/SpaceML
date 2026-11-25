@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { JobButton, JobCard, useJobs, useOnJobFinished } from "../components/Jobs";
 import { MarsModelUpload } from "../components/Setup";
-import { ModuleStatus } from "../components/Catalog";
+import { ModuleStatus, useCatalog } from "../components/Catalog";
 import Plot from "../components/LazyPlot";
 import { ErrorNotice, Glass, IconBadge, Notice, OriginBadge, Page, Segmented, Spinner, StatusBadge } from "../components/ui";
 import { api, createRun, useApi, useRun } from "../lib/api";
@@ -91,6 +91,8 @@ export default function Traverse() {
   const reload = useCallback(() => { ov.reload(); sections.reload(); }, [ov, sections]);
   useOnJobFinished(useCallback(() => { reload(); models.reload(); }, [reload, models]));
   const hasMarsModel = !!models.data?.mars?.active;
+  const trainable = useCatalog().data?.datasets.find((entry) => entry.id === "ai4mars")?.dataset.trainable;
+  const waypointRequest = useRef(0);
   const [batch, setBatch] = useState(0);
   const [zoom, setZoom] = useState<string | null>(null);
   useEffect(() => {
@@ -106,10 +108,16 @@ export default function Traverse() {
   }, [ov.data?.waypoints]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const openWaypoint = useCallback(async (p: { sol: number; site: number; drive: number }) => {
+    const request = ++waypointRequest.current;
     setSel(p); setWp(null); setWpLoading(true);
-    try { setWp(await api<WaypointInfo>(`/api/mars/traverse/waypoint?sol=${p.sol}&site=${p.site}&drive=${p.drive}`)); }
-    catch (e) { setWp({ sol: p.sol, site: p.site, drive: p.drive, raw_status: "error", raw: { images: [], error: (e as Error).message }, analysed: [], samples: [] }); }
-    finally { setWpLoading(false); }
+    try {
+      const result = await api<WaypointInfo>(`/api/mars/traverse/waypoint?sol=${p.sol}&site=${p.site}&drive=${p.drive}`);
+      if (request === waypointRequest.current) setWp(result);
+    } catch (e) {
+      if (request === waypointRequest.current) setWp({ ...p, raw_status: "error", raw: { images: [], error: (e as Error).message }, analysed: [], samples: [] });
+    } finally {
+      if (request === waypointRequest.current) setWpLoading(false);
+    }
   }, []);
 
   const w = ov.data?.waypoints;
@@ -220,7 +228,7 @@ export default function Traverse() {
                     <Notice tone="info" title="No Mars terrain model installed yet">
                       <p>Images can be browsed now; segmenting them needs the terrain model. Train it here or on Data &amp; Training, or upload a GPU-trained model:</p>
                       <div className="flex flex-wrap items-start gap-2">
-                        <JobButton task="mars.train_quick" module="mars" label="Quick run (pipeline check)" className="btn-primary px-3 py-1.5 text-xs" />
+                        {trainable && <JobButton task="mars.train_quick" module="mars" label="Quick run (pipeline check)" className="btn-primary px-3 py-1.5 text-xs" />}
                         <MarsModelUpload onDone={() => models.reload()} />
                       </div>
                     </Notice>)}

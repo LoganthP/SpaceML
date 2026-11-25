@@ -9,7 +9,7 @@ const MaskEditor = lazy(() => import("../components/MaskEditor"));
 import { useSearchParams } from "react-router-dom";
 import { JobButton, useOnJobFinished } from "../components/Jobs";
 import { MarsModelUpload } from "../components/Setup";
-import { ModuleStatus } from "../components/Catalog";
+import { ModuleStatus, useCatalog } from "../components/Catalog";
 import { ErrorNotice, Glass, IconBadge, Notice, Page, RunProgress, Segmented, Spinner } from "../components/ui";
 import { api, createRun, useApi, useRun } from "../lib/api";
 import { pct, TERRAIN_COLORS } from "../lib/format";
@@ -113,7 +113,10 @@ function MarsExtras({ runId }: { runId: string }) {
 }
 
 export default function Mars() {
-  const readOnly = !useCapabilities()?.capabilities.write;
+  const capabilities = useCapabilities();
+  const readOnly = !capabilities?.capabilities.write;
+  const trainable = useCatalog().data?.datasets.find((entry) => entry.id === "ai4mars")?.dataset.trainable;
+  const imageLimit = capabilities?.execution === "managed" ? 3_900_000 : 15_000_000;
   const [params, setParams] = useSearchParams();
   const runId = params.get("run");
   const samples = useApi<MarsSample[]>("/api/mars/samples");
@@ -134,7 +137,11 @@ export default function Mars() {
     try { setParams({ run: (await createRun("mars", { sample_id })).id }); } catch (e) { setSubmitError((e as Error).message); }
   }
   async function upload(file: File) {
-    if (readOnly) return;
+    if (readOnly || noModel) return;
+    if (file.size > imageLimit) {
+      setSubmitError(`Choose an image under ${imageLimit / 1_000_000} MB.`);
+      return;
+    }
     setSubmitError(null);
     setUploading(true);
     try {
@@ -156,10 +163,9 @@ export default function Mars() {
       <ModuleStatus ids={["ai4mars"]} />
       {noModel && (
         <Notice tone="info" title="No Mars terrain model installed yet">
-          <p>Train it from the local AI4Mars pairs - a quick run (pipeline check) takes minutes on a CPU, full training takes hours. For the best accuracy, train on a free
-            Colab/Kaggle GPU with <b>notebooks/mars_training.ipynb</b> and upload the <code>mars_model.zip</code> it produces here.</p>
+          <p>{trainable ? "Quick Train checks the pipeline on the installed AI4Mars pairs. Full training takes longer." : "Install the AI4Mars starter above to enable training, or upload a trained model."}</p>
           <div className="flex flex-wrap items-start gap-2">
-            <JobButton task="mars.train_quick" module="mars" label="Quick run (pipeline check)" className="btn-primary px-3 py-1.5 text-xs" />
+            {trainable && <JobButton task="mars.train_quick" module="mars" label="Quick run (pipeline check)" className="btn-primary px-3 py-1.5 text-xs" />}
             <MarsModelUpload onDone={() => models.reload()} />
           </div>
         </Notice>
@@ -174,7 +180,7 @@ export default function Mars() {
               className={`flex ${noModel ? "pointer-events-none opacity-50" : "cursor-pointer"} flex-col items-center gap-2 rounded-2xl border-2 border-dashed p-6 text-center transition ${dragOver ? "border-mars-400 bg-mars-50/80" : "border-mars-400/40 bg-white/40 hover:bg-white/70"}`}>
               {uploading ? <Spinner className="h-6 w-6 text-mars-600" /> : <Upload className="h-6 w-6 text-mars-600" />}
               <div className="text-sm font-semibold">Upload a rover image</div>
-              <div className="text-[11px] text-ink-soft">PNG/JPEG, grayscale NAVCAM works best · max 15 MB</div>
+              <div className="text-[11px] text-ink-soft">PNG/JPEG, grayscale NAVCAM works best · max {imageLimit / 1_000_000} MB</div>
               <FileInput ref={fileRef} type="file" accept="image/png,image/jpeg" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(f); e.target.value = ""; }} />
             </div>
           </Glass>

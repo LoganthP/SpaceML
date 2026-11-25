@@ -195,3 +195,17 @@ def test_sdk_creates_one_project_owned_drive_and_persistent_runtime(gateway, mon
     assert "a" * 48 not in str(command[1])
     assert command[2]["env"]["SMC_INTERNAL_TOKEN"] == "a" * 48
     assert command[2]["env"]["SMC_DEPLOYMENT_BYPASS"] == "test-automation-bypass"
+
+
+def test_reconnecting_compute_does_not_substitute_bundled_job_history(gateway, monkeypatch):
+    module, client = gateway
+
+    async def starting():
+        return "https://sandbox.example", {}, "starting"
+
+    monkeypatch.setattr(module.runtime, "probe", starting)
+    for path in ("/api/jobs", "/api/jobs/queued-id", "/api/runs/queued-id"):
+        response = client.get(path)
+        assert response.status_code == 503
+        assert response.headers["Retry-After"] == "5"
+    assert client.get("/api/catalog").headers["X-SpaceML-Source"] == "bundled"

@@ -4,7 +4,7 @@ import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { JobButton, activeJob, useJobs, useOnJobFinished, JobCard } from "../components/Jobs";
 import Plot from "../components/LazyPlot";
 import { ErrorNotice, Glass, IconBadge, Kpi, Notice, Page, Segmented, Spinner } from "../components/ui";
-import { api, useApi } from "../lib/api";
+import { api, useApi, usePoll } from "../lib/api";
 import { num } from "../lib/format";
 import type { ModuleEvaluation } from "../lib/types";
 import { ModuleStatus } from "../components/Catalog";
@@ -35,6 +35,31 @@ function Readout({ label, value, unit, tone }: { label: string; value: string; u
       <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-ink-faint">{label}</div>
       <div className={`font-mono text-xl font-bold tabular-nums ${tone ?? ""}`}>{value}<span className="ml-1 text-[10px] font-semibold text-ink-faint">{unit}</span></div>
     </div>
+  );
+}
+
+function LiveSolarWind() {
+  const { data, error, loading, reload } = usePoll<{
+    status: "live" | "stale" | "unavailable";
+    observed_at?: string; speed?: number; density?: number; temperature?: number;
+  }>("/api/live/solar-wind", 60_000);
+  return (
+    <Glass className="space-y-2 p-4" aria-label="NOAA solar wind">
+      <div className="flex flex-wrap items-center gap-2">
+        <Wind className="h-4 w-4 text-amber-600" />
+        <h2 className="text-sm font-semibold">Latest solar wind</h2>
+        <a href="https://www.swpc.noaa.gov/products/real-time-solar-wind" target="_blank" rel="noreferrer" className="text-xs underline">NOAA SWPC</a>
+        <button className="btn-ghost ml-auto px-2 py-1 text-xs" onClick={reload} disabled={loading}>Refresh solar wind</button>
+      </div>
+      {data?.observed_at ? <>
+        <p className="text-xs text-ink-soft">{data.status === "live" && !error ? "Latest measurement" : "Last available measurement"} · {new Date(data.observed_at).toLocaleString()}</p>
+        <div className="grid grid-cols-3 gap-2">
+          <Readout label="Speed" value={num(data.speed, 0)} unit="km/s" />
+          <Readout label="Density" value={num(data.density, 1)} unit="cm⁻³" />
+          <Readout label="Temperature" value={num(data.temperature, 0)} unit="K" />
+        </div>
+      </> : <p className="text-xs text-ink-soft">{loading ? "Checking NOAA…" : "NOAA solar-wind measurements are temporarily unavailable."}</p>}
+    </Glass>
   );
 }
 
@@ -166,6 +191,7 @@ export default function SpaceWeather() {
     <Page title="Space Weather Explorer"
       subtitle="Replay historical geomagnetic storms from NASA OMNIWeb: solar wind measured at L1 next to Earth's response (Dst, Kp). Annotate events and compare a trained Dst forecaster with a persistence baseline, with a chronological split and a visible forecast horizon."
       icon={<IconBadge gradient="from-amber-400 to-rose-500"><CloudLightning className="h-6 w-6" /></IconBadge>}>
+      <LiveSolarWind />
       <ModuleStatus ids={["omni2"]} />
       {st.error && <ErrorNotice message={st.error.message} />}
       {job && <JobCard job={job} />}

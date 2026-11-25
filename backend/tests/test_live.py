@@ -118,3 +118,14 @@ def test_api_routes(live, monkeypatch):
         _serve(monkeypatch, live, {"/api/get/webb": json.dumps(WEBB).encode()})
         assert c.get("/api/live/webb").json()["observation"]["target"] == "Orion Bar"
         assert c.get("/api/live/webb/sky/..%2Fsecret?fov=0.5").status_code == 404
+
+
+def test_sky_rejects_non_images_and_tries_independent_survey(live, monkeypatch):
+    jpg = b"\xff\xd8\xff\xe0fallbackjpeg"
+    _serve(monkeypatch, live, {
+        "/api/get/webb": json.dumps(WEBB).encode(),
+        "skyview.gsfc.nasa.gov": b"<html>maintenance</html>",
+        "alaskybis.cds.unistra.fr": jpg,
+    })
+    # Exercise the cold-instance path where the metadata is not already on disk.
+    assert live.sky("webb", "01JWEBB0001", 0.5).read_bytes() == jpg

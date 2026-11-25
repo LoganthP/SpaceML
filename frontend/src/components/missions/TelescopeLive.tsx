@@ -40,7 +40,7 @@ export function TelescopeLive({ mission }: { mission: "hubble" | "webb" }) {
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [fov, setFov] = useState<Fov>("0.5");
-  const [imgOk, setImgOk] = useState(true);
+  const [failedImage, setFailedImage] = useState<string | null>(null);
   const [, tick] = useState(0);
   const telescope = mission === "hubble" ? "Hubble" : "Webb";
 
@@ -58,7 +58,9 @@ export function TelescopeLive({ mission }: { mission: "hubble" | "webb" }) {
   }, [mission]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const o = data?.observation;
-  useEffect(() => setImgOk(true), [o?.id, fov]);
+  const imageKey = `${o?.id}-${fov}`;
+  const hasCoordinates = o?.ra != null && o.dec != null;
+  const imgOk = failedImage !== imageKey;
   const a = o?.start ? new Date(o.start).getTime() : null, b = o?.end ? new Date(o.end).getTime() : null;
   const now = Date.now();
   const frac = a && b && b > a ? Math.min(1, Math.max(0, (now - a) / (b - a))) : null;
@@ -71,7 +73,7 @@ export function TelescopeLive({ mission }: { mission: "hubble" | "webb" }) {
         {data && <span className={`chip text-[11px] ${data.source === "live" ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200" : "bg-amber-100 text-amber-900 dark:bg-amber-500/15 dark:text-amber-100"}`}>
           {data.source === "live" ? <><span className="mr-1 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />Live · updated {ago(data.fetched_at)}</> : `Offline · last known, fetched ${ago(data.fetched_at)}`}
         </span>}
-        <button className="btn-ghost ml-auto px-2.5 py-1 text-xs" onClick={() => load(true)} disabled={busy} aria-label="Refresh live observation">
+        <button className="btn-ghost ml-auto px-2.5 py-1 text-xs" onClick={() => { setFailedImage(null); void load(true); }} disabled={busy} aria-label="Refresh live observation">
           {busy ? <Spinner className="h-3.5 w-3.5" /> : <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" />} Refresh
         </button>
       </div>
@@ -79,26 +81,25 @@ export function TelescopeLive({ mission }: { mission: "hubble" | "webb" }) {
       {!data && !err && <div className="flex items-center gap-2 py-8 text-sm text-ink-soft" role="status"><Spinner /> Asking Space Telescope Live…</div>}
       {!data && err && (
         <p role="status" className="mt-3 rounded-xl bg-slate-100 p-3 text-sm text-ink-soft dark:bg-white/5">{err}</p>)}
-      {data && !o && data.notice && <p role="status" className="mt-3 rounded-xl bg-slate-100 p-3 text-sm text-ink-soft dark:bg-white/5">{data.notice}</p>}
+      {data && (data.notice || err) && <p role="status" className="mt-3 rounded-xl bg-slate-100 p-3 text-sm text-ink-soft dark:bg-white/5">{data.notice || err}</p>}
 
       {o && (
         <div className="mt-3 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
           <figure className="min-w-0">
             <div className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-slate-950">
-              {o.ra != null && imgOk ? (
-                <img key={`${o.id}-${fov}`} src={`/api/live/${mission}/sky/${encodeURIComponent(o.id)}?fov=${fov}`} onError={() => setImgOk(false)}
-                  alt={`Sky survey image around ${o.target}`} className="h-full w-full object-cover" />
+              {hasCoordinates && imgOk ? (
+                <img key={`${o.id}-${fov}`} src={`/api/live/${mission}/sky/${encodeURIComponent(o.id)}?fov=${fov}`} onError={() => setFailedImage(imageKey)}
+                  alt={`Sky survey image around ${o.target}`} className="h-full w-full object-contain" />
               ) : (
                 <div className="flex h-full flex-col items-center justify-center gap-2 text-center text-xs text-slate-400">
-                  <ImageOff className="h-6 w-6" aria-hidden="true" />{o.ra == null ? "No sky coordinates for this observation." : "Sky image not available right now."}
+                  <ImageOff className="h-6 w-6" aria-hidden="true" />{!hasCoordinates ? "No sky coordinates for this observation." : "Survey image unavailable. Use Refresh to retry."}
                 </div>)}
-              {o.ra != null && imgOk && <Crosshair className="pointer-events-none absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 text-cyan-300/90 drop-shadow" aria-hidden="true" />}
+              {hasCoordinates && imgOk && <Crosshair className="pointer-events-none absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 text-cyan-300/90 drop-shadow" aria-hidden="true" />}
               <span className="absolute left-2 top-2 rounded-lg bg-slate-950/70 px-2 py-0.5 font-mono text-[10px] text-slate-200">{radec(o.ra, o.dec)}</span>
             </div>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <Segmented label="Field of view" value={fov} onChange={setFov} options={FOV} />
-              <figcaption className="text-[10px] leading-tight text-ink-faint">Ground-based DSS2 survey image of the target region (CDS hips2fits).
-                {" "}{telescope}'s own images are not released in real time.</figcaption>
+              <figcaption className="text-[10px] leading-tight text-ink-faint">Archival DSS2 survey image of the scheduled target, provided by NASA SkyView or CDS. The observing schedule updates independently.</figcaption>
             </div>
           </figure>
 

@@ -4,10 +4,15 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import FileResponse
 
-from spaceml.common import stlive
+from spaceml.common import solarwind, stlive
 from spaceml.common.fetch import SourceUnavailable
 
 router = APIRouter(prefix="/api/live", tags=["live"])
+
+
+@router.get("/solar-wind")
+def solar_wind():
+    return solarwind.latest()
 
 
 @router.get("/{telescope}")

@@ -4,7 +4,7 @@ Source: NASA / STScI Space Telescope Live (https://spacetelescopelive.org). The 
 so the backend reads the same public JSON its own frontend uses (`GET /api/get/{webb|hubble}` with the header
 `endpoint: current`; undocumented, so the parser is defensive) and the app draws its own view.
 
-The sky picture is a ground-based survey image of the target region (DSS2 colour, cut out by the CDS hips2fits service
+The sky picture is a ground-based survey image of the target region (DSS2, cut out by NASA SkyView or CDS HiPS2FITS
 at the observation's coordinates). Hubble and Webb images are not public in real time, so no live telescope image exists.
 
 Everything fetched is cached under STORAGE_DIR/live, so the last known observation, its sky picture and the list of
@@ -17,6 +17,7 @@ import re
 import socket
 import time
 import tempfile
+from contextlib import suppress
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -29,6 +30,8 @@ from .fetch import USER_AGENT, SourceUnavailable, _reason
 
 SITE = "https://spacetelescopelive.org"
 SKY = "https://alasky.cds.unistra.fr/hips-image-services/hips2fits"
+SKYVIEW = "https://skyview.gsfc.nasa.gov/current/cgi/runquery.pl"
+SKY_MIRROR = "https://alaskybis.cds.unistra.fr/hips-image-services/hips2fits"
 TELESCOPES = {"webb": "James Webb Space Telescope", "hubble": "Hubble Space Telescope"}
 FOVS = (0.1, 0.5, 2.0)                       # degrees: target close-up, field, wide context
 MAX_AGE = float(os.environ.get("SMC_LIVE_MAX_AGE", "120"))   # seconds before the current observation is refreshed
@@ -49,7 +52,7 @@ def _get(url: str, headers: dict | None = None, timeout: float = 12, max_bytes: 
         with urllib.request.urlopen(req, timeout=timeout) as r:
             data = r.read(max_bytes + 1)
     except (urllib.error.URLError, socket.timeout, TimeoutError, ConnectionError, OSError) as e:
-        raise SourceUnavailable("Space Telescope Live" if SITE in url else "CDS sky survey", url, _reason(e)) from e
+        raise SourceUnavailable("Space Telescope Live" if SITE in url else "Sky survey", url, _reason(e)) from e
     if len(data) > max_bytes:
         raise SourceUnavailable("Space Telescope Live", url, "response too large")
     return data
@@ -199,6 +202,12 @@ def sky(tel: str, obs_id: str, fov: float) -> Path:
     if tel not in TELESCOPES or fov not in FOVS or not re.fullmatch(r"[A-Za-z0-9._-]{1,80}", obs_id):
         raise KeyError("unknown observation")
     o = _known(tel, obs_id)
+    if not o:
+        # An image can land on a different Function instance from the metadata request.
+        with suppress(SourceUnavailable):
+            observation = current(tel)["observation"]
+            if observation["id"] == obs_id:
+                o = observation
     if not o or o.get("ra") is None or o.get("dec") is None:
         raise KeyError("no coordinates for this observation")
     out = root() / "sky" / f"{tel}-{obs_id}-{fov:g}.jpg"
@@ -206,11 +215,26 @@ def sky(tel: str, obs_id: str, fov: float) -> Path:
         return out
     q = urllib.parse.urlencode({"hips": "CDS/P/DSS2/color", "width": 720, "height": 480, "fov": fov, "projection": "TAN",
                                 "coordsys": "icrs", "ra": f"{o['ra']:.6f}", "dec": f"{o['dec']:.6f}", "format": "jpg"})
-    data = _get(f"{SKY}?{q}", timeout=20)
-    if not data.startswith(b"\xff\xd8"):
-        raise SourceUnavailable("CDS sky survey", SKY, "did not return an image")
-    out.parent.mkdir(parents=True, exist_ok=True)
-    tmp = out.with_name(out.name + ".part")
-    tmp.write_bytes(data)
-    tmp.replace(out)
-    return out
+    skyview_query = urllib.parse.urlencode({
+        "Position": f"{o['ra']:.6f},{o['dec']:.6f}", "Survey": "DSS2 Red",
+        "Size": f"{fov:g}", "Pixels": 640, "Return": "JPEG",
+    })
+    failures = []
+    for url in (f"{SKYVIEW}?{skyview_query}", f"{SKY_MIRROR}?{q}", f"{SKY}?{q}"):
+        try:
+            data = _get(url, timeout=8, max_bytes=2_000_000)
+            if not data.startswith(b"\xff\xd8"):
+                raise SourceUnavailable("Sky survey", url, "did not return a JPEG")
+        except SourceUnavailable as error:
+            failures.append(error.reason)
+            continue
+        out.parent.mkdir(parents=True, exist_ok=True)
+        with tempfile.NamedTemporaryFile(dir=out.parent, prefix=".sky-", delete=False) as file:
+            file.write(data)
+            tmp = Path(file.name)
+        try:
+            tmp.replace(out)
+        finally:
+            tmp.unlink(missing_ok=True)
+        return out
+    raise SourceUnavailable("Sky survey", SKYVIEW, "; ".join(dict.fromkeys(failures)))
