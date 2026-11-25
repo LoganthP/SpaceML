@@ -24,3 +24,5 @@ frontend/dist/
 .env.*
 !.env.example
 storage/secrets/
+.vercel
+.env*
