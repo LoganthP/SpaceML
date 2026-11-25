@@ -41,7 +41,7 @@ export interface CatalogData {
   release: { present: boolean; bundle_dir: string; bundle_version: string | null; total_bytes: number | null;
              installed: { bundle_version?: string; complete?: boolean; copied?: number; n_problems?: number; problems?: string[] };
              active_job: CJob | null; last_failure: CJob | null };
-  heavy_jobs: { id: string; title: string; status: string }[]; free_bytes: number;
+  heavy_jobs: { id: string; title: string; status: string }[]; free_bytes: number | null;
 }
 
 /** One shared catalog snapshot for the whole app (Overview, Data & Training, module and mission pages):
@@ -77,7 +77,7 @@ export function useCatalog() {
 }
 
 /* ------------------------------------------------------------------ helpers */
-const fmtBytes = (b?: number | null) => (b == null ? "" : b >= 1e9 ? `${(b / 1e9).toFixed(2)} GB` : b >= 1e6 ? `${(b / 1e6).toFixed(1)} MB` : `${Math.max(1, Math.round(b / 1e3))} kB`);
+const fmtBytes = (b?: number | null) => (b == null ? "" : b >= 1e9 ? `${(b / 1e9).toFixed(2)} GB` : b >= 1e6 ? `${(b / 1e6).toFixed(1)} MB` : b >= 1e3 ? `${Math.round(b / 1e3)} kB` : `${b} B`);
 const ago = (iso?: string | null) => {
   if (!iso) return "";
   const s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
@@ -262,7 +262,7 @@ export function ReleaseCard({ c, reload }: { c: CatalogData; reload: () => void 
           : <span className="chip bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300">not used</span>}
         {r.installed?.complete && r.installed.bundle_version === r.bundle_version &&
           <span className="chip bg-emerald-100 text-emerald-800"><ShieldCheck className="h-3 w-3" /> installed · checksums verified</span>}
-        <span className="ml-auto flex items-center gap-1 text-[11px] text-ink-faint"><HardDrive className="h-3 w-3" /> {fmtBytes(c.free_bytes)} free</span>
+        <span className="ml-auto flex items-center gap-1 text-[11px] text-ink-faint"><HardDrive className="h-3 w-3" /> {c.free_bytes == null ? "Capacity unavailable" : `${fmtBytes(c.free_bytes)} free`}</span>
         {r.present && !job && <WriteButton className="btn-ghost px-2.5 py-1 text-[11px]" disabled={!!act.pending} onClick={() => act.startTask({ task: "release.install", label: "Install" })}>
           <RotateCcw className="h-3 w-3" /> {r.installed?.complete ? "Re-verify" : "Install"}</WriteButton>}
       </div>

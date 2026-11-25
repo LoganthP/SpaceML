@@ -20,6 +20,7 @@ selector. Their original files and source adapters are retained.
    | Variable | Value |
    | --- | --- |
    | `SMC_MODE` | `vercel` |
+   | `SMC_DRIVE_NAME` | `spaceml-data` (the Vercel Drive created below; Production only) |
    | `SMC_INTERNAL_TOKEN` | A new random secret, at least 32 characters; generate with `python -c "import secrets; print(secrets.token_hex(32))"` |
    | `SMC_AUTH_USER` | Your operator login name |
    | `SMC_AUTH_PASSWORD` | A strong, unique operator password |
@@ -32,13 +33,27 @@ selector. Their original files and source adapters are retained.
 4. Ensure your project/team permits **Vercel Sandbox and Vercel Drives**. The SDK
    uses the Function's Vercel OIDC identity to create project-owned resources.
    No third-party application backend or database integration is needed.
+   The shared Google Drive folder is unrelated and is not used. Never put its
+   URL or folder ID in `SMC_DRIVE_NAME`.
 5. Deploy through Git, or from repository root:
 
    ```sh
+   npm install -g vercel sandbox
    vercel login
    vercel link
+   vercel env pull .env.local
+   sandbox login
+   sandbox drives get-or-create spaceml-data --region iad1
    vercel --prod
    ```
+
+   Install the optional Sandbox CLI if `sandbox` is unavailable, following the
+   [official Drive guide](https://vercel.com/kb/guide/vercel-drives). Select the
+   same team and `spaceml` project in both CLIs. The SDK can also create the named
+   Drive on the first request, so manual creation is optional. An existing
+   Drive's region must match `SMC_REGION` (default `iad1`). Keep Preview's Drive
+   separate by leaving `SMC_DRIVE_NAME` unset there. Production OIDC is automatic;
+   `.env.local` is for local testing and must not be committed.
 
 The public services remain `backend` at `/api` and `/api/*`, and `frontend` at
 all other paths. The browser calls same-origin `/api/*`. There are no bindings:
@@ -52,6 +67,14 @@ is ready. HTTPS HTTP Basic credentials are managed by the browser, not stored
 by frontend JavaScript. Missing settings produce `state=setup_required` with
 the setting names in `/api/health`; training is not falsely advertised as working.
 Published results remain browsable before setup is complete.
+One status banner reports Sandbox availability and Drive writability. Install
+and Train keep their action labels and are disabled with a setup hint until
+both checks succeed. `/api/health/sandbox` and `/api/health/drive` expose those
+checks separately; startup errors include the failing stage and error type.
+The worker verifies dataset, model and job paths are under `/smc`, then writes,
+syncs and reads a temporary file in each directory. A failed check blocks writes.
+Capacity is shown as **Capacity unavailable** unless a trustworthy measurement
+exists; the filesystem estimate in diagnostics is not a Vercel Drive quota.
 An unauthenticated health request intentionally reports `write=false` and
 `train=false` even after compute is ready; sign in to enable operator actions.
 
@@ -96,9 +119,16 @@ supervisor owns the API/worker. Updates use separate source folders and wait for
 active jobs/runs before restarting. Datasets and models are not removed on resume.
 The default production names are `space-ml-production` (Sandbox) and
 `space-ml-production-data` (Drive); do not delete the Drive during restart checks.
+Setting `SMC_DRIVE_NAME=spaceml-data` overrides that default. If you already have
+data in the default Drive, keep its name instead: changing the variable selects
+another Drive and does not migrate files.
 
-Vercel Sandbox and Drive usage consumes account quotas and may be billed. Session
-duration/capacity depend on the plan. The default session is 45 minutes. Set
+Vercel Sandbox and Drive usage consumes account quotas and may be billed. Sandbox
+and Drive capacity must accommodate dependencies as well as datasets. The
+current Hobby default of 1 GiB is insufficient for this Python training stack;
+check your plan and Drive size before installing large datasets. The app never
+represents a placeholder or filesystem estimate as remaining Drive quota.
+Session duration/capacity depend on the plan. The default session is 45 minutes. Set
 `SMC_SANDBOX_SECONDS` within your plan's limit for longer sessions (up to 24 hours
 on eligible plans). Suspension stops processes; on the next request the runtime
 resumes and recovers interrupted jobs/runs using the same IDs. Existing pipeline
@@ -131,6 +161,9 @@ never commit or paste them into source.
 
 1. Wait for `/api/health`: `state=ready`, `execution=managed`,
    `storage=vercel-drive`. Sign in; `write` and `train` must become true.
+   Confirm `/api/health/sandbox` and `/api/health/drive` both report `ok=true`,
+   and the latter reports the intended Drive name, `mounted=true`,
+   `paths_valid=true` and `writable=true`.
 2. Start OPS-SAT Quick Train in the deployed UI. Reload while it runs and confirm
    the same job ID continues; open its held-out evaluation.
 3. Stop the Sandbox session without deleting the Drive. Reopen the application;
@@ -174,7 +207,7 @@ held-out metrics. Actual published weights/data are in `release/mission-results`
 `persistent-workflow-validation.json` reports the prior local process restart
 check, not a cloud Sandbox/Drive check.
 
-Local validation for this revision: 29 Vercel/fallback/gateway/security/archive
+Local validation for this revision: 35 Vercel/fallback/gateway/security/archive
 tests and 16 local mission/catalog/job/artifact/recovery tests passed. TypeScript
 and the Vite production build passed. All 15 pages passed the browser audit with
 zero console, HTTP, click or overflow errors. The authenticated local OPS-SAT

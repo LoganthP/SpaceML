@@ -56,24 +56,31 @@ class Runtime:
         self.refreshed = 0.0
         self.last_start = 0.0
         self.lock = asyncio.Lock()
+        self.checks = {"sandbox": {"available": False}, "drive": {"mounted": False, "writable": None, "mount_path": "/smc"}}
+        self.stage = "configuration"
 
     async def target(self):
         from vercel import sandbox
         async with self.lock:
             if not self.box or time.monotonic() - self.refreshed > 15:
+                self.checks["sandbox"]["available"] = False
+                self.checks["drive"].update(mounted=False, writable=None)
                 environment = os.environ.get("VERCEL_ENV", "development")
                 branch = os.environ.get("VERCEL_GIT_COMMIT_REF", environment)
                 import hashlib
                 suffix = "production" if environment == "production" else "preview-" + hashlib.sha256(branch.encode()).hexdigest()[:12]
                 name = os.environ.get("SMC_SANDBOX_NAME", "space-ml-" + suffix)
                 drive_name = os.environ.get("SMC_DRIVE_NAME", name + "-data")
+                self.checks["drive"]["name"] = drive_name
                 if not re.fullmatch(r"[a-zA-Z0-9_-]{1,64}", name + "") or not re.fullmatch(r"[a-zA-Z0-9_-]{1,64}", drive_name):
                     raise ValueError("Invalid project-local runtime name")
                 region = os.environ.get("SMC_REGION", "iad1")
+                self.stage = "create_drive"
                 drive, _ = await sandbox.get_or_create_drive(name=drive_name, region=region)
                 seconds = int(os.environ.get("SMC_SANDBOX_SECONDS", "2700"))
                 if not 300 <= seconds <= 86400:
                     raise ValueError("Sandbox session duration must be 300–86400 seconds, within your plan limit")
+                self.stage = "create_sandbox"
                 self.box, _ = await sandbox.get_or_create_sandbox(
                     name=name, image="vercel/sandbox/python:3.14", persistent=True,
                     ports=[8000], execution_time_limit=seconds,
@@ -81,10 +88,13 @@ class Runtime:
                     mounts={"/smc": drive}, region=region, snapshot_expiration=0,
                     snapshot_retention=sandbox.SnapshotRetention(count=1),
                 )
+                self.checks["sandbox"]["available"] = True
+                self.stage = "verify_mount"
                 mount = (self.box.mounts or {}).get("/smc")
                 if mount is None or mount.mode != "read-write" or mount.drive not in (drive_name, getattr(drive, "id", None)):
                     self.box = None
                     raise RuntimeError("The Vercel runtime must mount its named Drive read-write at /smc")
+                self.checks["drive"]["mounted"] = True
                 self.refreshed = time.monotonic()
             route = next((r for r in self.box.routes if r.port == 8000), None)
             if route is None or not route.url.startswith("https://"):
@@ -97,6 +107,7 @@ class Runtime:
                 return
             bundle = json.loads((ROOT / "runtime_bundle.json").read_text(encoding="utf-8"))
             launcher = (ROOT / "managed_bootstrap.py").read_text(encoding="utf-8")
+            self.stage = "start_worker"
             environment = {
                 "SMC_BUNDLE_SHA256": bundle["sha256"], "SMC_SOURCE_URL": source_origin() + bundle["url"],
                 "SMC_INTERNAL_TOKEN": os.environ["SMC_INTERNAL_TOKEN"],
@@ -111,7 +122,9 @@ class Runtime:
             self.last_start = time.monotonic()
 
     async def probe(self):
+        self.checks["drive"]["writable"] = None
         box, url = await self.target()
+        self.stage = "worker_health"
         bundle = json.loads((ROOT / "runtime_bundle.json").read_text(encoding="utf-8"))
         try:
             async with httpx.AsyncClient(timeout=4) as client:
@@ -119,6 +132,10 @@ class Runtime:
                 if response.status_code == 200:
                     body = response.json()
                     if body.get("bundle_sha256") == bundle["sha256"]:
+                        storage = (body.get("checks") or {}).get("drive") or {}
+                        self.checks["drive"]["writable"] = storage.get("writable") is True
+                        if storage.get("paths_valid") is not True or storage.get("writable") is not True:
+                            return url, body, "storage_error"
                         return url, body, "ready"
                     await self.start(box)
                     return url, body, "updating"
@@ -155,22 +172,45 @@ def published(path, request):
 async def health(request: Request):
     missing = missing_configuration()
     body, state = {}, "setup_required"
+    startup_error = None
     if not missing:
         try:
             _, body, state = await runtime.probe()
         except Exception as error:
             logger.warning("Vercel runtime initialization failed: %s", type(error).__name__)
             state = "error"
+            startup_error = {"stage": getattr(runtime, "stage", "startup"), "type": type(error).__name__}
             body = {"detail": "Vercel Sandbox or Drive could not start. Check project credentials, quotas and Function logs."}
     ready = state == "ready"
+    if state in ("error", "storage_error") and startup_error is None:
+        startup_error = {"stage": getattr(runtime, "stage", "worker_health"), "type": "WorkerStartupError" if state == "error" else "DriveWriteCheckFailed"}
     allowed = ready and auth.authenticated(request)
+    observed = (body.get("checks") or {}).get("drive") or {}
+    checks = getattr(runtime, "checks", {"sandbox": {"available": ready}, "drive": {"mounted": ready, "writable": None}})
+    checks = {"sandbox": dict(checks["sandbox"]), "drive": {**checks["drive"], **observed}}
+    if missing:
+        checks = {"sandbox": {"available": False}, "drive": {"mounted": False, "writable": None, "mount_path": "/smc"}}
+    checks["drive"]["name"] = os.environ.get("SMC_DRIVE_NAME", checks["drive"].get("name"))
     return JSONResponse({**body, "status": "ok" if ready else state, "state": state,
+                         "checks": checks, "startup_error": startup_error,
                          "mode": "vercel", "execution": "managed", "version": "3.1.10",
                          "storage": "vercel-drive" if ready else "not_connected", "read_only": [] if allowed else ["authentication_required" if ready else "compute_not_ready"],
                          "authentication": {"required": auth.required(), "authenticated": auth.authenticated(request)},
                          "capabilities": {"write": allowed, "train": allowed, "live": True},
                          "setup_required": missing,
-                         "hint": "Connect Vercel Sandbox and Drive" if missing else "Vercel compute could not start; check Sandbox permissions, quotas and project logs" if state == "error" else "Sign in to train" if ready and not allowed else "Preparing Vercel training compute" if not ready else None},
+                         "hint": "Connect Vercel Sandbox and Drive" if missing else "Vercel Drive write check failed; inspect /api/health/drive" if state == "storage_error" else "Vercel compute could not start; check Sandbox permissions, quotas and project logs" if state == "error" else "Sign in to train" if ready and not allowed else "Preparing Vercel training compute" if not ready else None},
+                        headers={"Cache-Control": "private, no-store"})
+
+
+@app.get("/api/health/sandbox")
+@app.get("/api/health/drive")
+async def health_component(request: Request):
+    report = json.loads((await health(request)).body)
+    component = request.url.path.rsplit("/", 1)[-1]
+    check = report["checks"][component]
+    ok = check.get("available") is True if component == "sandbox" else check.get("mounted") is True and check.get("writable") is True
+    return JSONResponse({"component": component, "ok": ok, "state": report["state"], **check,
+                         "startup_error": report["startup_error"], "detail": report.get("detail")},
                         headers={"Cache-Control": "private, no-store"})
 
 

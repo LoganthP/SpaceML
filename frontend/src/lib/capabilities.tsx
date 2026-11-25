@@ -1,6 +1,6 @@
 import { createContext, forwardRef, useContext, useEffect, useState, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode } from "react";
 
-interface Capabilities { mode: "local" | "vercel"; execution?: "local" | "static" | "managed"; state?: string; hint?: string; setup_required?: string[]; error?: boolean; authentication?: { required: boolean; authenticated: boolean }; stored_inputs?: { module: string; input: Record<string, unknown> }[]; precomputed_modules?: string[]; capabilities: { write: boolean; train: boolean; live: boolean } }
+interface Capabilities { checks?: { sandbox: { available: boolean }; drive: { mounted?: boolean; writable: boolean | null; name?: string } }; startup_error?: { stage: string; type: string } | null; detail?: string; mode: "local" | "vercel"; execution?: "local" | "static" | "managed"; state?: string; hint?: string; setup_required?: string[]; error?: boolean; authentication?: { required: boolean; authenticated: boolean }; stored_inputs?: { module: string; input: Record<string, unknown> }[]; precomputed_modules?: string[]; capabilities: { write: boolean; train: boolean; live: boolean } }
 const Context = createContext<Capabilities | null>(null);
 let health: Promise<Capabilities> | undefined;
 export const READ_ONLY_HINT = "Vercel compute required";
@@ -46,7 +46,7 @@ export function WriteButton({ operation = "write", ...props }: ButtonHTMLAttribu
   const caps = useCapabilities();
   const readOnly = caps?.capabilities.write === false || caps?.capabilities[operation] === false;
   return <button {...props} disabled={props.disabled || readOnly || caps === null}
-    title={readOnly ? (caps?.hint ?? (caps?.mode === "vercel" ? READ_ONLY_HINT : "Sign in to continue")) : props.title} data-smc-write="true">{readOnly && caps?.mode === "vercel" ? caps?.hint ?? READ_ONLY_HINT : props.children}</button>;
+    title={readOnly ? (caps?.hint ?? (caps?.mode === "vercel" ? READ_ONLY_HINT : "Sign in to continue")) : props.title} data-smc-write="true">{props.children}</button>;
 }
 
 export const FileInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(function FileInput(props, ref) {

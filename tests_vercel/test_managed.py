@@ -30,7 +30,7 @@ def gateway(monkeypatch):
         calls = 0
         async def probe(self):
             self.calls += 1
-            return "https://sandbox.example", {}, "ready"
+            return "https://sandbox.example", {"checks": {"drive": {"paths_valid": True, "writable": True}}}, "ready"
     monkeypatch.setattr(module, "runtime", Runtime())
     return module, TestClient(module.app)
 
@@ -52,10 +52,14 @@ def test_missing_setup_is_honest_and_catalog_excludes_removed_missions(gateway, 
     assert health["storage"] == "not_connected"
     assert module.runtime.calls == 0
     catalog = client.get("/api/catalog").json()
+    assert catalog["free_bytes"] is None
     assert len(catalog["datasets"]) == 9
     assert {e["mission"] for e in catalog["datasets"] if e.get("mission")} == {"opssat", "hubble", "webb"}
     assert client.post("/api/jobs", json={}).status_code == 409
     assert "Docker" not in client.get("/api/catalog").text
+    assert "Connect Vercel compute" not in client.get("/api/catalog").text
+    assert client.get("/api/health/sandbox").json()["ok"] is False
+    assert client.get("/api/health/drive").json()["ok"] is False
 
 
 def test_ready_gateway_forwards_real_job_requests_and_bounds_bodies(gateway, monkeypatch):
@@ -75,6 +79,8 @@ def test_ready_gateway_forwards_real_job_requests_and_bounds_bodies(gateway, mon
     monkeypatch.setattr(module.httpx, "AsyncClient", lambda **kwargs: original(transport=httpx.ASGITransport(app=upstream), **kwargs))
     health = client.get("/api/health").json()
     assert health["capabilities"]["train"] is True and health["storage"] == "vercel-drive"
+    assert client.get("/api/health/sandbox").json()["ok"] is True
+    assert client.get("/api/health/drive").json()["ok"] is True
     result = client.post("/api/jobs", json={"task": "missions.opssat.train", "params": {"mode": "quick"}})
     assert result.status_code == 200 and result.json()["id"] == "real-queue-id"
     assert received[0]["task"] == "missions.opssat.train"
@@ -93,6 +99,25 @@ def test_compute_is_not_advertised_until_ready(gateway, monkeypatch):
     body = client.get("/api/health").json()
     assert body["state"] == "starting" and not body["capabilities"]["write"]
     assert client.post("/api/jobs", json={}).status_code == 409
+
+
+@pytest.mark.parametrize("writable,expected", [(False, "storage_error"), (True, "ready")])
+def test_runtime_requires_worker_drive_write_proof(gateway, monkeypatch, tmp_path, writable, expected):
+    import asyncio
+    module, _ = gateway
+    monkeypatch.setattr(module, "ROOT", tmp_path)
+    (tmp_path / "runtime_bundle.json").write_text(json.dumps({"sha256": "current"}))
+    runtime = module.Runtime()
+    async def target():
+        return object(), "https://sandbox.example"
+    monkeypatch.setattr(runtime, "target", target)
+    transport = httpx.MockTransport(lambda request: httpx.Response(200, json={
+        "bundle_sha256": "current", "checks": {"drive": {"paths_valid": True, "writable": writable}}
+    }))
+    original = httpx.AsyncClient
+    monkeypatch.setattr(module.httpx, "AsyncClient", lambda **kwargs: original(transport=transport, **kwargs))
+    assert asyncio.run(runtime.probe())[2] == expected
+    assert runtime.checks["drive"]["writable"] is writable
 
 
 def test_signed_download_is_read_only_bound_to_path_and_expires(gateway, monkeypatch):
@@ -114,12 +139,18 @@ def test_signed_download_is_read_only_bound_to_path_and_expires(gateway, monkeyp
     assert client.get(path).status_code == 401
 
 
-def test_sdk_creates_one_project_owned_drive_and_persistent_runtime(gateway, monkeypatch, tmp_path):
+@pytest.mark.parametrize("drive_name", [None, "spaceml-data"])
+def test_sdk_creates_one_project_owned_drive_and_persistent_runtime(gateway, monkeypatch, tmp_path, drive_name):
     import asyncio
     from vercel import sandbox
     module, _ = gateway
     monkeypatch.setenv("VERCEL_ENV", "production")
     monkeypatch.setenv("VERCEL_URL", "space.example.vercel.app")
+    if drive_name:
+        monkeypatch.setenv("SMC_DRIVE_NAME", drive_name)
+    else:
+        monkeypatch.delenv("SMC_DRIVE_NAME", raising=False)
+    expected_name = drive_name or "space-ml-production-data"
     (tmp_path / "runtime_bundle.json").write_text(json.dumps({"sha256": "b" * 64, "url": "/runtime/source.tar.gz"}))
     (tmp_path / "managed_bootstrap.py").write_text("print('launcher')")
     monkeypatch.setattr(module, "ROOT", tmp_path)
@@ -127,10 +158,11 @@ def test_sdk_creates_one_project_owned_drive_and_persistent_runtime(gateway, mon
     drive = object()
     class Box:
         routes = [SimpleNamespace(port=8000, url="https://sandbox.example")]
-        mounts = {"/smc": SimpleNamespace(drive="space-ml-production-data", mode="read-write")}
+        mounts = {"/smc": SimpleNamespace(drive=expected_name, mode="read-write")}
         async def create_command(self, *args, **kwargs):
             calls.append(("command", args, kwargs))
     async def get_drive(**kwargs):
+        assert kwargs["name"] == expected_name
         calls.append(("drive", kwargs))
         return drive, True
     async def get_box(**kwargs):

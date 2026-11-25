@@ -94,8 +94,13 @@ def health(request: Request):
     from ..auth import required, authenticated
     from spaceml.config import MODE, IS_MANAGED_WORKER
     allowed = authenticated(request)
+    checks = None
+    if IS_MANAGED_WORKER:
+        from ..storage_health import worker_status
+        checks = {"sandbox": {"available": True}, "drive": worker_status()}
     return {"status": "ok", "mode": MODE, "version": APP_VERSION,
             "execution": "managed" if IS_MANAGED_WORKER else "local",
+            "checks": checks,
             "bundle_sha256": os.environ.get("SMC_BUNDLE_SHA256") if IS_MANAGED_WORKER else None,
             "read_only": [] if allowed else ["authentication_required"],
             "authentication": {"required": required(), "authenticated": allowed},

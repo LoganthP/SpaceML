@@ -213,9 +213,12 @@ export default function Layout({ children }: { children: ReactNode }) {
         <div className="flex h-5 justify-between text-xs font-semibold text-ink-soft sm:hidden"><span>{caps?.execution === "managed" ? "Vercel compute" : readOnly ? "Published results" : ""}</span>
           {caps?.authentication?.required && !caps.authentication.authenticated && (caps.mode !== "vercel" || caps.state === "ready") && <a href="/api/session" className="underline">Sign in to train</a>}
         </div>
-        {caps?.execution === "managed" && caps.state !== "ready" && <div className="glass-inset mx-auto mb-4 max-w-[1400px] p-3 text-sm" role="status">
-          <b>{caps.state === "starting" || caps.state === "updating" ? "Preparing Vercel training compute" : "Vercel setup required"}</b>
-          <p className="mt-1 text-xs text-ink-soft">{caps.hint}. Published results remain browsable. Download and Train become available when compute is ready.</p>
+        {caps?.execution === "managed" && <div className="glass-inset mx-auto mb-4 max-w-[1400px] p-3 text-sm" role="status">
+          <b>{caps.state === "ready" ? "Vercel compute ready" : caps.state === "starting" || caps.state === "updating" ? "Preparing Vercel training compute" : "Vercel setup required"}</b>
+          <p className="mt-1 text-xs text-ink-soft">Sandbox: {caps.checks?.sandbox.available ? "available" : "not connected"} · Drive: {caps.checks?.drive.writable === true ? "writable" : caps.checks?.drive.writable === false && caps.checks.drive.mounted ? "write check failed" : "not verified"}{caps.checks?.drive.name ? ` (${caps.checks.drive.name})` : ""}</p>
+          {caps.state !== "ready" && <p className="mt-1 text-xs text-ink-soft">{caps.hint}. Published results remain browsable. Install and Train become available after both checks pass.</p>}
+          {caps.startup_error && <p className="mt-1 text-xs text-ink-soft">Startup stage: {caps.startup_error.stage} · {caps.startup_error.type}</p>}
+          {caps.state === "error" && caps.detail && <p className="mt-1 break-words text-xs text-ink-soft">{caps.detail}</p>}
           {!!caps.setup_required?.length && <p className="mt-1 break-words text-xs text-ink-soft">{caps.setup_required.join(" · ")}</p>}
         </div>}
         <div className="mx-auto max-w-[1400px]">{children}</div>

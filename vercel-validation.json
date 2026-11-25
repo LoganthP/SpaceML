@@ -1,5 +1,5 @@
 {
-  "base_url": "http://127.0.0.1:4173",
+  "base_url": "http://localhost:3100",
   "pages": [
     {
       "path": "/",
@@ -66,5 +66,14 @@
   "page_errors": [],
   "http_errors": [],
   "click_errors": [],
-  "overflow": []
+  "overflow": [],
+  "drive_connection_ui": {
+    "capacity": "unavailable",
+    "misleading_capacity": false,
+    "repeated_connection_buttons": 0,
+    "disabled_write_actions": 37,
+    "status_banners": 1,
+    "cloud_provisioned": false,
+    "cloud_training_verified": false
+  }
 }

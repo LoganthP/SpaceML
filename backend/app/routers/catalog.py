@@ -392,9 +392,11 @@ def catalog():
     rel = release.status()
     rel_job = _jobs_for("release", ["release.install", "release.build"])
     heavy = [j for j in jobs.list_jobs(40) if j["task"] in jobs.HEAVY_TASKS and j["status"] in ("queued", "running")]
+    from spaceml.config import IS_MANAGED_WORKER
     return {"datasets": entries, "summary": _summary(entries), "release": {**rel, **rel_job},
             "heavy_jobs": [{"id": j["id"], "title": j["title"], "status": j["status"]} for j in heavy],
-            "free_bytes": shutil.disk_usage(DATA_DIR).free}
+            "free_bytes": None if IS_MANAGED_WORKER else shutil.disk_usage(DATA_DIR).free,
+            "capacity_source": "unavailable" if IS_MANAGED_WORKER else "local_filesystem"}
 
 
 @router.post("/workbench/samples/{name}")

@@ -44,11 +44,10 @@ def stored(path: str, params: dict | None = None, default=None):
                         r.get("module") == entry.get("module") and
                         (not mission or r.get("input_ref", {}).get("mission") == mission)), None)
             entry["capabilities"] = {"write": False, "train": False}
-            status["next"] = ({"kind": "link", "label": "View sample result",
+            if run and status.get("data") != "needs_repair":
+                status["next"] = {"kind": "link", "label": "View sample result",
                                "to": status.get("page", "/").split("?")[0] + "?" +
                                urlencode({**({"mission": mission} if mission else {}), "run": run["id"]})}
-                              if run and status.get("data") != "needs_repair" else
-                              {"kind": "none", "label": "Connect Vercel compute"})
     return body
 
 
@@ -259,7 +258,8 @@ def frozen(path: str, request: Request):
         return bounded(body)
     if route == "/api/catalog":
         body = stored(route)
-        body["free_bytes"] = 0
+        body["free_bytes"] = None
+        body["capacity_source"] = "unavailable"
         return bounded(body)
     if route.startswith("/api/runs/") and route.endswith("/report"):
         q.setdefault("format", "md")

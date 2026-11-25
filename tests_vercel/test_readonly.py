@@ -45,9 +45,10 @@ def test_demo_catalog_links_only_published_results_and_marks_missing_missions(ap
     for mid in ("hubble",):
         entry = entries["mission-" + mid]
         assert entry["status"]["data"] == "missing"
-        assert entry["status"]["next"] == {"kind": "none", "label": "Connect Vercel compute"}
+        assert entry["status"]["next"]["kind"] == "link"
     for name in ("kepler", "ai4mars", "omni2"):
-        assert entries[name]["status"]["next"]["kind"] == "none"
+        assert entries[name]["status"]["next"]["kind"] in ("task", "link")
+    assert "Connect Vercel compute" not in json.dumps(catalog)
     for mid in ("opssat", "webb"):
         entry = entries["mission-" + mid]
         assert entry["model"]["ready"] and not entry["status"].get("repair")
