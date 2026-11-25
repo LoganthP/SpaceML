@@ -3,6 +3,9 @@
 This is one Vercel project with `backend` and `frontend` services. It requires no
 external backend, database, Sandbox, Drive, queue, cron, or storage account.
 
+This configuration is explicitly a **read-only demo**. For the optional persistent
+Docker backend and frontend-only Vercel configuration, see [DEPLOY-PERSISTENT.md](DEPLOY-PERSISTENT.md).
+
 ## Import and deploy
 
 1. Extract `space-ml-mission-control-3.1.10-vercel.zip`, commit the contents to your
@@ -67,8 +70,12 @@ segments, ten Webb visit series, flood scene archives, and Curiosity waypoints.
 They do **not** contain Kepler folded light curves/CNN weights, AI4Mars training
 pairs/Mars weights, or OMNI2 caches. Those pages retain their existing truthful
 readiness/empty states; this release does not fabricate exoplanet candidates,
-segmentation masks, or storm forecasts. The supplied Webb timestamp repair notice
-is retained. Full local/Docker preparation remains available.
+segmentation masks, or storm forecasts. Webb's original ten MAST FITS products
+have now been re-imported with the corrected parser; every visit passes duration
+and ~64 ms sample-spacing checks. Fresh OPS-SAT and Webb models and held-out
+evaluation results are published. See `docs/mission-validation.json` for source
+checksums, per-visit timing and metrics. Hubble, ESA Missions 1–3, FUNcube-1 and
+SatNOGS are explicitly Data missing. No unavailable source is marked installed.
 
 ## Offline static-data build
 
@@ -125,7 +132,8 @@ frontend port helper works on Windows and Linux. On Windows, stop/restart Vercel
 after changing API Python files if the runtime's reloader waits on open requests.
 
 The measured Linux Python 3.12 dependency wheels expand to 10.34 MiB. Backend
-source plus the frozen capsule is approximately 37.58 MiB: **47.92 MiB combined**,
+source plus the frozen capsule and regenerated mission evaluations remain
+approximately **50 MiB combined**,
 well below the standard **500 MB uncompressed Python Function limit**. This is a
 measurement of the application payload, not a claim that a cloud production
 build was uploaded. A Vercel build may add a small platform launcher. The Function
@@ -139,12 +147,13 @@ so a Function never streams an oversized body. Stored mission item lists are
 filtered and paginated, and series requests honor column/range/point limits.
 Source: [Vercel Function limits](https://vercel.com/docs/functions/limitations).
 
-The local suite passes with legacy source tests skipped when their missions are
-not declared in the v3.1.9 catalog (ESA/SatNOGS/FUNcube), plus platform-dependent
-skips. This keeps removed missions out of the product instead of changing local
-features to satisfy stale 3.1.6 integration tests. See `vercel-validation.json`
-for browser results. The Docker engine was unavailable during validation; Docker
-and Compose files and local development scripts were left unchanged by this work.
+The local mission, catalog and job regressions and Vercel read-only/authentication
+tests are checked separately. Legacy source integration tests remain skipped
+until those import/job workflows are restored; their catalog entries truthfully
+show Data missing. See `vercel-validation.json` for browser results. The Docker
+engine was unavailable during validation. Existing Docker/Compose/dev commands
+are preserved; an optional production override adds authentication. The actual
+deployed training/reload/restart workflow still needs a persistent backend host.
 
 ## Recreate and verify the ZIP
 

@@ -55,7 +55,7 @@ def main():
                         # The mission map deliberately moves its HUD controls.
                         # Retry only a visible, enabled animated button; never
                         # bypass the disabled state of a writable action.
-                        if "element is not stable" not in str(exc) or not button.is_visible() or not button.is_enabled():
+                        if "stable" not in str(exc) or not button.is_visible() or not button.is_enabled():
                             raise
                         button.click(force=True, timeout=1200)
                     count += 1

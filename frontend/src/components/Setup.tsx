@@ -1,4 +1,4 @@
-import { WriteButton, FileInput } from "../lib/capabilities";
+import { WriteButton, FileInput, useReadOnly } from "../lib/capabilities";
 import { CheckCircle2, CircleDashed, Clock, CloudOff, Play, RotateCcw, Rocket, Upload, XCircle } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "../lib/api";
@@ -44,9 +44,10 @@ const STATE: Record<SetupStep["state"], { label: string; cls: string; icon: type
 
 /** Card with every setup step: what is ready, what is running, why something failed + Retry. */
 export function SetupPanel({ modules, compact = false }: { modules?: Module[]; compact?: boolean }) {
+  const readOnly = useReadOnly();
   const { data, run } = useSetup();
   const [busy, setBusy] = useState(false);
-  if (!data) return null;
+  if (!data || readOnly) return null;
   const steps = data.steps.filter((s) => !modules || modules.includes(s.module));
   const missing = steps.filter((s) => s.state !== "done");
   if (compact && !missing.length) return null;
@@ -99,6 +100,7 @@ export function SetupPanel({ modules, compact = false }: { modules?: Module[]; c
 
 /** Small inline status for one module's page: "being prepared automatically" or a Start button. */
 export function ModuleSetup({ module, stepIds, title }: { module: Module; stepIds: string[]; title: string }) {
+  const readOnly = useReadOnly();
   const { data, run } = useSetup();
   const { jobs } = useJobs();
   const job = activeJob(jobs, module);
@@ -106,6 +108,7 @@ export function ModuleSetup({ module, stepIds, title }: { module: Module; stepId
   const open = steps.filter((s) => s.state !== "done");
   const [busy, setBusy] = useState(false);
   if (!data || !open.length) return null;
+  if (readOnly) return <p className="text-sm text-ink-soft">Read-only demo. Preparation and training are available in Docker.</p>;
   const live = open.find((s) => s.state === "running" || s.state === "waiting");
   const failed = open.find((s) => s.error && (s.state === "failed" || s.state === "source_unavailable"));
   return (

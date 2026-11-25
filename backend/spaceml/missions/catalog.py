@@ -38,7 +38,7 @@ MISSIONS: dict[str, dict] = {
     "webb": {
         "name": "James Webb Space Telescope", "agency": "NASA/ESA/CSA", "family": "pointing", "telescope": "jwst",
         "summary": "Fine Guidance Sensor POINTING tables (FG / TRACK cal products): jitter and two-axis offsets per visit.",
-        "item_label": "visit", "time_basis": "milliseconds since the start of each guider data file (POINTING 'Time')",
+        "item_label": "visit", "time_basis": "UTC from POINTING Time units (MJD days, or relative seconds/milliseconds anchored to the file stamp)",
         "train": {"kind": "isolation_forest_pointing", "label": "Isolation Forest on jitter windows (split by visit)",
                   "quick_note": "separate Webb detector; visits split before windowing; review candidates only (no fault labels)"},
         "evaluate": "alert counts and reviewed outcomes (no verified fault labels)",

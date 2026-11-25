@@ -1,4 +1,4 @@
-import { WriteButton } from "../lib/capabilities";
+import { WriteButton, useReadOnly } from "../lib/capabilities";
 import { AlertTriangle, Brain, X, CheckCircle2, CircleDashed, Database, Download, FolderOpen, HardDrive, PackageCheck, Play, RotateCcw, ShieldCheck, Square, Timer, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -148,6 +148,7 @@ function Pill({ tone, label, sub }: { tone: "ok" | "warn" | "off"; label: string
 }
 
 export function DatasetCard({ e, reload, compact = false }: { e: CatalogEntry; reload: () => void; compact?: boolean }) {
+  const readOnly = useReadOnly();
   const act = useAct(reload);
   const nav = useNavigate();
   const job = e.active_job;
@@ -156,7 +157,7 @@ export function DatasetCard({ e, reload, compact = false }: { e: CatalogEntry; r
   const fail = e.last_failure;
   const soft = fail?.status === "interrupted" || /^(.*: )?(Not available right now|source_unavailable)|rate limit/i.test(String(fail?.error ?? ""));
   const failText = (fail?.error ?? "").replace(/\s*Run:\s*.+$/, "");
-  const trainBlocked = st?.data === "missing" ? "install the data first" : st?.data === "browse_only" ? (e.dataset.blocked_reason ?? "not enough data to train") : null;
+  const trainBlocked = st?.data === "needs_repair" ? "re-import and validate the data first" : st?.data === "missing" ? "install the data first" : st?.data === "browse_only" ? (e.dataset.blocked_reason ?? "not enough data to train") : null;
   const openScene = async (name: string) => {
     const r = await api<{ id: string }>(`/api/workbench/samples/${encodeURIComponent(name)}`, { method: "POST" });
     nav(`/workbench?dataset=${r.id}&auto=1`);
@@ -165,7 +166,7 @@ export function DatasetCard({ e, reload, compact = false }: { e: CatalogEntry; r
   const primaryTask = next?.kind === "task" ? next.task : null;
   const primary = !job && next && next.kind !== "wait" && (
     next.kind === "link" ? <Link className="btn-primary px-3 py-1.5 text-xs" to={next.to!}><Play className="h-3.5 w-3.5" aria-hidden="true" /> {next.label}</Link>
-      : next.kind === "task" ? <WriteButton className="btn-primary px-3 py-1.5 text-xs" disabled={!!act.pending} onClick={() => act.startTask({ task: next.task!, label: next.label, params: next.params })}>
+      : next.kind === "task" ? <WriteButton operation={/train|setup|resume/.test(next.task ?? "") ? "train" : "write"} className="btn-primary px-3 py-1.5 text-xs" disabled={!!act.pending} onClick={() => act.startTask({ task: next.task!, label: next.label, params: next.params })}>
           {act.pending ? <Spinner className="h-3.5 w-3.5" /> : <Zap className="h-3.5 w-3.5" aria-hidden="true" />} {next.label}</WriteButton>
         : <span className="text-xs text-ink-soft">{next.label}</span>);
   const modelSub = m?.ready ? (m.headline ? `${m.headline.metric} ${Number(m.headline.model).toFixed(2)} vs ${Number(m.headline.baseline).toFixed(2)}` : m.evaluated ? m.version ?? "" : "not evaluated yet") : undefined;
@@ -181,7 +182,7 @@ export function DatasetCard({ e, reload, compact = false }: { e: CatalogEntry; r
       {st?.readiness && <span className={`chip ${READINESS_TONE[st.readiness]}`} title={st.data_label}>{READINESS_LABEL[st.readiness]}</span>}
       <div className="grid gap-1.5 sm:grid-cols-2">
         <Pill tone={st?.data === "installed" ? "ok" : st?.data === "browse_only" || st?.data === "needs_repair" ? "warn" : "off"} label={`Data: ${st?.data_label ?? (e.dataset.ready ? "Installed" : "Not installed")}`} />
-        {m === null ? <Pill tone="ok" label="No model needed" sub="analysis only" /> :
+        {m === null ? <Pill tone={e.dataset.ready ? "ok" : "off"} label={e.dataset.ready ? "No model needed" : "Model: unavailable"} sub={e.dataset.ready ? "analysis only" : undefined} /> :
           <Pill tone={m?.ready ? "ok" : "off"} label={m?.ready ? `Model: ${m.run_kind === "quick" ? "quick run" : "trained"}` : "Model: not trained yet"} sub={modelSub} />}
       </div>
       {e.error && <p className="text-[11px] text-rose-700 dark:text-rose-300">{e.error}</p>}
@@ -203,18 +204,18 @@ export function DatasetCard({ e, reload, compact = false }: { e: CatalogEntry; r
       {!compact && !job && (
         <div className="flex flex-wrap items-center gap-1.5">
           {primary}
-          {e.train.filter((a) => !(primaryTask === a.task && JSON.stringify(next?.params ?? {}) === JSON.stringify(a.params ?? {}))).map((a, i) => (
-            <WriteButton key={i} className="btn-ghost px-3 py-1.5 text-xs" title={trainBlocked ? `Needs: ${trainBlocked}` : a.note}
+          {(readOnly ? [] : e.train).filter((a) => !(primaryTask === a.task && JSON.stringify(next?.params ?? {}) === JSON.stringify(a.params ?? {}))).map((a, i) => (
+            <WriteButton operation="train" key={i} className="btn-ghost px-3 py-1.5 text-xs" title={trainBlocked ? `Needs: ${trainBlocked}` : a.note}
               disabled={!!trainBlocked || !!act.pending} onClick={() => act.startTask(a)}>
               <Brain className="h-3.5 w-3.5" aria-hidden="true" /> {a.label}
             </WriteButton>))}
-          {e.download && primaryTask !== e.download.task && <WriteButton className="btn-ghost px-3 py-1.5 text-xs" disabled={!!act.pending} onClick={() => act.startTask(e.download!)}><Download className="h-3.5 w-3.5" aria-hidden="true" /> {e.download.label}</WriteButton>}
-          {e.open_in_workbench?.map((sc) => <WriteButton key={sc} className="btn-ghost px-3 py-1.5 text-xs" onClick={() => openScene(sc)}><FolderOpen className="h-3.5 w-3.5" aria-hidden="true" /> Open {sc.replace(".zip", "")} in Workbench</WriteButton>)}
+          {!readOnly && e.download && primaryTask !== e.download.task && <WriteButton className="btn-ghost px-3 py-1.5 text-xs" disabled={!!act.pending} onClick={() => act.startTask(e.download!)}><Download className="h-3.5 w-3.5" aria-hidden="true" /> {e.download.label}</WriteButton>}
+          {!readOnly && e.open_in_workbench?.map((sc) => <WriteButton key={sc} className="btn-ghost px-3 py-1.5 text-xs" onClick={() => openScene(sc)}><FolderOpen className="h-3.5 w-3.5" aria-hidden="true" /> Open {sc.replace(".zip", "")} in Workbench</WriteButton>)}
           {st?.next.kind === "link" && st.next.to !== st.page && st.data !== "missing" && <Link className="btn-ghost px-3 py-1.5 text-xs" to={st.page}>Open page</Link>}
           {e.module === "mars" && e.id === "ai4mars" && <MarsModelUpload onDone={reload} />}
         </div>
       )}
-      {!compact && !job && (e.train.length > 0 || e.notes || e.setup_help) && (
+      {!readOnly && !compact && !job && (e.train.length > 0 || e.notes || e.setup_help) && (
         <details className="text-[11px] text-ink-soft">
           <summary className="cursor-pointer font-semibold">Setup help</summary>
           <ul className="mt-1 space-y-0.5">
@@ -247,6 +248,7 @@ export function StatusCounts({ s }: { s: CatalogSummaryData }) {
 
 /* ------------------------------------------------------------------ release card */
 export function ReleaseCard({ c, reload }: { c: CatalogData; reload: () => void }) {
+  const readOnly = useReadOnly();
   const act = useAct(reload);
   const r = c.release;
   const job = r.active_job;
@@ -266,7 +268,8 @@ export function ReleaseCard({ c, reload }: { c: CatalogData; reload: () => void 
       {job && <JobBox job={job} onCancel={() => act.cancel(job.id)} busy={act.pending === "cancel"} />}
       {r.installed?.n_problems ? <p className="text-[11px] text-rose-600">{r.installed.n_problems} file(s) in the bundle are missing or corrupt, e.g. {r.installed.problems?.[0]}</p> : null}
       <p className="text-[11px] text-ink-soft">
-        {r.present ? "Datasets from the bundle are copied into the app's data volume once (only missing or changed files) and work offline. The bundle itself is never modified."
+        {readOnly ? "Read-only demo: published datasets and results are frozen at build time. Installation and training are available in Docker."
+          : r.present ? "Datasets from the bundle are copied into the app's data volume once (only missing or changed files) and work offline. The bundle itself is never modified."
           : <>No offline bundle is installed, which is fine with internet: a missing dataset downloads by itself when you press its <b>Download</b> or <b>Train</b> button. For machines without internet, prepare a bundle once (README → Release bundle).</>}
       </p>
       {act.err && <p className="text-[11px] text-rose-600">{act.err}</p>}
@@ -276,6 +279,7 @@ export function ReleaseCard({ c, reload }: { c: CatalogData; reload: () => void 
 
 /* ------------------------------------------------------------------ full catalog */
 export function Catalog() {
+  const readOnly = useReadOnly();
   const { data, error, reload } = useCatalog();
   if (error && !data) return <p className="text-sm text-rose-600">{error}</p>;
   if (!data) return <div className="flex items-center gap-2 text-sm text-ink-soft"><Spinner /> Reading datasets…</div>;
@@ -287,9 +291,9 @@ export function Catalog() {
         <StatusCounts s={data.summary} />
         {data.heavy_jobs.length > 0 && <span className="chip bg-violet-100 text-violet-700"><Spinner className="h-3 w-3" /> {data.heavy_jobs.length} training job(s)</span>}
       </div>
-      <p className="text-xs text-ink-soft">Each card shows its <b>data</b> and its <b>model</b> separately, and the highlighted button is the next step.
+      {readOnly ? <p className="text-xs text-ink-soft">Read-only demo. Dataset installed, ready to train, and model available are separate states. Training readiness describes the data; training runs in Docker. Sample links appear only for published results.</p> : <p className="text-xs text-ink-soft">Each card shows its <b>data</b> and its <b>model</b> separately, and the highlighted button is the next step.
         Nothing downloads or trains by itself. <b>Installed</b> = on this machine and explorable · <b>ready to train</b> = meets the trainer's requirements ·
-        <b> model available</b> = can produce results now. Training runs one job at a time and keeps the last working model until a new one is finished.</p>
+        <b> model available</b> = can produce results now. Training runs one job at a time and keeps the last working model until a new one is finished.</p>}
       <ReleaseCard c={data} reload={reload} />
       <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
         {data.datasets.map((e) => <DatasetCard key={e.id} e={e} reload={reload} />)}

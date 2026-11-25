@@ -1,0 +1,4763 @@
+[
+  {
+    "segment": 5,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 7,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.2667,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 12,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 13,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 18,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.1333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 20,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.5667,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 21,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 28,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.1267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 30,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.4333,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 31,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.8067,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 35,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 42,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.2467,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 43,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.46,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 50,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.22,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 54,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.2667,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 61,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 63,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 64,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.06,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 66,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 72,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 75,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.08,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 81,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.2933,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "FN"
+  },
+  {
+    "segment": 86,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 87,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 91,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.06,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 94,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.1,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 103,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0667,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 104,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 108,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.6467,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "FP"
+  },
+  {
+    "segment": 110,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.92,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 112,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.3067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 114,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 115,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 119,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 120,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 131,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 132,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.52,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 142,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 147,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 148,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.6733,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 155,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 167,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.06,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 182,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 184,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 189,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.1267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 190,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 198,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 204,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 206,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 209,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.68,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 218,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.08,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 221,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 224,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 226,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 228,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 229,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.06,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 235,
+    "channel": "CADC0892",
+    "label": 1,
+    "prob": 0.74,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 239,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.9733,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 243,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 252,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.72,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 256,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.2667,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "FN"
+  },
+  {
+    "segment": 260,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.2133,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 261,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.2933,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "FN"
+  },
+  {
+    "segment": 265,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 266,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 270,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.64,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 273,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 276,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.9867,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 277,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 278,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "FN"
+  },
+  {
+    "segment": 279,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 289,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 292,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 301,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.98,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 304,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 306,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.9867,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 308,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 309,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 310,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.1333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 314,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.1067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 315,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.5533,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 318,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 320,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 326,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.2133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "FN"
+  },
+  {
+    "segment": 327,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.1533,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "FN"
+  },
+  {
+    "segment": 328,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 336,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 343,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 351,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 356,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 357,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 372,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.06,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 381,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 382,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 384,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 388,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 395,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 397,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 403,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 406,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 410,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 415,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 417,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 420,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 421,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 427,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 429,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 433,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.12,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 437,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 440,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 444,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 449,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 450,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 452,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.1067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "FN"
+  },
+  {
+    "segment": 458,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.1867,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "FN"
+  },
+  {
+    "segment": 466,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 476,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.86,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "FP"
+  },
+  {
+    "segment": 478,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.64,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "FP"
+  },
+  {
+    "segment": 493,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.42,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 498,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.3733,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 500,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.3933,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 504,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 520,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0533,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 522,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 524,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 529,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 533,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 535,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 537,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 543,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 546,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 547,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.1267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 550,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0733,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 553,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0733,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 554,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.9867,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 556,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.4933,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "FP"
+  },
+  {
+    "segment": 558,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.9733,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 564,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.64,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 565,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.8667,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 566,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 569,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.9867,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 576,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 582,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 585,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 590,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 591,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 594,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0933,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 600,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 602,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 605,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 610,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 611,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 614,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.9267,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 615,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 616,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.34,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 623,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.96,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 627,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 628,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 630,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 632,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.7467,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 633,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 638,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.8733,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 647,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 655,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.8867,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 670,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 671,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 678,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 679,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 680,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 682,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 683,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 701,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 706,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 707,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 708,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 710,
+    "channel": "CADC0884",
+    "label": 0,
+    "prob": 0.0533,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 711,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 712,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 715,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 717,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 722,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 726,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 733,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 734,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 735,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 738,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.06,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 746,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.06,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 749,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 753,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 756,
+    "channel": "CADC0874",
+    "label": 1,
+    "prob": 0.9533,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 761,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 764,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 767,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 779,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 792,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 798,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 800,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 803,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 805,
+    "channel": "CADC0874",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 813,
+    "channel": "CADC0886",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 814,
+    "channel": "CADC0886",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 817,
+    "channel": "CADC0886",
+    "label": 1,
+    "prob": 0.9067,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 820,
+    "channel": "CADC0886",
+    "label": 0,
+    "prob": 0.0533,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 822,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 827,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.1,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 828,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 831,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 835,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 841,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 853,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 856,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.06,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 860,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 861,
+    "channel": "CADC0892",
+    "label": 1,
+    "prob": 0.82,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 863,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.2067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 865,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.06,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 868,
+    "channel": "CADC0892",
+    "label": 1,
+    "prob": 0.88,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 870,
+    "channel": "CADC0892",
+    "label": 1,
+    "prob": 0.9067,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 871,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 883,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 895,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 903,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0533,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 905,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0667,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 912,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 923,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.2867,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 925,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 927,
+    "channel": "CADC0892",
+    "label": 1,
+    "prob": 0.1,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "FN"
+  },
+  {
+    "segment": 929,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 937,
+    "channel": "CADC0892",
+    "label": 1,
+    "prob": 0.8533,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 944,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 949,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 952,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 953,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 954,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 956,
+    "channel": "CADC0892",
+    "label": 1,
+    "prob": 0.78,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 957,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 961,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 965,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 970,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.08,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 971,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 974,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.5933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "FP"
+  },
+  {
+    "segment": 977,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0533,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 979,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 980,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.38,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 989,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 992,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1001,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.1333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1003,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.5733,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "FP"
+  },
+  {
+    "segment": 1004,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.2133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1005,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.26,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1006,
+    "channel": "CADC0892",
+    "label": 0,
+    "prob": 0.24,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1016,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1017,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1024,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0667,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1030,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.1733,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1038,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1039,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0667,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1041,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1047,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1053,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1054,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1058,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1066,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1068,
+    "channel": "CADC0888",
+    "label": 1,
+    "prob": 0.82,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1072,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1079,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1085,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1102,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.6267,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "FP"
+  },
+  {
+    "segment": 1105,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1112,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.0467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1116,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1120,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.0733,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1123,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1126,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1132,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.0467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1133,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.14,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1156,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1158,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1166,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1168,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1170,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.08,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1176,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1177,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1182,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1183,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.9867,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1184,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.12,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1189,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.7867,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1190,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.48,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1194,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0933,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1198,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0667,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1201,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1203,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1204,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.96,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1205,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1206,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1215,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1221,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1223,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1233,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1240,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1242,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1253,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1257,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1259,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.2533,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1262,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1267,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1273,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.9867,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1276,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1278,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1281,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1282,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1286,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1288,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1291,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1293,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1295,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1304,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1307,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1309,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1311,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1313,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1316,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1324,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1329,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1330,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.9867,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1331,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.9333,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1336,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0867,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1338,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1341,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1346,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1353,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1359,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1360,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1364,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0667,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1373,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1374,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1381,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1384,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1389,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1391,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1394,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1401,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1402,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1403,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1405,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1408,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1411,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1412,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1422,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1430,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1437,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1445,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1446,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1456,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.1067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1460,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1462,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1465,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1466,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1471,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1472,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1473,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1475,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.2,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1477,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.2267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1478,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1482,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1483,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1486,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1488,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1493,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1494,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1495,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1498,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1501,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1511,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0533,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1512,
+    "channel": "CADC0873",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1518,
+    "channel": "CADC0873",
+    "label": 1,
+    "prob": 0.9667,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1522,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.6533,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "FP"
+  },
+  {
+    "segment": 1524,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1525,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1527,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1542,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1549,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1550,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1551,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1554,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1558,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1560,
+    "channel": "CADC0888",
+    "label": 1,
+    "prob": 0.9533,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1562,
+    "channel": "CADC0888",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1569,
+    "channel": "CADC0888",
+    "label": 1,
+    "prob": 0.9867,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1571,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.1333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1573,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1574,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.08,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1575,
+    "channel": "CADC0888",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1579,
+    "channel": "CADC0888",
+    "label": 1,
+    "prob": 0.1867,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "FN"
+  },
+  {
+    "segment": 1580,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1584,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1585,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1587,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0933,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1588,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1591,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1595,
+    "channel": "CADC0888",
+    "label": 1,
+    "prob": 0.9667,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1600,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.1467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1601,
+    "channel": "CADC0888",
+    "label": 1,
+    "prob": 0.8733,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1603,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0867,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1613,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1614,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1617,
+    "channel": "CADC0888",
+    "label": 1,
+    "prob": 0.9067,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1618,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1620,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.3733,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1633,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.12,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1639,
+    "channel": "CADC0888",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1643,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1649,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1657,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1659,
+    "channel": "CADC0888",
+    "label": 1,
+    "prob": 0.8667,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1665,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1666,
+    "channel": "CADC0888",
+    "label": 1,
+    "prob": 0.9867,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1667,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1669,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1676,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.1467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1685,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1686,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.12,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1699,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.5,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "FP"
+  },
+  {
+    "segment": 1700,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0667,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1704,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0667,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1709,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0933,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1710,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1712,
+    "channel": "CADC0888",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1716,
+    "channel": "CADC0890",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1725,
+    "channel": "CADC0890",
+    "label": 1,
+    "prob": 0.9,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1728,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.1467,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1732,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.44,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1734,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.7733,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "FP"
+  },
+  {
+    "segment": 1735,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.54,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "FP"
+  },
+  {
+    "segment": 1738,
+    "channel": "CADC0894",
+    "label": 1,
+    "prob": 0.9733,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1744,
+    "channel": "CADC0894",
+    "label": 1,
+    "prob": 0.86,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1748,
+    "channel": "CADC0894",
+    "label": 1,
+    "prob": 0.6867,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1751,
+    "channel": "CADC0894",
+    "label": 1,
+    "prob": 0.72,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1756,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.4,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1757,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.1,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1759,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.1267,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1761,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.18,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1763,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.16,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1764,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.1933,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1771,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.4533,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1782,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.4333,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1788,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.4467,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1793,
+    "channel": "CADC0894",
+    "label": 1,
+    "prob": 0.2133,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "FN"
+  },
+  {
+    "segment": 1795,
+    "channel": "CADC0894",
+    "label": 0,
+    "prob": 0.0667,
+    "pred": 0,
+    "baseline_pred": 1,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1803,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.92,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1805,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1812,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.9533,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1816,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1820,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1821,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1822,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1828,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1830,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1833,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1842,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1848,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1853,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1856,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1858,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1860,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1867,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1868,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1869,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1872,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1890,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1892,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1893,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1895,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1904,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1906,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1913,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1914,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1915,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1917,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1918,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1921,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1923,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1929,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1938,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1949,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1953,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.9333,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1954,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1955,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.72,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1956,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.5933,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1957,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 1.0,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1960,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1962,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0467,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1964,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1967,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.9667,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1968,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1973,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1975,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1986,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.04,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1988,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1990,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 1996,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.9867,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 1999,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0267,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2017,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.98,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 2018,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2023,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2036,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2040,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.02,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2041,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0333,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2042,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2058,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2065,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.9933,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 2066,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2068,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.9533,
+    "pred": 1,
+    "baseline_pred": 0,
+    "outcome": "TP"
+  },
+  {
+    "segment": 2076,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2079,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2081,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2083,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2085,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0533,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2087,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2089,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2090,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.66,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 2094,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2103,
+    "channel": "CADC0872",
+    "label": 1,
+    "prob": 0.6867,
+    "pred": 1,
+    "baseline_pred": 1,
+    "outcome": "TP"
+  },
+  {
+    "segment": 2104,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2108,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0067,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2109,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0133,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2111,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.1667,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2114,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.2,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2116,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.18,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  },
+  {
+    "segment": 2119,
+    "channel": "CADC0872",
+    "label": 0,
+    "prob": 0.0733,
+    "pred": 0,
+    "baseline_pred": 0,
+    "outcome": "TN"
+  }
+]

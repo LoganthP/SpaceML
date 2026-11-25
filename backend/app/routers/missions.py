@@ -29,6 +29,9 @@ def repair_needed(mid: str) -> dict | None:
 
 
 def _status(mid: str) -> dict:
+    from spaceml.missions.availability import SOURCES, mission_status
+    if mid in SOURCES:
+        return mission_status(mid)
     meta = catalog.get(mid)
     man = store.manifest(mid)
     act = models.active(mid)
@@ -106,7 +109,8 @@ async def upload(mission: str, files: list[UploadFile] = File(...)):
 
 @router.get("")
 def list_missions():
-    return {"missions": [_status(m) for m in catalog.ORDER]}
+    from spaceml.missions.availability import SOURCES
+    return {"missions": [_status(m) for m in [*catalog.ORDER, *SOURCES]]}
 
 
 @router.get("/{mission}")

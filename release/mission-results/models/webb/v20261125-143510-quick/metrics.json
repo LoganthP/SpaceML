@@ -1,0 +1,38 @@
+{
+  "headline": {
+    "metric": "alerts on held-out observations (model vs rolling-MAD baseline)",
+    "model": 0,
+    "baseline": 3
+  },
+  "eval_split": "3 held-out visits (split before windowing)",
+  "train_items": [
+    "jw02732001001",
+    "jw02732001002",
+    "jw02732001003",
+    "jw02732001004",
+    "jw02732002001",
+    "jw02732004001",
+    "jw02732005001"
+  ],
+  "test_items": [
+    "jw02732002002",
+    "jw02732003001",
+    "jw02732006001"
+  ],
+  "threshold": 0.8030593512264723,
+  "threshold_source": "99.5th percentile of training-window anomaly scores (single windows alert: transients are short)",
+  "alerts": {
+    "model_alerts": 0,
+    "baseline_alerts": 3,
+    "overlapping_alerts": 0,
+    "windows": 146
+  },
+  "labels": "none verified - alerts are review candidates; no fault-classification metrics are published",
+  "model": {
+    "name": "IsolationForest (100 trees) per telescope",
+    "windows_trained": 493
+  },
+  "baseline": {
+    "name": "rolling median/MAD (61 samples, |z| > 6) on pointing magnitude"
+  }
+}

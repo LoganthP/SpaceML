@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useReadOnly } from "../lib/capabilities";
 import { Activity, ArrowUpRight, BarChart3, CheckCircle2, CircleDashed, Clapperboard, CloudLightning, Command, FlaskConical, Highlighter, History, Mountain, Orbit, Package, Radio, Satellite, Sparkles } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
@@ -36,11 +37,12 @@ function Tile({ className = "", children, to, kicker, icon: Icon, accent }: {
 
 /** A tile whose data is not installed yet: one centred hint plus the action, so the tile never looks empty. */
 function Empty({ icon: Icon, color, text, action }: { icon: typeof Activity; color: string; text: string; action: string }) {
+  const readOnly = useReadOnly();
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-2 py-4 text-center">
       <span className="grid h-10 w-10 place-items-center rounded-2xl" style={{ background: `${color}1f`, color }}><Icon className="h-5 w-5" aria-hidden="true" /></span>
-      <p className="max-w-[16rem] text-xs text-ink-soft">{text}</p>
-      <span className="text-[11px] font-semibold" style={{ color }}>{action} →</span>
+      <p className="max-w-[16rem] text-xs text-ink-soft">{readOnly ? "No sample result is published for this module." : text}</p>
+      <span className="text-[11px] font-semibold" style={{ color }}>{readOnly ? "Available in Docker" : `${action} →`}</span>
     </div>);
 }
 

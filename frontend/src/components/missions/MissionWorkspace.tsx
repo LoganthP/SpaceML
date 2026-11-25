@@ -1,4 +1,4 @@
-import { WriteButton, FileInput, useCapabilities, READ_ONLY_HINT } from "../../lib/capabilities";
+import { WriteButton, FileInput, useCapabilities, useReadOnly, useCanRun, READ_ONLY_HINT } from "../../lib/capabilities";
 import { CheckCircle2, CircleDashed, ClipboardCheck, Download, ExternalLink, Gauge, Inbox, Play, Satellite, Search, Table2, Upload } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -85,7 +85,7 @@ export default function MissionWorkspace({ mission, runId, onRun }: { mission: s
         <div className="flex flex-wrap gap-2 text-xs">
           <span className={`chip ${m.dataset.installed ? "bg-emerald-100 text-emerald-800" : "bg-slate-200 text-slate-800"}`}>Data: {m.dataset.installed ? "installed" : "not installed"}</span>
           {m.trainable ? <span className={`chip ${m.model.ready ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-900"}`}>Model: {m.model.ready ? `${m.model.version}` : "not trained"}</span>
-            : <span className="chip bg-slate-200 text-slate-800">Analysis only (no labels to train on)</span>}
+            : <span className="chip bg-slate-200 text-slate-800">{m.dataset.installed ? "Analysis only (no labels to train on)" : "Data missing"}</span>}
         </div>
       </Glass>
 
@@ -167,16 +167,16 @@ function StepStrip({ m, item, onChanged }: { m: MissionStatus; item: string | nu
                 <Download className="h-3 w-3" aria-hidden="true" /> Get newest data</WriteButton>}
             </div>
           : job ? <span role="status"><Spinner className="mr-1 inline h-3 w-3" />{job.title} {job.progress ? `${Math.round(job.progress * 100)}%` : ""}</span>
-            : <a href="#install" className="btn-primary mt-1 px-3 py-1.5 text-xs"><Download className="h-3.5 w-3.5" aria-hidden="true" /> Install data</a>)}
-        {step(2, "Train", !m.trainable || m.model.ready, !m.trainable ? "Not needed - no labels to train on; rolling detection flags intervals."
+            : readOnly ? "Available in Docker" : <a href="#install" className="btn-primary mt-1 px-3 py-1.5 text-xs"><Download className="h-3.5 w-3.5" aria-hidden="true" /> Install data</a>)}
+        {step(2, "Train", !m.trainable || m.model.ready, !m.dataset.installed ? "Data missing" : !m.trainable ? "Not needed - no labels to train on; rolling detection flags intervals."
           : job ? <span role="status"><Spinner className="mr-1 inline h-3 w-3" />{job.title} {job.progress ? `${Math.round(job.progress * 100)}%` : ""}</span>
             : !m.dataset.installed ? "Available after the data is installed."
               : <div className="space-y-1.5">
                   {m.model.ready && <div>Model {m.model.version}{m.model.headline ? ` · ${m.model.headline.metric}: ${fmtHeadline(m.model.headline.model)} vs baseline ${fmtHeadline(m.model.headline.baseline)}` : ""}</div>}
                   {m.model.stale && <div className="text-amber-800 dark:text-amber-300">The last model was trained on another data version - train again on this one.</div>}
                   <div className="flex flex-wrap gap-1.5">
-                    <WriteButton className={`${m.model.ready ? "btn-ghost" : "btn-primary"} px-2.5 py-1 text-[11px]`} onClick={() => train("quick")}><Play className="h-3 w-3" aria-hidden="true" /> Quick train</WriteButton>
-                    <WriteButton className="btn-ghost px-2.5 py-1 text-[11px]" onClick={() => train("full")}>Full training</WriteButton>
+                    <WriteButton operation="train" disabled={!!m.repair} className={`${m.model.ready ? "btn-ghost" : "btn-primary"} px-2.5 py-1 text-[11px]`} onClick={() => train("quick")}><Play className="h-3 w-3" aria-hidden="true" /> Quick train</WriteButton>
+                    <WriteButton operation="train" disabled={!!m.repair} className="btn-ghost px-2.5 py-1 text-[11px]" onClick={() => train("full")}>Full training</WriteButton>
                   </div>
                 </div>)}
         {step(3, "Analyze", !!item, !m.dataset.installed ? "Replay and scoring open once data is installed."
@@ -211,6 +211,8 @@ function RepairBanner({ repair }: { repair: NonNullable<MissionStatus["repair"]>
 
 /* ---------------------------------------------------------------- Install data: download or upload */
 function InstallPanel({ m, embedded = false }: { m: MissionStatus; embedded?: boolean }) {
+  const readOnly = useReadOnly();
+  const cat = useCatalog();
   const spec = m.install;
   const { start } = useJobs();
   const [vals, setVals] = useState<Record<string, string>>({});
@@ -245,7 +247,8 @@ function InstallPanel({ m, embedded = false }: { m: MissionStatus; embedded?: bo
       setFiles([]);
     } catch (e) { setMsg({ ok: false, text: (e as Error).message }); } finally { setBusy(null); setPct(null); }
   };
-  if (!spec) return null;
+  if (readOnly) return <Notice title="Read-only demo">{m.dataset.installed ? "Published data can be explored above." : "Data missing: no validated dataset is published."} Installation and uploads are available in Docker.</Notice>;
+  if (!spec) return <Notice title="Data missing">Import and validate real source data before enabling this mission.</Notice>;
   const dl = spec.download;
   const auto = m.auto_install;
   const fieldsOf = (names: string[]) => (dl?.fields ?? []).filter((f) => names.includes(f.name));
@@ -262,7 +265,6 @@ function InstallPanel({ m, embedded = false }: { m: MissionStatus; embedded?: bo
     setBusy("download"); setMsg(null);
     try { await run({}); } catch (e) { setMsg({ ok: false, text: (e as Error).message }); } finally { setBusy(null); }
   };
-  const cat = useCatalog();
   const ce = cat.data?.datasets.find((d) => d.id === `mission-${m.id}`);
   const jobNow = ce?.active_job;
   const failed = !jobNow ? ce?.last_failure : null;
@@ -408,7 +410,8 @@ function ItemPicker({ m, selected, onSelect }: { m: MissionStatus; selected: str
 /* ---------------------------------------------------------------- viewer + scoring */
 function Viewer({ m, itemId, onAnnounce, runId, onRun }: { m: MissionStatus; itemId: string; onAnnounce: (s: string) => void; runId: string | null; onRun: (id: string | null) => void }) {
   const caps = useCapabilities();
-  const frozenUnavailable = caps?.mode === "vercel" && !caps.precomputed_modules?.includes("missions");
+  const canRun = useCanRun("missions", { mission: m.id, action: "score", item: itemId });
+  const frozenUnavailable = caps?.mode === "vercel" && !canRun;
   const meta = useApi<{ items: Item[] }>(`/api/missions/${m.id}/items?q=${encodeURIComponent(itemId)}&limit=20`, [m.id, itemId]);
   const item = meta.data?.items.find((x) => x.id === itemId) ?? null;
   const allCols = item?.columns.filter((c) => !c.startsWith("flag:")) ?? [];
@@ -445,7 +448,7 @@ function Viewer({ m, itemId, onAnnounce, runId, onRun }: { m: MissionStatus; ite
         <button className="btn-primary ml-auto px-3 py-1.5 text-xs" onClick={score} disabled={busy || !canScore || run.run?.status === "running" || run.run?.status === "queued"}
           title={frozenUnavailable ? READ_ONLY_HINT : canScore ? undefined : "Train a model first"}>
           {busy || run.run?.status === "running" || run.run?.status === "queued" ? <Spinner className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" aria-hidden="true" />}
-          {m.family === "segments" ? "Predict this segment" : `Score this ${m.item_label}`}
+          {frozenUnavailable ? READ_ONLY_HINT : m.family === "segments" ? "Predict this segment" : `Score this ${m.item_label}`}
         </button>
       </div>
       {!canScore && <p className="text-xs text-ink-soft">Prediction needs a trained model - press <b>Quick train</b> above (takes seconds).</p>}
@@ -625,6 +628,8 @@ function ScorePanel({ res, m, runId }: { res: ScoreResult; m: MissionStatus; run
 
 /* ---------------------------------------------------------------- held-out evaluation */
 function Evaluation({ m, runId, onRun, onAnnounce }: { m: MissionStatus; runId: string | null; onRun: (id: string | null) => void; onAnnounce: (s: string) => void }) {
+  const readOnly = useReadOnly();
+  const canEvaluate = useCanRun("missions", { mission: m.id, action: "evaluate" });
   const [rid, setRid] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const run = useRun<EvalResult>(rid);
@@ -645,11 +650,11 @@ function Evaluation({ m, runId, onRun, onAnnounce }: { m: MissionStatus; runId: 
       <div className="flex flex-wrap items-center gap-2">
         <h3 className="font-display text-lg font-bold">Held-out evaluation</h3>
         <span className="text-xs text-ink-soft">{m.evaluate}</span>
-        <button className="btn-primary ml-auto px-3 py-1.5 text-xs" onClick={go} disabled={!m.model.ready || run.run?.status === "running" || run.run?.status === "queued"}>
-          {run.run && ["queued", "running"].includes(run.run.status) ? <Spinner className="h-3.5 w-3.5" /> : <ClipboardCheck className="h-3.5 w-3.5" aria-hidden="true" />} Evaluate {m.model.version ?? ""}
+        <button className="btn-primary ml-auto px-3 py-1.5 text-xs" onClick={go} disabled={!canEvaluate || !m.model.ready || run.run?.status === "running" || run.run?.status === "queued"}>
+          {run.run && ["queued", "running"].includes(run.run.status) ? <Spinner className="h-3.5 w-3.5" /> : <ClipboardCheck className="h-3.5 w-3.5" aria-hidden="true" />} {readOnly ? (canEvaluate ? "View sample result" : READ_ONLY_HINT) : `Evaluate ${m.model.version ?? ""}`}
         </button>
       </div>
-      {!m.model.ready && <p className="text-xs text-ink-soft">No model yet - press <b>Quick train</b> above, then evaluate.</p>}
+      {!m.model.ready && <p className="text-xs text-ink-soft">{readOnly ? "No model result is published. Training is available in Docker." : <>No model yet - press <b>Quick train</b> above, then evaluate.</>}</p>}
       {err && <ErrorNotice message={err} />}
       {run.run?.status === "failed" && <ErrorNotice message={run.run.error ?? "evaluation failed"} />}
       {met && (

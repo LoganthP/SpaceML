@@ -1,0 +1,482 @@
+[
+  {
+    "id": "jw02732001001",
+    "label": "jw02732001001 \u00b7 program 2732 obs 1 visit 1",
+    "program": 2732,
+    "observation": 1,
+    "visit": 1,
+    "guiding_modes": [
+      "fg"
+    ],
+    "files": [
+      "jw02732001001_gs-fg_2022162160927_cal.fits"
+    ],
+    "segments": 1,
+    "start_utc": "2022-06-11T16:05:00.062000+00:00",
+    "end_utc": "2022-06-11T16:09:27.774000+00:00",
+    "duration_s": 267.712,
+    "time_unit": "MJD days",
+    "cadence_s": 0.06400012969970703,
+    "pointing_header": [
+      {
+        "JITTRAVG": 105.3068163040961,
+        "JITTRMIN": 0.016417147951708,
+        "JITTRMAX": 39663.30754057353
+      }
+    ],
+    "units": {
+      "jitter": "mas",
+      "delta_ddc_ra": "mas",
+      "delta_ddc_dec": "mas",
+      "hga_motion": "0=moving 1=finished 2=offline"
+    },
+    "n": 4184,
+    "t0": 1654963500.062,
+    "t1": 1654963767.7739997,
+    "columns": [
+      "delta_ddc_dec",
+      "delta_ddc_ra",
+      "hga_motion",
+      "jitter"
+    ],
+    "gaps": 0,
+    "missing": {
+      "delta_ddc_dec": 0,
+      "delta_ddc_ra": 0,
+      "hga_motion": 4184,
+      "jitter": 0
+    }
+  },
+  {
+    "id": "jw02732001002",
+    "label": "jw02732001002 \u00b7 program 2732 obs 1 visit 2",
+    "program": 2732,
+    "observation": 1,
+    "visit": 2,
+    "guiding_modes": [
+      "fg"
+    ],
+    "files": [
+      "jw02732001002_gs-fg_2022162182251_cal.fits"
+    ],
+    "segments": 1,
+    "start_utc": "2022-06-11T18:15:25.399000+00:00",
+    "end_utc": "2022-06-11T18:22:51.350000+00:00",
+    "duration_s": 445.951,
+    "time_unit": "MJD days",
+    "cadence_s": 0.06400012969970703,
+    "pointing_header": [
+      {
+        "JITTRAVG": 82.81627805109245,
+        "JITTRMIN": 0.01321739077790975,
+        "JITTRMAX": 51472.09585066821
+      }
+    ],
+    "units": {
+      "jitter": "mas",
+      "delta_ddc_ra": "mas",
+      "delta_ddc_dec": "mas",
+      "hga_motion": "0=moving 1=finished 2=offline"
+    },
+    "n": 6969,
+    "t0": 1654971325.3990002,
+    "t1": 1654971771.35,
+    "columns": [
+      "delta_ddc_dec",
+      "delta_ddc_ra",
+      "hga_motion",
+      "jitter"
+    ],
+    "gaps": 0,
+    "missing": {
+      "delta_ddc_dec": 0,
+      "delta_ddc_ra": 0,
+      "hga_motion": 6969,
+      "jitter": 0
+    }
+  },
+  {
+    "id": "jw02732001003",
+    "label": "jw02732001003 \u00b7 program 2732 obs 1 visit 3",
+    "program": 2732,
+    "observation": 1,
+    "visit": 3,
+    "guiding_modes": [
+      "fg"
+    ],
+    "files": [
+      "jw02732001003_gs-fg_2022162194014_cal.fits"
+    ],
+    "segments": 1,
+    "start_utc": "2022-06-11T19:35:48.434000+00:00",
+    "end_utc": "2022-06-11T19:40:14.226000+00:00",
+    "duration_s": 265.792,
+    "time_unit": "MJD days",
+    "cadence_s": 0.06400012969970703,
+    "pointing_header": [
+      {
+        "JITTRAVG": 219.7802874477673,
+        "JITTRMIN": 0.01073914114817085,
+        "JITTRMAX": 75795.91401437367
+      }
+    ],
+    "units": {
+      "jitter": "mas",
+      "delta_ddc_ra": "mas",
+      "delta_ddc_dec": "mas",
+      "hga_motion": "0=moving 1=finished 2=offline"
+    },
+    "n": 4154,
+    "t0": 1654976148.434,
+    "t1": 1654976414.2259998,
+    "columns": [
+      "delta_ddc_dec",
+      "delta_ddc_ra",
+      "hga_motion",
+      "jitter"
+    ],
+    "gaps": 0,
+    "missing": {
+      "delta_ddc_dec": 0,
+      "delta_ddc_ra": 0,
+      "hga_motion": 4154,
+      "jitter": 0
+    }
+  },
+  {
+    "id": "jw02732001004",
+    "label": "jw02732001004 \u00b7 program 2732 obs 1 visit 4",
+    "program": 2732,
+    "observation": 1,
+    "visit": 4,
+    "guiding_modes": [
+      "fg"
+    ],
+    "files": [
+      "jw02732001004_gs-fg_2022162214257_cal.fits"
+    ],
+    "segments": 1,
+    "start_utc": "2022-06-11T21:38:16.715000+00:00",
+    "end_utc": "2022-06-11T21:42:57.803000+00:00",
+    "duration_s": 281.088,
+    "time_unit": "MJD days",
+    "cadence_s": 0.06400012969970703,
+    "pointing_header": [
+      {
+        "JITTRAVG": 171.9163908147675,
+        "JITTRMIN": 0.01794814168561917,
+        "JITTRMAX": 62281.23468060011
+      }
+    ],
+    "units": {
+      "jitter": "mas",
+      "delta_ddc_ra": "mas",
+      "delta_ddc_dec": "mas",
+      "hga_motion": "0=moving 1=finished 2=offline"
+    },
+    "n": 4393,
+    "t0": 1654983496.715,
+    "t1": 1654983777.8030002,
+    "columns": [
+      "delta_ddc_dec",
+      "delta_ddc_ra",
+      "hga_motion",
+      "jitter"
+    ],
+    "gaps": 0,
+    "missing": {
+      "delta_ddc_dec": 0,
+      "delta_ddc_ra": 0,
+      "hga_motion": 4393,
+      "jitter": 0
+    }
+  },
+  {
+    "id": "jw02732002001",
+    "label": "jw02732002001 \u00b7 program 2732 obs 2 visit 1",
+    "program": 2732,
+    "observation": 2,
+    "visit": 1,
+    "guiding_modes": [
+      "fg"
+    ],
+    "files": [
+      "jw02732002001_gs-fg_2022163180758_cal.fits"
+    ],
+    "segments": 1,
+    "start_utc": "2022-06-12T18:04:45.239000+00:00",
+    "end_utc": "2022-06-12T18:07:58.327000+00:00",
+    "duration_s": 193.088,
+    "time_unit": "MJD days",
+    "cadence_s": 0.06400012969970703,
+    "pointing_header": [
+      {
+        "JITTRAVG": 181.4716534625682,
+        "JITTRMIN": 0.04211032570747643,
+        "JITTRMAX": 45252.00576320256
+      }
+    ],
+    "units": {
+      "jitter": "mas",
+      "delta_ddc_ra": "mas",
+      "delta_ddc_dec": "mas",
+      "hga_motion": "0=moving 1=finished 2=offline"
+    },
+    "n": 3018,
+    "t0": 1655057085.2389998,
+    "t1": 1655057278.3270004,
+    "columns": [
+      "delta_ddc_dec",
+      "delta_ddc_ra",
+      "hga_motion",
+      "jitter"
+    ],
+    "gaps": 0,
+    "missing": {
+      "delta_ddc_dec": 0,
+      "delta_ddc_ra": 0,
+      "hga_motion": 3018,
+      "jitter": 0
+    }
+  },
+  {
+    "id": "jw02732002002",
+    "label": "jw02732002002 \u00b7 program 2732 obs 2 visit 2",
+    "program": 2732,
+    "observation": 2,
+    "visit": 2,
+    "guiding_modes": [
+      "fg"
+    ],
+    "files": [
+      "jw02732002002_gs-fg_2022163212047_cal.fits"
+    ],
+    "segments": 1,
+    "start_utc": "2022-06-12T21:17:26.252000+00:00",
+    "end_utc": "2022-06-12T21:20:47.404000+00:00",
+    "duration_s": 201.152,
+    "time_unit": "MJD days",
+    "cadence_s": 0.06400012969970703,
+    "pointing_header": [
+      {
+        "JITTRAVG": 209.7448055356076,
+        "JITTRMIN": 0.02095312833798667,
+        "JITTRMAX": 59632.73004634478
+      }
+    ],
+    "units": {
+      "jitter": "mas",
+      "delta_ddc_ra": "mas",
+      "delta_ddc_dec": "mas",
+      "hga_motion": "0=moving 1=finished 2=offline"
+    },
+    "n": 3144,
+    "t0": 1655068646.2520003,
+    "t1": 1655068847.4040003,
+    "columns": [
+      "delta_ddc_dec",
+      "delta_ddc_ra",
+      "hga_motion",
+      "jitter"
+    ],
+    "gaps": 0,
+    "missing": {
+      "delta_ddc_dec": 0,
+      "delta_ddc_ra": 0,
+      "hga_motion": 3144,
+      "jitter": 0
+    }
+  },
+  {
+    "id": "jw02732003001",
+    "label": "jw02732003001 \u00b7 program 2732 obs 3 visit 1",
+    "program": 2732,
+    "observation": 3,
+    "visit": 1,
+    "guiding_modes": [
+      "fg"
+    ],
+    "files": [
+      "jw02732003001_gs-fg_2022166161647_cal.fits"
+    ],
+    "segments": 1,
+    "start_utc": "2022-06-15T16:12:51.536000+00:00",
+    "end_utc": "2022-06-15T16:16:47.632000+00:00",
+    "duration_s": 236.096,
+    "time_unit": "MJD days",
+    "cadence_s": 0.06400012969970703,
+    "pointing_header": [
+      {
+        "JITTRAVG": 205.3738295384255,
+        "JITTRMIN": 0.01701749732913932,
+        "JITTRMAX": 62696.4451939612
+      }
+    ],
+    "units": {
+      "jitter": "mas",
+      "delta_ddc_ra": "mas",
+      "delta_ddc_dec": "mas",
+      "hga_motion": "0=moving 1=finished 2=offline"
+    },
+    "n": 3690,
+    "t0": 1655309571.5359998,
+    "t1": 1655309807.6319997,
+    "columns": [
+      "delta_ddc_dec",
+      "delta_ddc_ra",
+      "hga_motion",
+      "jitter"
+    ],
+    "gaps": 0,
+    "missing": {
+      "delta_ddc_dec": 0,
+      "delta_ddc_ra": 0,
+      "hga_motion": 3690,
+      "jitter": 0
+    }
+  },
+  {
+    "id": "jw02732004001",
+    "label": "jw02732004001 \u00b7 program 2732 obs 4 visit 1",
+    "program": 2732,
+    "observation": 4,
+    "visit": 1,
+    "guiding_modes": [
+      "fg"
+    ],
+    "files": [
+      "jw02732004001_gs-fg_2022171100414_cal.fits"
+    ],
+    "segments": 1,
+    "start_utc": "2022-06-20T09:59:50.520000+00:00",
+    "end_utc": "2022-06-20T10:04:14.200000+00:00",
+    "duration_s": 263.68,
+    "time_unit": "MJD days",
+    "cadence_s": 0.06400012969970703,
+    "pointing_header": [
+      {
+        "JITTRAVG": 164.1620503671326,
+        "JITTRMIN": 0.02498409478322404,
+        "JITTRMAX": 60912.63650594376
+      }
+    ],
+    "units": {
+      "jitter": "mas",
+      "delta_ddc_ra": "mas",
+      "delta_ddc_dec": "mas",
+      "hga_motion": "0=moving 1=finished 2=offline"
+    },
+    "n": 4121,
+    "t0": 1655719190.52,
+    "t1": 1655719454.2000003,
+    "columns": [
+      "delta_ddc_dec",
+      "delta_ddc_ra",
+      "hga_motion",
+      "jitter"
+    ],
+    "gaps": 0,
+    "missing": {
+      "delta_ddc_dec": 0,
+      "delta_ddc_ra": 0,
+      "hga_motion": 4121,
+      "jitter": 0
+    }
+  },
+  {
+    "id": "jw02732005001",
+    "label": "jw02732005001 \u00b7 program 2732 obs 5 visit 1",
+    "program": 2732,
+    "observation": 5,
+    "visit": 1,
+    "guiding_modes": [
+      "fg"
+    ],
+    "files": [
+      "jw02732005001_gs-fg_2022171114054_cal.fits"
+    ],
+    "segments": 1,
+    "start_utc": "2022-06-20T11:36:11.059000+00:00",
+    "end_utc": "2022-06-20T11:40:54.130000+00:00",
+    "duration_s": 283.071,
+    "time_unit": "MJD days",
+    "cadence_s": 0.06400012969970703,
+    "pointing_header": [
+      {
+        "JITTRAVG": 128.0116147780047,
+        "JITTRMIN": 0.01617977106427447,
+        "JITTRMAX": 51066.9810946701
+      }
+    ],
+    "units": {
+      "jitter": "mas",
+      "delta_ddc_ra": "mas",
+      "delta_ddc_dec": "mas",
+      "hga_motion": "0=moving 1=finished 2=offline"
+    },
+    "n": 4424,
+    "t0": 1655724971.0589998,
+    "t1": 1655725254.13,
+    "columns": [
+      "delta_ddc_dec",
+      "delta_ddc_ra",
+      "hga_motion",
+      "jitter"
+    ],
+    "gaps": 0,
+    "missing": {
+      "delta_ddc_dec": 0,
+      "delta_ddc_ra": 0,
+      "hga_motion": 4424,
+      "jitter": 0
+    }
+  },
+  {
+    "id": "jw02732006001",
+    "label": "jw02732006001 \u00b7 program 2732 obs 6 visit 1",
+    "program": 2732,
+    "observation": 6,
+    "visit": 1,
+    "guiding_modes": [
+      "fg"
+    ],
+    "files": [
+      "jw02732006001_gs-fg_2022181235818_cal.fits"
+    ],
+    "segments": 1,
+    "start_utc": "2022-06-30T23:55:38.656000+00:00",
+    "end_utc": "2022-06-30T23:58:18.912000+00:00",
+    "duration_s": 160.256,
+    "time_unit": "MJD days",
+    "cadence_s": 0.06400012969970703,
+    "pointing_header": [
+      {
+        "JITTRAVG": 314.7496796348602,
+        "JITTRMIN": 0.04506110731222633,
+        "JITTRMAX": 65419.8035992228
+      }
+    ],
+    "units": {
+      "jitter": "mas",
+      "delta_ddc_ra": "mas",
+      "delta_ddc_dec": "mas",
+      "hga_motion": "0=moving 1=finished 2=offline"
+    },
+    "n": 2505,
+    "t0": 1656633338.6559997,
+    "t1": 1656633498.9119997,
+    "columns": [
+      "delta_ddc_dec",
+      "delta_ddc_ra",
+      "hga_motion",
+      "jitter"
+    ],
+    "gaps": 0,
+    "missing": {
+      "delta_ddc_dec": 0,
+      "delta_ddc_ra": 0,
+      "hga_motion": 2505,
+      "jitter": 0
+    }
+  }
+]

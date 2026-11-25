@@ -1,0 +1,8 @@
+{
+  "mission": "webb",
+  "model_name": "IsolationForest (100 trees) per telescope",
+  "run_kind": "quick",
+  "source": "JWST FGS guider products (MAST)",
+  "dataset_fingerprint": "d44bf0ea50752871",
+  "trained_seconds": 0.46
+}

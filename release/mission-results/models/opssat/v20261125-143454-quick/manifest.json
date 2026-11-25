@@ -1,0 +1,11 @@
+{
+  "mission": "opssat",
+  "model_name": "RandomForest (150 trees, class_weight=balanced)",
+  "run_kind": "quick",
+  "source_version": "v1",
+  "source_doi": "10.5281/zenodo.12588359",
+  "dataset_fingerprint": "3372b27563d46450",
+  "trained_seconds": 3.71,
+  "train_segments": 1594,
+  "test_segments": 529
+}

@@ -36,6 +36,38 @@ def test_empty_tmp_cold_start_has_no_database_or_writes(api):
     assert "app.db" not in sys.modules and "app.jobs" not in sys.modules
 
 
+def test_demo_catalog_links_only_published_results_and_marks_missing_missions(api):
+    catalog = api.get("/api/catalog").json()
+    entries = {e["id"]: e for e in catalog["datasets"]}
+    for mid in ("hubble", "esa-m1", "esa-m2", "esa-m3", "funcube", "satnogs"):
+        entry = entries["mission-" + mid]
+        assert entry["status"]["data"] == "missing"
+        assert entry["status"]["next"] == {"kind": "none", "label": "Available in Docker"}
+    for name in ("kepler", "ai4mars", "omni2"):
+        assert entries[name]["status"]["next"]["kind"] == "none"
+    for mid in ("opssat", "webb"):
+        entry = entries["mission-" + mid]
+        assert entry["model"]["ready"] and not entry["status"].get("repair")
+        next_step = entry["status"]["next"]
+        assert next_step["label"] == "View sample result"
+        from urllib.parse import parse_qs
+        run_id = parse_qs(urlsplit(next_step["to"]).query)["run"][0]
+        run = api.get("/api/runs/" + run_id).json()
+        assert run["status"] == "succeeded"
+        assert run["input_ref"]["mission"] == mid
+
+
+def test_all_published_webb_visits_have_real_duration_and_spacing(api):
+    body = api.get("/api/missions/webb/items?limit=5000").json()
+    assert body["total"] == 10
+    for item in body["items"]:
+        assert item["t1"] - item["t0"] > 1
+        assert 0.03 < item["cadence_s"] < 0.1
+        assert item["time_unit"] == "MJD days"
+    mission = api.get("/api/missions/webb").json()
+    assert mission["repair"] is None and mission["model"]["ready"]
+
+
 @pytest.mark.parametrize("method,path", [
     ("POST", "/api/jobs"), ("POST", "/api/setup/run"), ("POST", "/api/mars/uploads"),
     ("POST", "/api/mars/traverse/download"), ("PUT", "/api/runs/example/reviews/candidate"),

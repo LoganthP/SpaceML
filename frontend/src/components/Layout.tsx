@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ChevronDown, Command, Menu as MenuIcon, Moon, Search, Sun, SquareTerminal } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useCapabilities } from "../lib/capabilities";
+import { useCapabilities, useReadOnly } from "../lib/capabilities";
 import { MOBILE_NAV, NAV_GROUPS } from "../lib/nav";
 import { usePrefs } from "../lib/theme";
 import CommandPalette from "./CommandPalette";
@@ -118,6 +118,8 @@ function ApiPulse() {
 }
 
 function Dock({ onSearch }: { onSearch: () => void }) {
+  const readOnly = useReadOnly();
+  const caps = useCapabilities();
   return (
     <header className="pointer-events-none sticky top-0 z-40 px-3 pt-3">
       <motion.div initial={{ y: -40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 200, damping: 24 }}
@@ -132,9 +134,10 @@ function Dock({ onSearch }: { onSearch: () => void }) {
           </div>
           <div className="hidden leading-tight sm:block">
             <div className="font-display text-[15px] font-bold">Space ML</div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">Mission Control</div>
+            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">{readOnly ? "Read-only demo" : "Mission Control"}</div>
           </div>
         </NavLink>
+        {caps?.authentication?.required && !caps.authentication.authenticated && <a href="/api/session" className="btn-ghost text-xs">Sign in to train</a>}
         <nav aria-label="Main" className="mx-auto hidden items-center gap-1 rounded-[20px] bg-white/40 p-1 dark:bg-white/5 lg:flex">
           {NAV_GROUPS.map((g) => <NavMenu key={g.label} group={g} />)}
         </nav>
@@ -191,6 +194,7 @@ function MobileDock() {
 }
 
 export default function Layout({ children }: { children: ReactNode }) {
+  const readOnly = useReadOnly();
   const [palette, setPalette] = useState(false);
   const loc = useLocation();
   useEffect(() => {
@@ -205,6 +209,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <SpaceBackdrop />
       <Dock onSearch={() => setPalette(true)} />
       <main key={loc.pathname} className="px-4 pb-28 pt-6 sm:px-6 lg:pb-12">
+        <div className="h-5 text-xs font-semibold text-ink-soft sm:hidden">{readOnly ? "Read-only demo" : ""}</div>
         <div className="mx-auto max-w-[1400px]">{children}</div>
       </main>
       <MobileDock />

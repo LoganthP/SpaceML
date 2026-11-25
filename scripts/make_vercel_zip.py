@@ -58,6 +58,14 @@ def verify_archive(path: Path) -> dict:
                 if hashlib.sha256(content).hexdigest() != record["sha256"]:
                     raise RuntimeError(f"Final ZIP pack mismatch: {record['path']}")
         frozen = json.loads(archive.read("backend/static_data/index.json"))
+        publication = "release/mission-results/manifest.json"
+        if publication in archive.namelist():
+            if hashlib.sha256(archive.read(publication)).hexdigest() != frozen.get("mission_publication_sha256"):
+                raise RuntimeError("Published mission manifest differs from the frozen snapshot")
+            for record in json.loads(archive.read(publication))["files"]:
+                content = archive.read("release/mission-results/" + record["path"])
+                if len(content) != record["bytes"] or hashlib.sha256(content).hexdigest() != record["sha256"]:
+                    raise RuntimeError(f"Final ZIP published mission mismatch: {record['path']}")
         for record in frozen["responses"].values():
             content = archive.read("backend/static_data/responses/" + record["file"])
             if hashlib.sha256(content).hexdigest() != Path(record["file"]).stem:

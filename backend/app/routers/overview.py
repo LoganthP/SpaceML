@@ -1,7 +1,7 @@
 """Dashboard overview, dataset catalog, model registry and evaluation results."""
 from __future__ import annotations
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 from spaceml.config import DATA_DIR, MODELS_DIR
 
@@ -88,10 +88,14 @@ def datasets() -> list[dict]:
 
 
 @router.get("/health")
-def health():
+def health(request: Request):
     from ..manifest import APP_VERSION
+    from ..auth import required, authenticated
+    allowed = authenticated(request)
     return {"status": "ok", "mode": "local", "version": APP_VERSION,
-            "read_only": [], "capabilities": {"write": True, "train": True, "live": True},
+            "read_only": [] if allowed else ["authentication_required"],
+            "authentication": {"required": required(), "authenticated": allowed},
+            "storage": "persistent", "capabilities": {"write": allowed, "train": allowed, "live": True},
             "data_dir": str(DATA_DIR), "models_dir": str(MODELS_DIR)}
 
 

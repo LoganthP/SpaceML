@@ -55,6 +55,8 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="Space ML Mission Control", version="3.1.10", lifespan=lifespan)
+from .auth import install as install_auth
+install_auth(app)
 
 origins = os.environ.get("SPACEML_CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
 app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["*"], allow_headers=["*"])

@@ -1,0 +1,268 @@
+{
+  "schema": 1,
+  "models": {
+    "opssat": "v20261125-143454-quick",
+    "webb": "v20261125-143510-quick"
+  },
+  "files": [
+    {
+      "path": "data/webb/events.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    {
+      "path": "data/webb/items.json",
+      "sha256": "e71476233ac584db680af19c62fc9ad92a926304a863c3fafe76d89aecb56491",
+      "bytes": 11690
+    },
+    {
+      "path": "data/webb/manifest.json",
+      "sha256": "9a1db9d8104bf4c2aa96e9c7b4b8b2785829a27987ccbed818315bcdb24f321e",
+      "bytes": 3143
+    },
+    {
+      "path": "data/webb/series/jw02732001001.npz",
+      "sha256": "7136dbb0f1a26f5ba86e488eacf6380b4819f21d0a53460f62a83c82b6c7f388",
+      "bytes": 57410
+    },
+    {
+      "path": "data/webb/series/jw02732001002.npz",
+      "sha256": "7c8d15d355e8ac32784f90c4e83a9fb006c41c922f8d0139210d3b254d2f22e5",
+      "bytes": 95085
+    },
+    {
+      "path": "data/webb/series/jw02732001003.npz",
+      "sha256": "d8cb45a1d4e8ff10340ec93422b56ed508346c80aacc4b2ea0712d0ae5dd77da",
+      "bytes": 57020
+    },
+    {
+      "path": "data/webb/series/jw02732001004.npz",
+      "sha256": "84f321a15592c90dd2841b2724341d4b9cfbc5e733186c4c07699baed43c467e",
+      "bytes": 60640
+    },
+    {
+      "path": "data/webb/series/jw02732002001.npz",
+      "sha256": "13625da8d2505e725b7c5e22604bfc1a5b0d57fe83769b9c0b7cf71d08b601a6",
+      "bytes": 41735
+    },
+    {
+      "path": "data/webb/series/jw02732002002.npz",
+      "sha256": "76ae1795f5021c92d79c7f8e1bd6a7548b68c0d765ceb4c6cb694ade4611f372",
+      "bytes": 43308
+    },
+    {
+      "path": "data/webb/series/jw02732003001.npz",
+      "sha256": "d335d8142c0f224d9a76af4bc1277c66911065c4b0f0bc6697c11bc940b71526",
+      "bytes": 50724
+    },
+    {
+      "path": "data/webb/series/jw02732004001.npz",
+      "sha256": "779fe0d8bd725a97a9d033c2f92fad8b6eead895d8b16f0cf510e0a6e00266ee",
+      "bytes": 56620
+    },
+    {
+      "path": "data/webb/series/jw02732005001.npz",
+      "sha256": "2cd32112808dca70bf424525a1902fe17b083ebdb4ff34674cf32fc9398ce4cd",
+      "bytes": 60961
+    },
+    {
+      "path": "data/webb/series/jw02732006001.npz",
+      "sha256": "88477725dbc13a0728a2a3d7dbb58d13d906017052645bac6fccc61377588dbf",
+      "bytes": 34838
+    },
+    {
+      "path": "models/opssat/v20261125-143454-quick/manifest.json",
+      "sha256": "01e4f6c984bea8449d2380869e2f4524b632849195e8b5b740b5e83e81bb3441",
+      "bytes": 316
+    },
+    {
+      "path": "models/opssat/v20261125-143454-quick/metrics.json",
+      "sha256": "e82a44ca53ebf82350934ca908cce21e0bea811f9fb6643035b59d8e06f9d077",
+      "bytes": 4594
+    },
+    {
+      "path": "models/opssat/v20261125-143454-quick/model.joblib",
+      "sha256": "0be5e70eade874ee0aa69086e19f98c1b5e54d46ef46dee7bd808fb49518b6d4",
+      "bytes": 2140306
+    },
+    {
+      "path": "models/opssat/v20261125-143454-quick/predictions.json",
+      "sha256": "278116597906befceaae302a7b5dfcdc97b6245933add45423cac15a5bbda2c5",
+      "bytes": 84275
+    },
+    {
+      "path": "models/webb/v20261125-143510-quick/manifest.json",
+      "sha256": "81c2054bc87b8cadf3dd7fb72eb61fc8f44242ddf8aad2c8fb67cf399189a4e1",
+      "bytes": 233
+    },
+    {
+      "path": "models/webb/v20261125-143510-quick/metrics.json",
+      "sha256": "bf96b0a242109c6fa6a588df8d622c1536b0ac36b9d593699169944363a40c77",
+      "bytes": 1072
+    },
+    {
+      "path": "models/webb/v20261125-143510-quick/model.joblib",
+      "sha256": "b37d28398f75b8efe63763ffa0d473577fde0e930eb9b485ac6547cc89f3d9cb",
+      "bytes": 866846
+    },
+    {
+      "path": "models/webb/v20261125-143510-quick/predictions.json",
+      "sha256": "146f7bef7a82b946ce4416e182875501a3915607648b4d2957bd2a1fa32169d7",
+      "bytes": 1260
+    }
+  ],
+  "source_files": [
+    {
+      "file": "jw02732001001_gs-fg_2022162160927_cal.fits",
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:JWST/product/jw02732001001_gs-fg_2022162160927_cal.fits",
+      "sha256": "45aa6cead7783ddb17adf43d4651d4c32782cb87780c659b66c79a85eb86aafe",
+      "bytes": 5702400
+    },
+    {
+      "file": "jw02732001002_gs-fg_2022162182251_cal.fits",
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:JWST/product/jw02732001002_gs-fg_2022162182251_cal.fits",
+      "sha256": "903af8aaf0a1c3ea3a3e1cc3d22e0336fb38cf9883b380ae945337a858c2ceb5",
+      "bytes": 9037440
+    },
+    {
+      "file": "jw02732001003_gs-fg_2022162194014_cal.fits",
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:JWST/product/jw02732001003_gs-fg_2022162194014_cal.fits",
+      "sha256": "bd77ad21deef644714446a101a815031e9cee10562203b2ef2c5ac1c52e3a132",
+      "bytes": 5685120
+    },
+    {
+      "file": "jw02732001004_gs-fg_2022162214257_cal.fits",
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:JWST/product/jw02732001004_gs-fg_2022162214257_cal.fits",
+      "sha256": "029a3dfecd1f1dce5c89cd7697ec2614df2e575d4c2861851da823ae58e543f2",
+      "bytes": 5803200
+    },
+    {
+      "file": "jw02732002001_gs-fg_2022163180758_cal.fits",
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:JWST/product/jw02732002001_gs-fg_2022163180758_cal.fits",
+      "sha256": "663da9245334f3f483053b79986020633d8259e62c43eb6ccd0fb16796580611",
+      "bytes": 3574080
+    },
+    {
+      "file": "jw02732002002_gs-fg_2022163212047_cal.fits",
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:JWST/product/jw02732002002_gs-fg_2022163212047_cal.fits",
+      "sha256": "9408b00b49e4ca614060de44bd2a92e44dc2a6d9c28f92a2c6bd1fbfde1df1ea",
+      "bytes": 3605760
+    },
+    {
+      "file": "jw02732003001_gs-fg_2022166161647_cal.fits",
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:JWST/product/jw02732003001_gs-fg_2022166161647_cal.fits",
+      "sha256": "4f3c6b7fcc0e96e6ed589046e4d6a68261bddf25e4dbeec3c0301239b4f0333e",
+      "bytes": 4135680
+    },
+    {
+      "file": "jw02732004001_gs-fg_2022171100414_cal.fits",
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:JWST/product/jw02732004001_gs-fg_2022171100414_cal.fits",
+      "sha256": "06407bbf3a2e8f5079f4cea84ffd43aac97bfe8bb94e422a5f30c452d1183fb9",
+      "bytes": 4242240
+    },
+    {
+      "file": "jw02732005001_gs-fg_2022171114054_cal.fits",
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:JWST/product/jw02732005001_gs-fg_2022171114054_cal.fits",
+      "sha256": "ec0a82e731b478dca8b2c86d24bdac77f5c4a70a0283645172ff4220e4034537",
+      "bytes": 4708800
+    },
+    {
+      "file": "jw02732006001_gs-fg_2022181235818_cal.fits",
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:JWST/product/jw02732006001_gs-fg_2022181235818_cal.fits",
+      "sha256": "7d8e87d81cf33c0607db192cb8179d44cb5aadf41c973efb2b1287380b4915b9",
+      "bytes": 3058560
+    }
+  ],
+  "visits": [
+    {
+      "visit": "jw02732001001",
+      "samples": 4184,
+      "duration_s": 267.7119996547699,
+      "median_spacing_s": 0.06400012969970703,
+      "min_spacing_s": 0.06399941444396973,
+      "max_spacing_s": 0.06400036811828613,
+      "time_unit": "MJD days"
+    },
+    {
+      "visit": "jw02732001002",
+      "samples": 6969,
+      "duration_s": 445.9509997367859,
+      "median_spacing_s": 0.06400012969970703,
+      "min_spacing_s": 0.06299996376037598,
+      "max_spacing_s": 0.06499981880187988,
+      "time_unit": "MJD days"
+    },
+    {
+      "visit": "jw02732001003",
+      "samples": 4154,
+      "duration_s": 265.79199981689453,
+      "median_spacing_s": 0.06400012969970703,
+      "min_spacing_s": 0.06399941444396973,
+      "max_spacing_s": 0.06400036811828613,
+      "time_unit": "MJD days"
+    },
+    {
+      "visit": "jw02732001004",
+      "samples": 4393,
+      "duration_s": 281.0880002975464,
+      "median_spacing_s": 0.06400012969970703,
+      "min_spacing_s": 0.06399941444396973,
+      "max_spacing_s": 0.06400036811828613,
+      "time_unit": "MJD days"
+    },
+    {
+      "visit": "jw02732002001",
+      "samples": 3018,
+      "duration_s": 193.08800053596497,
+      "median_spacing_s": 0.06400012969970703,
+      "min_spacing_s": 0.06399941444396973,
+      "max_spacing_s": 0.06400036811828613,
+      "time_unit": "MJD days"
+    },
+    {
+      "visit": "jw02732002002",
+      "samples": 3144,
+      "duration_s": 201.15199995040894,
+      "median_spacing_s": 0.06400012969970703,
+      "min_spacing_s": 0.06399941444396973,
+      "max_spacing_s": 0.06400036811828613,
+      "time_unit": "MJD days"
+    },
+    {
+      "visit": "jw02732003001",
+      "samples": 3690,
+      "duration_s": 236.09599995613098,
+      "median_spacing_s": 0.06400012969970703,
+      "min_spacing_s": 0.06399941444396973,
+      "max_spacing_s": 0.06400036811828613,
+      "time_unit": "MJD days"
+    },
+    {
+      "visit": "jw02732004001",
+      "samples": 4121,
+      "duration_s": 263.6800003051758,
+      "median_spacing_s": 0.06400012969970703,
+      "min_spacing_s": 0.06399941444396973,
+      "max_spacing_s": 0.06400036811828613,
+      "time_unit": "MJD days"
+    },
+    {
+      "visit": "jw02732005001",
+      "samples": 4424,
+      "duration_s": 283.0710003376007,
+      "median_spacing_s": 0.06400012969970703,
+      "min_spacing_s": 0.06299948692321777,
+      "max_spacing_s": 0.06499981880187988,
+      "time_unit": "MJD days"
+    },
+    {
+      "visit": "jw02732006001",
+      "samples": 2505,
+      "duration_s": 160.25600004196167,
+      "median_spacing_s": 0.06400012969970703,
+      "min_spacing_s": 0.06399941444396973,
+      "max_spacing_s": 0.06400036811828613,
+      "time_unit": "MJD days"
+    }
+  ]
+}

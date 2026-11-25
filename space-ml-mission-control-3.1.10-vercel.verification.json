@@ -1,9 +1,9 @@
 {
-  "files": 3405,
+  "files": 4003,
   "dataset_files_verified": 122,
-  "frozen_responses_verified": 2657,
-  "static_downloads_verified": 170,
+  "frozen_responses_verified": 3204,
+  "static_downloads_verified": 172,
   "starter_pack_sha256": "41b143b8c3bf6694fb1a67089ebe1eb0a7c14e69f53b433edd0b342840718b84",
-  "zip_bytes": 100416872,
-  "zip_sha256": "8ee047252ec2a66703b3302f170e8a860bd6d9adaa0daf7a1fce5c737903c2b9"
+  "zip_bytes": 102359073,
+  "zip_sha256": "fcccdc5dfdb1791b51eaeba84e3bfc57d6eaca3c74717a0d9146c718fdc693ef"
 }

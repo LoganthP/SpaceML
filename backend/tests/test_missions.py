@@ -124,10 +124,14 @@ def test_api_catalog_and_untrainable_missions(env):
         ms = {m["id"]: m for m in c.get("/api/missions").json()["missions"]}
         assert ms["opssat"]["dataset"]["installed"] and not ms["hubble"]["dataset"]["installed"]
         assert ms["hubble"]["dataset"]["state"] == "importer available - no local data"
-        assert ms["opssat"]["trainable"] and set(ms) == {"opssat", "hubble", "webb"}
+        assert ms["opssat"]["trainable"] and set(ms) == {"opssat", "hubble", "webb", "esa-m1", "esa-m2", "esa-m3", "funcube", "satnogs"}
         cat = {e["id"]: e for e in c.get("/api/catalog").json()["datasets"]}
         assert cat["mission-opssat"]["dataset"]["ready"] and cat["mission-opssat"]["train"]
-        assert not any(k.startswith(("mission-esa", "mission-funcube", "mission-satnogs")) for k in cat)
+        for mid in ("esa-m1", "esa-m2", "esa-m3", "funcube", "satnogs"):
+            assert not ms[mid]["dataset"]["installed"]
+            assert not cat["mission-" + mid]["dataset"]["ready"]
+            assert cat["mission-" + mid]["status"]["data"] == "missing"
+            assert not cat["mission-" + mid]["train"]
         r = c.post("/api/runs", json={"module": "missions", "input": {"mission": "webb", "action": "score", "item": "x"}})
         assert r.status_code == 409 and "prepare" in r.json()["detail"]
         assert c.post("/api/jobs", json={"task": "missions.satnogs.install"}).status_code in (404, 422)

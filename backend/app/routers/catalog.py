@@ -340,7 +340,7 @@ def _status(e: dict) -> dict:
         rd = "missing"
     elif model == "not_applicable":
         rd = "analysis_only"
-    elif model == "available":
+    elif model == "available" and data != "needs_repair":
         rd = "model_available"
     elif data == "installed":
         rd = "ready_to_train"
@@ -387,6 +387,8 @@ def catalog():
         except Exception as e:  # noqa: BLE001 - one broken dataset must not hide the others
             entries.append({"id": f.__name__.removeprefix("_entry_"), "title": f.__name__, "error": str(e)[:300],
                             "dataset": {"ready": False, "summary": "could not be read"}, "model": None, "train": []})
+    from spaceml.missions.availability import catalog_entries
+    entries.extend(catalog_entries())
     rel = release.status()
     rel_job = _jobs_for("release", ["release.install", "release.build"])
     heavy = [j for j in jobs.list_jobs(40) if j["task"] in jobs.HEAVY_TASKS and j["status"] in ("queued", "running")]

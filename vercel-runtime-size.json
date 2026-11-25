@@ -2,8 +2,8 @@
   "python": "3.12",
   "platform": "manylinux2014_x86_64",
   "runtime_dependency_bytes": 10838828,
-  "source_and_frozen_data_bytes": 39409058,
-  "measured_application_bytes": 50247886,
+  "source_and_frozen_data_bytes": 41624647,
+  "measured_application_bytes": 52463475,
   "python_function_limit_bytes": 500000000,
   "measurement": "Linux wheel expansion plus application files; excludes Vercel platform launcher; cloud build not uploaded"
 }

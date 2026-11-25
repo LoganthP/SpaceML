@@ -131,7 +131,15 @@ def refresh() -> None:
             if verified["problems"]:
                 raise RuntimeError(verified)
             release.install(ROOT / "release" / "bundle")
+            publication = ROOT / "release/mission-results"
+            if (publication / "manifest.json").is_file():
+                from spaceml.missions.published import install as install_publication
+                install_publication(publication)
             registry.scan()
+            from spaceml.missions import models as mission_models
+            for mid in catalog.ORDER:
+                if store.installed(mid) and mission_models.active(mid):
+                    compute("missions", {"mission": mid, "action": "evaluate"}, f"{mid} validated evaluation")
             for chan in sorted(telemetry.load_channels()):
                 if telemetry.has_channel(chan) and registry.telemetry_dir_for(chan):
                     compute("telemetry", {"chan_id": chan}, f"{chan} · frozen NASA telemetry")
@@ -146,7 +154,8 @@ def refresh() -> None:
                         continue
                     capture(client, path)
             capture(client, "/api/runs", {"limit": 500}, required=True)
-            for mid in catalog.ORDER:
+            from spaceml.missions.availability import SOURCES as unavailable_missions
+            for mid in [*catalog.ORDER, *unavailable_missions]:
                 capture(client, f"/api/missions/{mid}")
                 capture(client, f"/api/missions/{mid}/items", {"limit": 5000})
                 capture(client, f"/api/missions/{mid}/predictions")
@@ -176,7 +185,9 @@ def refresh() -> None:
                 capture(client, "/api/reviews/evidence", {"run_id": item["run_id"], "item": item["item"]})
         index = {"schema": 1, "version": "3.1.10", "sources": sources(),
                  "responses": responses, "files": files, "unavailable": unavailable}
-        (CAPSULE / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=1), encoding="utf-8")
+        if (ROOT / "release/mission-results/manifest.json").is_file():
+            index["mission_publication_sha256"] = digest(ROOT / "release/mission-results/manifest.json")
+        (CAPSULE / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")
         print(f"Frozen {len(responses)} JSON responses and {len(files)} static downloads", flush=True)
 
 
@@ -185,6 +196,15 @@ def export() -> None:
     index = json.loads((CAPSULE / "index.json").read_text(encoding="utf-8"))
     if current_sources != index["sources"]:
         raise RuntimeError("Frozen data is stale. Run build_static_data.py --refresh in the optional training environment")
+    if index.get("mission_publication_sha256"):
+        publication = ROOT / "release/mission-results"
+        manifest = publication / "manifest.json"
+        if digest(manifest) != index["mission_publication_sha256"]:
+            raise RuntimeError("Published mission manifest changed; regenerate the frozen capsule")
+        for record in json.loads(manifest.read_text(encoding="utf-8"))["files"]:
+            path = (publication / record["path"]).resolve()
+            if not path.is_relative_to(publication.resolve()) or not path.is_file() or digest(path) != record["sha256"]:
+                raise RuntimeError(f"Published mission checksum failed: {record['path']}")
     PUBLIC.mkdir(parents=True, exist_ok=True)
     for record in index["responses"].values():
         source = CAPSULE / "responses" / record["file"]
@@ -271,7 +291,7 @@ def augment() -> None:
         name = hashlib.sha256(payload).hexdigest() + ".zip"
         (PUBLIC / "assets" / name).write_bytes(payload)
         index["files"]["/api/reviews/export?format=zip"] = {"url": "/data/assets/" + name, "type": "application/zip"}
-    (CAPSULE / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=1), encoding="utf-8")
+    (CAPSULE / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")
     print(f"Compiled evidence for {len(queue)} review items")
 
 

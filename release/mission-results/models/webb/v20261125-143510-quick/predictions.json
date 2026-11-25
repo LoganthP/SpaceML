@@ -1,0 +1,68 @@
+[
+  {
+    "item": "jw02732002002",
+    "model_intervals": [],
+    "baseline_intervals": [
+      {
+        "start": 1655068846.7639997,
+        "end": 1655068847.4040003,
+        "i0": 3133,
+        "i1": 3143,
+        "n": 11
+      }
+    ],
+    "windows": 49,
+    "overlap": 0,
+    "context": {
+      "guiding": null,
+      "warnings": null,
+      "guiding_modes": [
+        "fg"
+      ]
+    }
+  },
+  {
+    "item": "jw02732003001",
+    "model_intervals": [],
+    "baseline_intervals": [
+      {
+        "start": 1655309806.9279997,
+        "end": 1655309807.6319997,
+        "i0": 3678,
+        "i1": 3689,
+        "n": 12
+      }
+    ],
+    "windows": 58,
+    "overlap": 0,
+    "context": {
+      "guiding": null,
+      "warnings": null,
+      "guiding_modes": [
+        "fg"
+      ]
+    }
+  },
+  {
+    "item": "jw02732006001",
+    "model_intervals": [],
+    "baseline_intervals": [
+      {
+        "start": 1656633498.2079997,
+        "end": 1656633498.9119997,
+        "i0": 2493,
+        "i1": 2504,
+        "n": 12
+      }
+    ],
+    "windows": 39,
+    "overlap": 0,
+    "context": {
+      "guiding": null,
+      "warnings": null,
+      "guiding_modes": [
+        "fg"
+      ]
+    }
+  }
+]

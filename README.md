@@ -665,3 +665,6 @@ docker compose up -d --build app   # never add -v: volumes hold your data, model
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:22d3ee,50:a78bfa,100:fb923c&height=110&section=footer" width="100%" alt=""/>
 
 </div>
+
+<!-- deployment-modes -->
+For the read-only Vercel demo, see [DEPLOY-VERCEL.md](DEPLOY-VERCEL.md). For a Vercel frontend with an authenticated persistent Docker API and worker, see [DEPLOY-PERSISTENT.md](DEPLOY-PERSISTENT.md).

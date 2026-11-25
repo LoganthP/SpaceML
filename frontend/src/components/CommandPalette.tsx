@@ -92,7 +92,7 @@ export default function CommandPalette({ open, onClose }: { open: boolean; onClo
                         title={readOnly && i.group === "Background jobs" ? READ_ONLY_HINT : i.hint}
                         className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm transition ${idx === sel ? "bg-white shadow-sm" : ""}`}>
                         <i.icon className="h-4 w-4 text-violet-600" />
-                        <span className="flex-1 font-medium">{i.label}</span>
+                        <span className="flex-1 font-medium">{readOnly && (i.group === "Background jobs" || i.id === "upload" || i.id === "wb") ? READ_ONLY_HINT : i.label}</span>
                         {i.hint && <span className="text-xs text-ink-faint">{i.hint}</span>}
                         {idx === sel && <CornerDownLeft className="h-3.5 w-3.5 text-ink-faint" />}
                       </button>

@@ -160,7 +160,7 @@ export function JobButton({ task, params, label, module, className = "btn-primar
   const [pending, setPending] = useState(false);
   return (
     <div className="space-y-1">
-      <WriteButton className={className} disabled={disabled || !!busy || pending}
+      <WriteButton operation={/train|retrain|setup|resume/.test(task) ? "train" : "write"} className={className} disabled={disabled || !!busy || pending}
         onClick={async () => { setErr(null); setPending(true); try { await start(task, params); } catch (e) { setErr((e as Error).message); } finally { setPending(false); } }}>
         {pending || busy?.task === task ? <Spinner /> : <Play className="h-4 w-4" />} {label}
       </WriteButton>

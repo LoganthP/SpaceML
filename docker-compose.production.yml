@@ -1,0 +1,14 @@
+# Keep existing data/model/storage volumes. Supply backend-only secrets in the environment.
+# Run behind an HTTPS reverse proxy; never send Basic credentials over plain HTTP.
+services:
+  app:
+    volumes:
+      - ./release/mission-results:/published:ro
+    environment:
+      SMC_MODE: local
+      SMC_AUTH_REQUIRED: "true"
+      SMC_AUTH_USER: ${SMC_AUTH_USER:?Set a backend login username}
+      SMC_AUTH_PASSWORD: ${SMC_AUTH_PASSWORD:?Set a strong backend login password}
+      SMC_PUBLIC_ORIGIN: ${SMC_PUBLIC_ORIGIN:?Set the public frontend HTTPS origin}
+      SATNOGS_TOKEN: ${SATNOGS_TOKEN:-}
+      SMC_AUTO_INSTALL: "off"

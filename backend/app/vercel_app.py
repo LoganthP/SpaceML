@@ -34,7 +34,22 @@ def stored(path: str, params: dict | None = None, default=None):
     record = index()["responses"].get(key(path, params))
     if record is None:
         return copy.deepcopy(default)
-    return json.loads((ROOT / "responses" / record["file"]).read_text(encoding="utf-8"))
+    body = json.loads((ROOT / "responses" / record["file"]).read_text(encoding="utf-8"))
+    if path == "/api/catalog":
+        runs = all_runs()
+        for entry in body["datasets"]:
+            status = entry.get("status", {})
+            mission = entry.get("mission")
+            run = next((r for r in runs if r.get("status") == "succeeded" and
+                        r.get("module") == entry.get("module") and
+                        (not mission or r.get("input_ref", {}).get("mission") == mission)), None)
+            entry["capabilities"] = {"write": False, "train": False}
+            status["next"] = ({"kind": "link", "label": "View sample result",
+                               "to": status.get("page", "/").split("?")[0] + "?" +
+                               urlencode({**({"mission": mission} if mission else {}), "run": run["id"]})}
+                              if run and status.get("data") != "needs_repair" else
+                              {"kind": "none", "label": "Available in Docker"})
+    return body
 
 
 def all_runs() -> list:
@@ -67,6 +82,7 @@ def bounded(body, status=200):
 def health():
     return {"status": "ok", "mode": "vercel", "version": VERSION,
             "precomputed_modules": sorted({r["module"] for r in all_runs()}),
+            "stored_inputs": [{"module": r["module"], "input": r.get("input_ref", {})} for r in all_runs() if r.get("status") == "succeeded"],
             "read_only": ["training", "install", "download", "uploads", "reviews", "annotations", "model_activation"],
             "capabilities": {"write": False, "train": False, "live": True, "stored_scoring": True},
             "hint": HINT, "storage": "ephemeral", "static_responses": len(index()["responses"])}
